@@ -1,0 +1,12 @@
+package segundum.repositorio;
+
+import segundum.modelo.Usuario;
+
+public class RepositorioUsuariosJPA extends RepositorioJPA<Usuario> {
+
+	@Override
+	public Class<Usuario> getClase() {
+		return Usuario.class;
+	}
+
+}
