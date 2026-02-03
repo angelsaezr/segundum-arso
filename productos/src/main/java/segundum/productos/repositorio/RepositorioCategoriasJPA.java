@@ -1,0 +1,12 @@
+package segundum.productos.repositorio;
+
+import segundum.productos.modelo.Categoria;
+
+public class RepositorioCategoriasJPA extends RepositorioJPA<Categoria> {
+
+	@Override
+	public Class<Categoria> getClase() {
+		return Categoria.class;
+	}
+
+}
