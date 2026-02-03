@@ -11,9 +11,9 @@
     <persistence-unit name="segundum">
 
         <!-- añadir las entidades anotadas con el elemento class-->
-        <class>segundum.modelo.Usuario</class>
-        <class>segundum.modelo.Producto</class>
-        <class>segundum.modelo.Categoria</class>
+        <class>segundum.productos.modelo.Usuario</class>
+        <class>segundum.productos.modelo.Producto</class>
+        <class>segundum.productos.modelo.Categoria</class>
 
         <properties>
 
