@@ -32,7 +32,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		if (fechaNacimiento == null)
 			throw new IllegalArgumentException("fecha nacimiento: no debe ser nula");
 
-		Usuario usuario = new Usuario(email, nombre, apellidos, clave, fechaNacimiento, telefono, false);
+		Usuario usuario = new Usuario(email, nombre, apellidos);
 
 		String id = repositorio.add(usuario);
 
@@ -57,15 +57,6 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
 		if (apellidos != null && !apellidos.isEmpty())
 			usuario.setApellidos(apellidos);
-
-		if (clave != null && !clave.isEmpty())
-			usuario.setClave(clave);
-
-		if (fechaNacimiento != null)
-			usuario.setFechaNacimiento(fechaNacimiento);
-
-		if (telefono != null && !telefono.isEmpty())
-			usuario.setTelefono(telefono);
 
 		repositorio.update(usuario);
 	}
