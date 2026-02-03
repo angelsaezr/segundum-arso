@@ -23,3 +23,5 @@ Obtener las categorías y sus descendientes se puede simplificar usando el campo
 #### - Tarea 1
 
 Los proyectos (microservicios) tendrán esquemas de base de datos independientes.
+
+La base de datos de Productos será inicializada con un conjunto inicial de usuarios para que se puedan dar de alta productos.
