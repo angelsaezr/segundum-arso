@@ -12,8 +12,6 @@
 
         <!-- añadir las entidades anotadas con el elemento class-->
         <class>segundum.usuarios.modelo.Usuario</class>
-        <class>segundum.usuarios.modelo.Producto</class>
-        <class>segundum.usuarios.modelo.Categoria</class>
 
         <properties>
 
