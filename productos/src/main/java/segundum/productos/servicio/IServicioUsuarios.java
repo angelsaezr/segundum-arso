@@ -6,8 +6,7 @@ import segundum.productos.repositorio.EntidadNoEncontrada;
 import segundum.productos.repositorio.RepositorioException;
 
 public interface IServicioUsuarios {
-	String altaUsuario(String email, String nombre, String apellidos, String clave, LocalDate fechaNacimiento,
-			String telefono) throws RepositorioException;
+	String altaUsuario(String email, String nombre, String apellidos) throws RepositorioException;
 
 	void modificarUsuario(String id, String email, String nombre, String apellidos, String clave,
 			LocalDate fechaNacimiento, String telefono, boolean administrador)

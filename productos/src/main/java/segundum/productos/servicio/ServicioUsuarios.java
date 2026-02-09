@@ -13,8 +13,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	private Repositorio<Usuario, String> repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	@Override
-	public String altaUsuario(String email, String nombre, String apellidos, String clave, LocalDate fechaNacimiento,
-			String telefono) throws RepositorioException {
+	public String altaUsuario(String email, String nombre, String apellidos) throws RepositorioException {
 		// Control de integridad de los datos
 
 		if (nombre == null || nombre.isEmpty())
@@ -25,12 +24,6 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
 		if (email == null || email.isEmpty())
 			throw new IllegalArgumentException("email: no debe ser nulo ni vacio");
-
-		if (clave == null || clave.isEmpty())
-			throw new IllegalArgumentException("clave: no debe ser nulo ni vacio");
-
-		if (fechaNacimiento == null)
-			throw new IllegalArgumentException("fecha nacimiento: no debe ser nula");
 
 		Usuario usuario = new Usuario(email, nombre, apellidos);
 

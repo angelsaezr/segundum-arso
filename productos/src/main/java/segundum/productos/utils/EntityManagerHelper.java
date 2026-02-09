@@ -11,7 +11,7 @@ public class EntityManagerHelper {
 
 	static {
 
-		entityManagerFactory = Persistence.createEntityManagerFactory("segundum");
+		entityManagerFactory = Persistence.createEntityManagerFactory("productos");
 
 		entityManagerHolder = new ThreadLocal<EntityManager>();
 
