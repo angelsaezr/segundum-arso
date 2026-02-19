@@ -20,8 +20,6 @@ Obtener el resumen mensual debería ser una consulta JPQL, más eficiente que re
 
 Obtener las categorías y sus descendientes se puede simplificar usando el campo `ruta`.
 
-#### - Tarea 1
+#### - Tarea 3
 
-Los proyectos (microservicios) tendrán esquemas de base de datos independientes.
-
-La base de datos de Productos será inicializada con un conjunto inicial de usuarios para que se puedan dar de alta productos.
+Añadir las operaciones que especificamos en clase para la Tarea 2
