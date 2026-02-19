@@ -70,4 +70,9 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		repositorio.update(usuario);
 	}
 
+	@Override
+	public Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada {
+		
+		return repositorio.getById(id);
+	}
 }
