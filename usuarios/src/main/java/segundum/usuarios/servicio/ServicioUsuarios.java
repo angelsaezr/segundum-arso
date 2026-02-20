@@ -1,6 +1,6 @@
 package segundum.usuarios.servicio;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.repositorio.EntidadNoEncontrada;
@@ -13,7 +13,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	private Repositorio<Usuario, String> repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	@Override
-	public String altaUsuario(String email, String nombre, String apellidos, String clave, LocalDate fechaNacimiento,
+	public String altaUsuario(String email, String nombre, String apellidos, String clave, Date fechaNacimiento,
 			String telefono) throws RepositorioException {
 		// Control de integridad de los datos
 
@@ -41,7 +41,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
 	@Override
 	public void modificarUsuario(String id, String email, String nombre, String apellidos, String clave,
-			LocalDate fechaNacimiento, String telefono, boolean administrador)
+			Date fechaNacimiento, String telefono, boolean administrador)
 			throws RepositorioException, EntidadNoEncontrada {
 
 		if (id == null || id.isEmpty())
@@ -72,7 +72,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
 	@Override
 	public Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada {
-		
+
 		return repositorio.getById(id);
 	}
 }

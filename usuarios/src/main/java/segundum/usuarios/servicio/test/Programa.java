@@ -1,6 +1,6 @@
 package segundum.usuarios.servicio.test;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import segundum.usuarios.servicio.FactoriaServicios;
 import segundum.usuarios.servicio.IServicioUsuarios;
@@ -18,7 +18,7 @@ public class Programa {
 		String nombre = "Juan";
 		String apellidos = "Perez Gomez";
 		String clave = "1234";
-		LocalDate fechaNacimiento = LocalDate.of(2000, 1, 1);
+		Date fechaNacimiento = new Date();
 
 		// Alta del usuario
 		System.out.println("Creando usuario...");

@@ -1,15 +1,17 @@
 package segundum.usuarios.modelo;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import segundum.usuarios.repositorio.Identificable;
 
+@XmlRootElement(name = "usuario")
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements Identificable {
@@ -26,7 +28,7 @@ public class Usuario implements Identificable {
 
 	private String clave;
 
-	private LocalDate fechaNacimiento;
+	private Date fechaNacimiento;
 
 	private String telefono;
 
@@ -37,8 +39,8 @@ public class Usuario implements Identificable {
 
 	}
 
-	public Usuario(String email, String nombre, String apellidos, String clave, LocalDate fechaNacimiento,
-			String telefono, boolean administrador) {
+	public Usuario(String email, String nombre, String apellidos, String clave, Date fechaNacimiento, String telefono,
+			boolean administrador) {
 		this.email = email;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -89,11 +91,11 @@ public class Usuario implements Identificable {
 		this.clave = clave;
 	}
 
-	public LocalDate getFechaNacimiento() {
+	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
