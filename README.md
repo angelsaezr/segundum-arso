@@ -23,3 +23,9 @@ Obtener las categorías y sus descendientes se puede simplificar usando el campo
 #### - Tarea 3
 
 Añadir las operaciones que especificamos en clase para la Tarea 2
+
+Solo se utilizará el formato JSON
+
+Uso del patrón DTO
+
+El listado debe ofrecer un resumen de cada usuario y un enlace para obtener el recurso completo
