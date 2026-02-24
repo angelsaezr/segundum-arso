@@ -1,0 +1,23 @@
+package segundum.productos.repositorio;
+
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import segundum.productos.modelo.EstadoProducto;
+import segundum.productos.modelo.Producto;
+
+public interface RepositorioProductosJPA extends JpaRepository<Producto, String> {
+
+	@Query("SELECT p FROM Producto p " + "LEFT JOIN p.categoria c "
+			+ "WHERE (:idsCategoria IS NULL OR c.id IN :idsCategoria) "
+			+ "AND (:texto IS NULL OR LOWER(p.titulo) LIKE LOWER(CONCAT('%', :texto, '%')) "
+			+ "OR LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%'))) "
+			+ "AND (:estadosPermitidos IS NULL OR p.estado IN :estadosPermitidos) "
+			+ "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
+	List<Producto> buscarProductos(@Param("idsCategoria") Set<String> idsCategoria, @Param("texto") String texto,
+			@Param("estadosPermitidos") List<EstadoProducto> estadosPermitidos, @Param("precioMax") Double precioMax);
+}
