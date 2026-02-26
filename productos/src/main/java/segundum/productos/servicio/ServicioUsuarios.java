@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import segundum.productos.modelo.Usuario;
 import segundum.productos.repositorio.EntidadNoEncontrada;
 import segundum.productos.repositorio.RepositorioUsuarios;
 
+@Service
 public class ServicioUsuarios implements IServicioUsuarios {
 
 	private RepositorioUsuarios repositorioUsuarios;
