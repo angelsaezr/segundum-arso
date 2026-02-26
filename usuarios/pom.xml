@@ -17,6 +17,23 @@
 	</properties>
 
 	<dependencies>
+	
+		<!-- para añadir a la petición la información del token -->
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Token JWT -->
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 		
 		<!-- JAX-RS Jersey -->
 		<dependency>

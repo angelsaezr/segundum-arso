@@ -2,6 +2,8 @@ package segundum.usuarios.rest;
 
 import java.net.URI;
 
+import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import io.jsonwebtoken.Claims;
 import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.servicio.FactoriaServicios;
 import segundum.usuarios.servicio.IServicioUsuarios;
@@ -26,12 +29,22 @@ public class ControladorUsuarios {
 	@Context
 	private UriInfo uriInfo;
 
+	@Context
+	private HttpServletRequest servletRequest;
+
 	// http://localhost:8080/api/usuarios/1
 
 	@GET
 	@Path("{id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@RolesAllowed("USUARIO")
 	public Response getUsuario(@PathParam("id") String id) throws Exception {
+
+		if (this.servletRequest.getAttribute("claims") != null) {
+			Claims claims = (Claims) this.servletRequest.getAttribute("claims");
+			System.out.println("Usuario autenticado: " + claims.getSubject());
+			System.out.println("Roles: " + claims.get("roles"));
+		}
 
 		return Response.status(Response.Status.OK).entity(servicio.recuperar(id)).build();
 	}
