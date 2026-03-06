@@ -1,31 +1,26 @@
 # segundum-arso
 Proyecto ARSO 25/26
 
-## ToDos:
-#### - Repositorio y servicio Categoria
+## ToDos de ArSo:
 
-`getCategoriasRaiz`: en lugar de recuperar todas las categorías y filtrar, sería más eficiente construir una consulta JPQL que hiciera la consulta.
+#### Tareas pendientes
+  - Tarea 5
+  - Tarea 6
 
-`getDescendientesCategoria`: en lugar de tener un método recursivo para obtener los descendientes, será más eficiente hacer una consulta JPQL que aprovechara la existencia del campo `ruta`.
+## ToDos de AADD:
+(algunos métodos puede que no se usen en ArSO y que, por lo tanto, no haga falta hacer alguno de estos ToDO)
 
-#### - Repositorio y servicio Usuarios
+### Repositorio y servicio Categoria
 
-Hay que comprobar que el email del usuario no existe ya antes de crearlo.
+- `getCategoriasRaiz`: en lugar de recuperar todas las categorías y filtrar, sería más eficiente construir una consulta JPQL que hiciera la consulta.
+- `getDescendientesCategoria`: en lugar de tener un método recursivo para obtener los descendientes, será más eficiente hacer una consulta JPQL que aprovechara la existencia del campo `ruta`.
 
-#### - Repositorio y servicio productos
+### Repositorio y servicio Usuarios
 
-La creación primera del producto no tiene que recibir el lugar de recogida. Además, debería ser el producto el que cree su lugar de recogida.
+- Hay que comprobar que el email del usuario no existe ya antes de crearlo.
 
-Obtener el resumen mensual debería ser una consulta JPQL, más eficiente que recuperar todos los productos, iterar y filtrar.
+### Repositorio y servicio productos
 
-Obtener las categorías y sus descendientes se puede simplificar usando el campo `ruta`.
-
-#### - Tarea 3
-
-Añadir las operaciones que especificamos en clase para la Tarea 2
-
-Solo se utilizará el formato JSON
-
-Uso del patrón DTO
-
-El listado debe ofrecer un resumen de cada usuario y un enlace para obtener el recurso completo
+- La creación primera del producto no tiene que recibir el lugar de recogida. Además, debería ser el producto el que cree su lugar de recogida.
+- Obtener el resumen mensual debería ser una consulta JPQL, más eficiente que recuperar todos los productos, iterar y filtrar.
+- Obtener las categorías y sus descendientes se puede simplificar usando el campo `ruta`.
