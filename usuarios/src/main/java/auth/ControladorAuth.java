@@ -34,7 +34,7 @@ public class ControladorAuth {
 
 		HashMap<String, Object> claims = new HashMap<String, Object>();
 		claims.put("sub", username);
-		claims.put("roles", "PROFESOR");
+		claims.put("roles", "USUARIO");
 
 		return claims;
 	}

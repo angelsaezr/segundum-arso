@@ -18,8 +18,9 @@ public class PruebasAuth {
 		Map<String, Object> claims = new HashMap<String, Object>(); // el cuerpo del token
 
 		claims.put("sub", "Juan");
+		claims.put("roles", "USUARIO");
 
-		Date caducidad = Date.from(Instant.now().plusSeconds(60)); // 1 minuto
+		Date caducidad = Date.from(Instant.now().plusSeconds(7200)); // 2 horas
 
 		String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256, "secreto")
 				.setExpiration(caducidad).compact();

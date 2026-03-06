@@ -1,6 +1,8 @@
 package segundum.usuarios.rest;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,8 @@ import segundum.usuarios.servicio.FactoriaServicios;
 import segundum.usuarios.servicio.IServicioUsuarios;
 
 @Path("usuarios")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ControladorUsuarios {
 
 	private IServicioUsuarios servicio = FactoriaServicios.getServicio(IServicioUsuarios.class);
@@ -32,11 +36,10 @@ public class ControladorUsuarios {
 	@Context
 	private HttpServletRequest servletRequest;
 
-	// http://localhost:8080/api/usuarios/1
+	// GET http://localhost:8080/api/usuarios/1
 
 	@GET
 	@Path("{id}")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@RolesAllowed("USUARIO")
 	public Response getUsuario(@PathParam("id") String id) throws Exception {
 
@@ -46,43 +49,53 @@ public class ControladorUsuarios {
 			System.out.println("Roles: " + claims.get("roles"));
 		}
 
-		return Response.status(Response.Status.OK).entity(servicio.recuperar(id)).build();
+		Usuario usuario = servicio.recuperar(id);
+		UsuarioDTO dto = new UsuarioDTO(usuario);
+		return Response.status(Response.Status.OK).entity(dto).build();
 	}
 
-	// curl -i -X POST -H "Content-type: application/xml" -d @1.xml
+	// curl -i -X POST -H "Content-type: application/json" -d @1.json
 	// http://localhost:8080/api/usuarios/
 
 	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public Response createUsuario(Usuario usuario) throws Exception {
+	public Response createUsuario(UsuarioInputDTO dto) throws Exception {
 
-		String id = servicio.altaUsuario(usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(),
-				usuario.getClave(), usuario.getFechaNacimiento(), usuario.getTelefono());
+		String id = servicio.altaUsuario(dto.getEmail(), dto.getNombre(), dto.getApellidos(),
+				dto.getClave(), dto.getFechaNacimiento(), dto.getTelefono());
 		URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();
 		return Response.created(nuevaURL).build();
 	}
 
-	// curl -i -X PUT -H "Content-type: application/xml" -d @test-files/1.xml
+	// curl -i -X PUT -H "Content-type: application/json" -d @1.json
 	// http://localhost:8080/api/usuarios/1
 
 	@PUT
 	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_XML)
-	public Response update(@PathParam("id") String id, Usuario usuario) throws Exception {
-		if (!id.equals(usuario.getId()))
-			throw new IllegalArgumentException("El identificador no coincide: " + id);
+	public Response update(@PathParam("id") String id, UsuarioInputDTO dto) throws Exception {
 
-		servicio.modificarUsuario(usuario.getId(), usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(),
-				usuario.getClave(), usuario.getFechaNacimiento(), usuario.getTelefono(), usuario.isAdministrador());
+		servicio.modificarUsuario(id, dto.getEmail(), dto.getNombre(), dto.getApellidos(),
+				dto.getClave(), dto.getFechaNacimiento(), dto.getTelefono(), dto.isAdministrador());
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
 
 	// curl -i http://localhost:8080/api/usuarios/
 
 	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response getUsuarios() throws Exception {
-		return Response.status(Response.Status.OK).entity(servicio.recuperarTodos()).build();
+
+		String baseUri = uriInfo.getAbsolutePath().toString();
+		// Eliminar barra final si existe
+		if (baseUri.endsWith("/")) {
+			baseUri = baseUri.substring(0, baseUri.length() - 1);
+		}
+
+		List<Usuario> usuarios = servicio.recuperarTodos();
+		final String uri = baseUri;
+		List<UsuarioResumenDTO> resumen = usuarios.stream()
+				.map(u -> new UsuarioResumenDTO(u, uri))
+				.collect(Collectors.toList());
+
+		return Response.status(Response.Status.OK).entity(resumen).build();
 	}
 
 }
