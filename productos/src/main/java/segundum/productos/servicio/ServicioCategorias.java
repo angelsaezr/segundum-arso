@@ -92,14 +92,7 @@ public class ServicioCategorias implements IServicioCategorias {
 
 	@Override
 	public List<Categoria> getDescendientesCategoria(String idCategoria) throws EntidadNoEncontrada {
-		if (idCategoria == null || idCategoria.isEmpty())
-			throw new IllegalArgumentException("idCategoria: no debe ser nulo ni vacío");
-
-		Optional<Categoria> resultado = repositorioCategorias.findById(idCategoria);
-		if (resultado.isPresent() == false)
-			throw new EntidadNoEncontrada("No existe categoría con id: " + idCategoria);
-
-		Categoria categoria = resultado.get();
+		Categoria categoria = getCategoria(idCategoria);
 		List<Categoria> descendientes = new ArrayList<>();
 		obtenerDescendientesRecursivos(categoria, descendientes);
 

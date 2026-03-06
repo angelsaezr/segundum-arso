@@ -30,13 +30,18 @@ public class ServicioProductos implements IServicioProductos {
 	private RepositorioCategorias repositorioCategorias;
 	private RepositorioUsuarios repositorioUsuarios;
 	private RepositorioProductos repositorioProductos;
+	private ServicioUsuarios servicioUsuarios;
+	private ServicioCategorias servicioCategorias;
 
 	@Autowired
 	public ServicioProductos(RepositorioCategorias repositorioCategorias, RepositorioUsuarios repositorioUsuarios,
-			RepositorioProductos repositorioProductos) {
+			RepositorioProductos repositorioProductos, ServicioUsuarios servicioUsuarios,
+			ServicioCategorias servicioCategorias) {
 		this.repositorioCategorias = repositorioCategorias;
 		this.repositorioUsuarios = repositorioUsuarios;
 		this.repositorioProductos = repositorioProductos;
+		this.servicioUsuarios = servicioUsuarios;
+		this.servicioCategorias = servicioCategorias;
 	}
 
 	@Override
@@ -61,10 +66,6 @@ public class ServicioProductos implements IServicioProductos {
 			throw new IllegalArgumentException("descripcion: no debe ser nulo ni vacio");
 		if (precio < 0)
 			throw new IllegalArgumentException("precio: debe ser mayor o igual que 0");
-		if (idCategoria == null || idCategoria.isEmpty())
-			throw new IllegalArgumentException("idCategoria: no debe ser nulo ni vacio");
-		if (idVendedor == null || idVendedor.isEmpty())
-			throw new IllegalArgumentException("idVendedor: no debe ser nulo ni vacio");
 		if (descripcionRecogida == null || descripcionRecogida.isEmpty())
 			throw new IllegalArgumentException("descripcionRecogida: no debe ser nulo ni vacio");
 		if (longitud < -180 || longitud > 180)
@@ -72,16 +73,8 @@ public class ServicioProductos implements IServicioProductos {
 		if (latitud < -90 || latitud > 90)
 			throw new IllegalArgumentException("latitud: debe estar entre -90 y 90");
 
-		Optional<Categoria> resultadoCategoria = repositorioCategorias.findById(idCategoria);
-		if (resultadoCategoria.isPresent() == false)
-			throw new EntidadNoEncontrada("No existe categoría con id: " + idCategoria);
-		Categoria categoria = resultadoCategoria.get();
-
-		Optional<Usuario> resultadoVendedor = repositorioUsuarios.findById(idVendedor);
-		if (resultadoVendedor.isPresent() == false)
-			throw new EntidadNoEncontrada("No existe usuario vendedor con id: " + idVendedor);
-		Usuario vendedor = resultadoVendedor.get();
-
+		Categoria categoria = servicioCategorias.getCategoria(idCategoria);
+		Usuario vendedor = servicioUsuarios.getUsuario(idVendedor);
 		LugarDeRecogida lugarDeRecogida = new LugarDeRecogida(descripcionRecogida, longitud, latitud);
 		Producto producto = new Producto(titulo, descripcion, precio, estado, envioDisponible, categoria, vendedor,
 				lugarDeRecogida);
@@ -91,17 +84,12 @@ public class ServicioProductos implements IServicioProductos {
 	@Override
 	public void modificarDatosProducto(String idProducto, Double nuevoPrecio, String nuevaDescripcion)
 			throws EntidadNoEncontrada {
-		if (idProducto == null || idProducto.isEmpty())
-			throw new IllegalArgumentException("idProducto: no debe ser nulo ni vacio");
 		if (nuevoPrecio == null || nuevoPrecio < 0)
 			throw new IllegalArgumentException("nuevoPrecio: debe ser mayor o igual que 0");
 		if (nuevaDescripcion == null || nuevaDescripcion.isEmpty())
 			throw new IllegalArgumentException("nuevaDescripcion: no debe ser nulo ni vacio");
 
-		Optional<Producto> resultadoProducto = repositorioProductos.findById(idProducto);
-		if (resultadoProducto.isPresent() == false)
-			throw new EntidadNoEncontrada("No existe producto con id: " + idProducto);
-		Producto producto = resultadoProducto.get();
+		Producto producto = getProducto(idProducto);
 		producto.setPrecio(nuevoPrecio);
 		producto.setDescripcion(nuevaDescripcion);
 		repositorioProductos.save(producto);
@@ -110,8 +98,6 @@ public class ServicioProductos implements IServicioProductos {
 	@Override
 	public void asignarLugarRecogida(String idProducto, double longitud, double latitud, String descripcionLugar)
 			throws EntidadNoEncontrada {
-		if (idProducto == null || idProducto.isEmpty())
-			throw new IllegalArgumentException("idProducto: no debe ser nulo ni vacio");
 		if (longitud < -180 || longitud > 180)
 			throw new IllegalArgumentException("longitud: debe estar entre -180 y 180");
 		if (latitud < -90 || latitud > 90)
@@ -119,11 +105,7 @@ public class ServicioProductos implements IServicioProductos {
 		if (descripcionLugar == null || descripcionLugar.isEmpty())
 			throw new IllegalArgumentException("descripcionLugar: no debe ser nulo ni vacio");
 
-		Optional<Producto> resultadoProducto = repositorioProductos.findById(idProducto);
-		if (resultadoProducto.isPresent() == false)
-			throw new EntidadNoEncontrada("No existe producto con id: " + idProducto);
-		Producto producto = resultadoProducto.get();
-
+		Producto producto = getProducto(idProducto);
 		LugarDeRecogida lugarDeRecogida = new LugarDeRecogida(descripcionLugar, longitud, latitud);
 		producto.setLugarDeRecogida(lugarDeRecogida);
 		repositorioProductos.save(producto);
@@ -131,20 +113,16 @@ public class ServicioProductos implements IServicioProductos {
 
 	@Override
 	public void incrementarVisualizaciones(String idProducto) throws EntidadNoEncontrada {
-		Optional<Producto> resultadoProducto = repositorioProductos.findById(idProducto);
-		if (resultadoProducto.isPresent() == false)
-			throw new EntidadNoEncontrada("No existe producto con id: " + idProducto);
-		Producto producto = resultadoProducto.get();
+		Producto producto = getProducto(idProducto);
 		producto.incrementarVisualizaciones();
 		repositorioProductos.save(producto);
 	}
 
+	// TODO: este método creo que no se va a usar. Si se va a usar, hay que hacer
+	// refactoring
 	@Override
 	public List<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int anio)
 			throws EntidadNoEncontrada {
-		if (idVendedor == null || idVendedor.isEmpty()) {
-			throw new IllegalArgumentException("idVendedor: no debe ser nulo ni vacio");
-		}
 		if (mes < 1 || mes > 12) {
 			throw new IllegalArgumentException("mes: debe estar entre 1 y 12");
 		}
@@ -183,6 +161,12 @@ public class ServicioProductos implements IServicioProductos {
 				.collect(Collectors.toList());
 	}
 
+	// TODO: refactorizar este método para que sea más eficiente, evitando cargar
+	// todas las categorías y productos en memoria. Se puede hacer con consultas
+	// específicas al repositorio, o con un índice en memoria de categorías si es
+	// necesario. Además, se podrían añadir paginación y ordenación a la búsqueda.
+	// En general, mejor delegar en el repositorio para que haga el trabajo pesado,
+	// y no cargar todo en memoria.
 	@Override
 	public List<Producto> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado,
 			Double precioMax) {

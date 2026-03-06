@@ -22,8 +22,6 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
 	@Override
 	public String altaUsuario(String email, String nombre, String apellidos) {
-		// Control de integridad de los datos
-
 		if (nombre == null || nombre.isEmpty())
 			throw new IllegalArgumentException("nombre: no debe ser nulo ni vacio");
 
@@ -55,15 +53,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	@Override
 	public void modificarUsuario(String id, String email, String nombre, String apellidos, String clave,
 			LocalDate fechaNacimiento, String telefono, boolean administrador) throws EntidadNoEncontrada {
-
-		if (id == null || id.isEmpty())
-			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
-
-		// Usuario usuario = repositorioUsuarios.getById(id);
-		Optional<Usuario> optionalUsuario = repositorioUsuarios.findById(id);
-		if (!optionalUsuario.isPresent())
-			throw new EntidadNoEncontrada("No se ha encontrado el usuario con id: " + id);
-		Usuario usuario = optionalUsuario.get();
+		Usuario usuario = getUsuario(id);
 
 		if (email != null && !email.isEmpty())
 			usuario.setEmail(email);
