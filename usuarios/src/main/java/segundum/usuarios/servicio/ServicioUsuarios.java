@@ -1,6 +1,7 @@
 package segundum.usuarios.servicio;
 
 import java.util.Date;
+import java.util.List;
 
 import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.repositorio.EntidadNoEncontrada;
@@ -72,7 +73,11 @@ public class ServicioUsuarios implements IServicioUsuarios {
 
 	@Override
 	public Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada {
-
 		return repositorio.getById(id);
+	}
+
+	@Override
+	public List<Usuario> recuperarTodos() throws RepositorioException {
+		return repositorio.getAll();
 	}
 }

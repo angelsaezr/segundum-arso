@@ -77,4 +77,12 @@ public class ControladorUsuarios {
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
 
+	// curl -i http://localhost:8080/api/usuarios/
+
+	@GET
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public Response getUsuarios() throws Exception {
+		return Response.status(Response.Status.OK).entity(servicio.recuperarTodos()).build();
+	}
+
 }

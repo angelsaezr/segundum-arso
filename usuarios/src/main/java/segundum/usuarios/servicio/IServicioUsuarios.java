@@ -1,6 +1,7 @@
 package segundum.usuarios.servicio;
 
 import java.util.Date;
+import java.util.List;
 
 import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.repositorio.EntidadNoEncontrada;
@@ -14,4 +15,6 @@ public interface IServicioUsuarios {
 			String telefono, boolean administrador) throws RepositorioException, EntidadNoEncontrada;
 
 	Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada;
+
+	List<Usuario> recuperarTodos() throws RepositorioException;
 }
