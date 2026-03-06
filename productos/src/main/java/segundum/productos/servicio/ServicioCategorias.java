@@ -62,22 +62,6 @@ public class ServicioCategorias implements IServicioCategorias {
 	}
 
 	@Override
-	public void modificarDescripcionCategoria(String idCategoria, String nuevaDescripcion) throws EntidadNoEncontrada {
-		if (idCategoria == null || idCategoria.isEmpty())
-			throw new IllegalArgumentException("idCategoria: no debe ser nulo ni vacío");
-		if (nuevaDescripcion == null || nuevaDescripcion.isEmpty())
-			throw new IllegalArgumentException("nuevaDescripcion: no debe ser nula ni vacía");
-
-		Optional<Categoria> resultado = repositorioCategorias.findById(idCategoria);
-		if (resultado.isPresent() == false)
-			throw new EntidadNoEncontrada("No existe categoría con id: " + idCategoria);
-
-		Categoria categoria = resultado.get();
-		categoria.setDescripcion(nuevaDescripcion);
-		repositorioCategorias.save(categoria);
-	}
-
-	@Override
 	public List<Categoria> getCategoriasRaiz() {
 		List<Categoria> todas = new ArrayList<>();
 		for (Categoria c : repositorioCategorias.findAll()) {
