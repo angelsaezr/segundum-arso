@@ -30,6 +30,18 @@ public class ServicioCategorias implements IServicioCategorias {
 	}
 
 	@Override
+	public Categoria getCategoria(String id) throws EntidadNoEncontrada {
+		if (id == null || id.isEmpty())
+			throw new IllegalArgumentException("id: no debe ser nulo ni vacío");
+
+		Optional<Categoria> resultado = repositorioCategorias.findById(id);
+		if (!resultado.isPresent())
+			throw new EntidadNoEncontrada("No existe categoría con id: " + id);
+
+		return resultado.get();
+	}
+
+	@Override
 	public void cargarJerarquiaCategorias(String ruta) throws JAXBException, IOException {
 
 		InputStream input = this.getClass().getClassLoader().getResourceAsStream(ruta);

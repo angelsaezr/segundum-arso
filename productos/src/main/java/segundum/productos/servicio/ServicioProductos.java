@@ -40,6 +40,18 @@ public class ServicioProductos implements IServicioProductos {
 	}
 
 	@Override
+	public Producto getProducto(String id) throws EntidadNoEncontrada {
+		if (id == null || id.isEmpty())
+			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
+
+		Optional<Producto> resultado = repositorioProductos.findById(id);
+		if (!resultado.isPresent())
+			throw new EntidadNoEncontrada("No existe producto con id: " + id);
+
+		return resultado.get();
+	}
+
+	@Override
 	public String altaProducto(String titulo, String descripcion, double precio, EstadoProducto estado,
 			boolean envioDisponible, String idCategoria, String idVendedor, String descripcionRecogida, double longitud,
 			double latitud) throws EntidadNoEncontrada {

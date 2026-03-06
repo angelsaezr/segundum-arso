@@ -12,6 +12,8 @@ public interface IServicioCategorias {
 
 	void cargarJerarquiaCategorias(String ruta) throws JAXBException, IOException;
 
+	Categoria getCategoria(String id) throws EntidadNoEncontrada;
+
 	List<Categoria> getCategoriasRaiz() throws EntidadNoEncontrada;
 
 	List<Categoria> getDescendientesCategoria(String idCategoria) throws EntidadNoEncontrada;

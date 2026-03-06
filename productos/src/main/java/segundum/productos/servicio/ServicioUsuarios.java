@@ -41,6 +41,18 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	}
 
 	@Override
+	public Usuario getUsuario(String id) throws EntidadNoEncontrada {
+		if (id == null || id.isEmpty())
+			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
+
+		Optional<Usuario> optionalUsuario = repositorioUsuarios.findById(id);
+		if (!optionalUsuario.isPresent())
+			throw new EntidadNoEncontrada("No se ha encontrado el usuario con id: " + id);
+
+		return optionalUsuario.get();
+	}
+
+	@Override
 	public void modificarUsuario(String id, String email, String nombre, String apellidos, String clave,
 			LocalDate fechaNacimiento, String telefono, boolean administrador) throws EntidadNoEncontrada {
 
