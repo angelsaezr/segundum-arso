@@ -53,7 +53,7 @@ public class Producto {
 	}
 
 	public Producto(String titulo, String descripcion, double precio, EstadoProducto estado, boolean envioDisponible,
-			Categoria categoria, Usuario vendedor, LugarDeRecogida lugarDeRecogida) {
+			Categoria categoria, Usuario vendedor) {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;
@@ -63,7 +63,7 @@ public class Producto {
 		this.envioDisponible = envioDisponible;
 		this.categoria = categoria;
 		this.vendedor = vendedor;
-		this.lugarDeRecogida = lugarDeRecogida;
+		this.lugarDeRecogida = null;
 	}
 
 	public String getId() {
@@ -156,6 +156,10 @@ public class Producto {
 
 	public void incrementarVisualizaciones() {
 		this.visualizaciones++;
+	}
+
+	public void asignarLugarRecogida(String descripcion, double longitud, double latitud) {
+		this.lugarDeRecogida = new LugarDeRecogida(descripcion, longitud, latitud);
 	}
 
 	@Override

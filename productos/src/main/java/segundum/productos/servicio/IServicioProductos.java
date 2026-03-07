@@ -11,8 +11,7 @@ public interface IServicioProductos {
 	Producto getProducto(String id) throws EntidadNoEncontrada;
 
 	String altaProducto(String titulo, String descripcion, double precio, EstadoProducto estado,
-			boolean envioDisponible, String idCategoria, String idVendedor, String descripcionRecogida, double longitud,
-			double latitud) throws EntidadNoEncontrada;
+			boolean envioDisponible, String idCategoria, String idVendedor) throws EntidadNoEncontrada;
 
 	void modificarDatosProducto(String idProducto, Double nuevoPrecio, String nuevaDescripcion)
 			throws EntidadNoEncontrada;

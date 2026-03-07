@@ -2,13 +2,8 @@ package segundum.productos.servicio;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Deque;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,28 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import segundum.productos.modelo.Categoria;
 import segundum.productos.modelo.EstadoProducto;
-import segundum.productos.modelo.LugarDeRecogida;
 import segundum.productos.modelo.Producto;
 import segundum.productos.modelo.Usuario;
 import segundum.productos.repositorio.EntidadNoEncontrada;
 import segundum.productos.repositorio.RepositorioCategorias;
 import segundum.productos.repositorio.RepositorioProductos;
-import segundum.productos.repositorio.RepositorioUsuarios;
 
 public class ServicioProductos implements IServicioProductos {
 
 	private RepositorioCategorias repositorioCategorias;
-	private RepositorioUsuarios repositorioUsuarios;
 	private RepositorioProductos repositorioProductos;
 	private ServicioUsuarios servicioUsuarios;
 	private ServicioCategorias servicioCategorias;
 
 	@Autowired
-	public ServicioProductos(RepositorioCategorias repositorioCategorias, RepositorioUsuarios repositorioUsuarios,
-			RepositorioProductos repositorioProductos, ServicioUsuarios servicioUsuarios,
-			ServicioCategorias servicioCategorias) {
+	public ServicioProductos(RepositorioCategorias repositorioCategorias, RepositorioProductos repositorioProductos,
+			ServicioUsuarios servicioUsuarios, ServicioCategorias servicioCategorias) {
 		this.repositorioCategorias = repositorioCategorias;
-		this.repositorioUsuarios = repositorioUsuarios;
 		this.repositorioProductos = repositorioProductos;
 		this.servicioUsuarios = servicioUsuarios;
 		this.servicioCategorias = servicioCategorias;
@@ -58,26 +48,19 @@ public class ServicioProductos implements IServicioProductos {
 
 	@Override
 	public String altaProducto(String titulo, String descripcion, double precio, EstadoProducto estado,
-			boolean envioDisponible, String idCategoria, String idVendedor, String descripcionRecogida, double longitud,
-			double latitud) throws EntidadNoEncontrada {
+			boolean envioDisponible, String idCategoria, String idVendedor) throws EntidadNoEncontrada {
 		if (titulo == null || titulo.isEmpty())
 			throw new IllegalArgumentException("titulo: no debe ser nulo ni vacio");
 		if (descripcion == null || descripcion.isEmpty())
 			throw new IllegalArgumentException("descripcion: no debe ser nulo ni vacio");
 		if (precio < 0)
 			throw new IllegalArgumentException("precio: debe ser mayor o igual que 0");
-		if (descripcionRecogida == null || descripcionRecogida.isEmpty())
-			throw new IllegalArgumentException("descripcionRecogida: no debe ser nulo ni vacio");
-		if (longitud < -180 || longitud > 180)
-			throw new IllegalArgumentException("longitud: debe estar entre -180 y 180");
-		if (latitud < -90 || latitud > 90)
-			throw new IllegalArgumentException("latitud: debe estar entre -90 y 90");
 
 		Categoria categoria = servicioCategorias.getCategoria(idCategoria);
 		Usuario vendedor = servicioUsuarios.getUsuario(idVendedor);
-		LugarDeRecogida lugarDeRecogida = new LugarDeRecogida(descripcionRecogida, longitud, latitud);
-		Producto producto = new Producto(titulo, descripcion, precio, estado, envioDisponible, categoria, vendedor,
-				lugarDeRecogida);
+
+		Producto producto = new Producto(titulo, descripcion, precio, estado, envioDisponible, categoria, vendedor);
+
 		return repositorioProductos.save(producto).getId();
 	}
 
@@ -106,8 +89,7 @@ public class ServicioProductos implements IServicioProductos {
 			throw new IllegalArgumentException("descripcionLugar: no debe ser nulo ni vacio");
 
 		Producto producto = getProducto(idProducto);
-		LugarDeRecogida lugarDeRecogida = new LugarDeRecogida(descripcionLugar, longitud, latitud);
-		producto.setLugarDeRecogida(lugarDeRecogida);
+		producto.asignarLugarRecogida(descripcionLugar, longitud, latitud);
 		repositorioProductos.save(producto);
 	}
 
@@ -118,114 +100,57 @@ public class ServicioProductos implements IServicioProductos {
 		repositorioProductos.save(producto);
 	}
 
-	// TODO: este método creo que no se va a usar. Si se va a usar, hay que hacer
-	// refactoring
 	@Override
 	public List<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int anio)
 			throws EntidadNoEncontrada {
-		if (mes < 1 || mes > 12) {
+		if (mes < 1 || mes > 12)
 			throw new IllegalArgumentException("mes: debe estar entre 1 y 12");
-		}
-		if (anio < 1) {
+		if (anio < 1)
 			throw new IllegalArgumentException("anio: debe ser positivo");
-		}
 
-		// Verifica existencia del vendedor
-		Optional<Usuario> resultadoVendedor = repositorioUsuarios.findById(idVendedor);
-		if (resultadoVendedor.isPresent() == false)
-			throw new EntidadNoEncontrada("No existe usuario vendedor con id: " + idVendedor);
+		servicioUsuarios.getUsuario(idVendedor);
 
 		YearMonth ym = YearMonth.of(anio, mes);
 		LocalDateTime inicio = ym.atDay(1).atStartOfDay();
 		LocalDateTime fin = ym.atEndOfMonth().atTime(23, 59, 59, 999_999_999);
 
-		// Se asume que el repositorio permite obtener todos los productos; si existe un
-		// findByVendedor, úsalo.
-		// List<Producto> todos = repositorioProductos.getAll().filter(p ->
-		// p.getVendedor() != null &&
-		// idVendedor.equals(p.getVendedor().getId())).collect(Collectors.toList());
-		List<Producto> todos = new ArrayList<>();
-		for (Producto p : repositorioProductos.findAll()) {
-			todos.add(p);
-		}
-
-		return todos.stream().filter(p -> p.getVendedor() != null && idVendedor.equals(p.getVendedor().getId()))
-				.filter(p -> {
-					LocalDateTime f = p.getFechaPublicacion(); // es LocalDateTime [web:36][web:41]
-					return f != null && !f.isBefore(inicio) && !f.isAfter(fin);
-				}).sorted(Comparator.comparingInt(Producto::getVisualizaciones).reversed()) // desc por visualizaciones
-																							// [web:20][web:26]
+		return repositorioProductos.findResumenMensual(idVendedor, inicio, fin).stream()
 				.map(p -> new ProductoResumenMensual(p.getId(), p.getTitulo(), p.getPrecio(),
-						p.getFechaPublicacion().toLocalDate(), // convertir a LocalDate para el DTO [web:36][web:41]
+						p.getFechaPublicacion().toLocalDate(),
 						p.getCategoria() != null ? p.getCategoria().getNombre() : null, p.getVisualizaciones()))
 				.collect(Collectors.toList());
 	}
 
-	// TODO: refactorizar este método para que sea más eficiente, evitando cargar
-	// todas las categorías y productos en memoria. Se puede hacer con consultas
-	// específicas al repositorio, o con un índice en memoria de categorías si es
-	// necesario. Además, se podrían añadir paginación y ordenación a la búsqueda.
-	// En general, mejor delegar en el repositorio para que haga el trabajo pesado,
-	// y no cargar todo en memoria.
 	@Override
 	public List<Producto> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado,
 			Double precioMax) {
-		// Normaliza texto
+
 		String texto = descripcion != null ? descripcion.trim() : null;
 		if (texto != null && texto.isEmpty())
 			texto = null;
 
-		// 1) Expandir categorías a descendientes usando subcategorias
+		// Expandir categoría a descendientes usando el campo ruta — una sola query
 		Set<String> idsCategoriasValidas = null;
 		if (idCategoria != null && !idCategoria.trim().isEmpty()) {
-			idsCategoriasValidas = new java.util.HashSet<>();
-
-			// Índice id -> Categoria
-			List<Categoria> todas = new ArrayList<>();
-			for (Categoria c : repositorioCategorias.findAll()) {
-				todas.add(c);
-			}
-
-			Map<String, Categoria> porId = new java.util.HashMap<>();
-			for (Categoria c : todas) {
-				porId.put(c.getId(), c);
-			}
-
-			Categoria raiz = porId.get(idCategoria);
+			Categoria raiz = repositorioCategorias.findById(idCategoria).orElse(null);
 			if (raiz != null) {
-				// DFS por subcategorias
-				Deque<Categoria> pila = new ArrayDeque<>();
-				pila.push(raiz);
-				while (!pila.isEmpty()) {
-					Categoria actual = pila.pop();
-					if (idsCategoriasValidas.add(actual.getId())) {
-						List<Categoria> subs = actual.getSubcategorias();
-						if (subs != null) {
-							for (Categoria h : subs) {
-								pila.push(h);
-							}
-						}
-					}
-				}
+				// Trae todos los descendientes por ruta, sin cargar el árbol en memoria
+				List<Categoria> descendientes = repositorioCategorias.findDescendientesByRuta(raiz.getRuta());
+				idsCategoriasValidas = descendientes.stream().map(Categoria::getId)
+						.collect(Collectors.toCollection(java.util.HashSet::new));
+				idsCategoriasValidas.add(idCategoria); // incluye la propia raíz
 			} else {
-				// si no existe en memoria, al menos filtra por la propia id
-				idsCategoriasValidas.add(idCategoria);
+				idsCategoriasValidas = java.util.Collections.singleton(idCategoria);
 			}
 		}
 
-		// 2) Estados “igual o mejor”
+		// Estados "igual o mejor"
 		List<EstadoProducto> estadosPermitidos = null;
 		if (estado != null) {
-			// ranking de negocio: NUEVO > COMO_NUEVO > BUEN_ESTADO > ACEPTABLE >
-			// PARA_PIEZAS_O_REPARAR
 			List<EstadoProducto> ranking = Arrays.asList(EstadoProducto.NUEVO, EstadoProducto.COMO_NUEVO,
 					EstadoProducto.BUEN_ESTADO, EstadoProducto.ACEPTABLE, EstadoProducto.PARA_PIEZAS_O_REPARAR);
 			int idx = ranking.indexOf(estado);
-			if (idx >= 0) {
-				estadosPermitidos = ranking.subList(0, idx + 1); // igual o mejor
-			} else {
-				estadosPermitidos = java.util.Collections.singletonList(estado);
-			}
+			estadosPermitidos = idx >= 0 ? ranking.subList(0, idx + 1) : java.util.Collections.singletonList(estado);
 		}
 
 		return repositorioProductos.buscarProductos(idsCategoriasValidas, texto, estadosPermitidos, precioMax);

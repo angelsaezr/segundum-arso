@@ -1,5 +1,6 @@
 package segundum.productos.repositorio;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -10,9 +11,9 @@ import org.springframework.data.repository.query.Param;
 import segundum.productos.modelo.EstadoProducto;
 import segundum.productos.modelo.Producto;
 
-public interface RepositorioProductosJPA extends JpaRepository<Producto, String> {
+public interface RepositorioProductosJPA extends RepositorioProductos, JpaRepository<Producto, String> {
 
-	@Query("SELECT p FROM Producto p " + "LEFT JOIN p.categoria c "
+	@Query("SELECT p FROM Producto p LEFT JOIN p.categoria c "
 			+ "WHERE (:idsCategoria IS NULL OR c.id IN :idsCategoria) "
 			+ "AND (:texto IS NULL OR LOWER(p.titulo) LIKE LOWER(CONCAT('%', :texto, '%')) "
 			+ "OR LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%'))) "
@@ -20,4 +21,9 @@ public interface RepositorioProductosJPA extends JpaRepository<Producto, String>
 			+ "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
 	List<Producto> buscarProductos(@Param("idsCategoria") Set<String> idsCategoria, @Param("texto") String texto,
 			@Param("estadosPermitidos") List<EstadoProducto> estadosPermitidos, @Param("precioMax") Double precioMax);
+
+	@Query("SELECT p FROM Producto p " + "WHERE p.vendedor.id = :idVendedor " + "AND p.fechaPublicacion >= :inicio "
+			+ "AND p.fechaPublicacion <= :fin " + "ORDER BY p.visualizaciones DESC")
+	List<Producto> findResumenMensual(@Param("idVendedor") String idVendedor, @Param("inicio") LocalDateTime inicio,
+			@Param("fin") LocalDateTime fin);
 }
