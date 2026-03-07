@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -61,10 +62,11 @@ public class ControladorUsuarios {
 	// http://localhost:8080/api/usuarios/
 
 	@POST
+	@PermitAll
 	public Response createUsuario(UsuarioInputDTO dto) throws Exception {
 
-		String id = servicio.altaUsuario(dto.getEmail(), dto.getNombre(), dto.getApellidos(),
-				dto.getClave(), dto.getFechaNacimiento(), dto.getTelefono());
+		String id = servicio.altaUsuario(dto.getEmail(), dto.getNombre(), dto.getApellidos(), dto.getClave(),
+				dto.getFechaNacimiento(), dto.getTelefono());
 		URI nuevaURL = this.uriInfo.getAbsolutePathBuilder().path(id).build();
 		return Response.created(nuevaURL).build();
 	}
@@ -74,16 +76,23 @@ public class ControladorUsuarios {
 
 	@PUT
 	@Path("/{id}")
+	@RolesAllowed("USUARIO")
 	public Response update(@PathParam("id") String id, UsuarioInputDTO dto) throws Exception {
 
-		servicio.modificarUsuario(id, dto.getEmail(), dto.getNombre(), dto.getApellidos(),
-				dto.getClave(), dto.getFechaNacimiento(), dto.getTelefono(), dto.isAdministrador());
+		Claims claims = (Claims) this.servletRequest.getAttribute("claims");
+		if (!claims.getSubject().equals(id)) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Solo puedes modificar tus propios datos").build();
+		}
+
+		servicio.modificarUsuario(id, dto.getEmail(), dto.getNombre(), dto.getApellidos(), dto.getClave(),
+				dto.getFechaNacimiento(), dto.getTelefono(), dto.isAdministrador());
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
 
 	// curl -i http://localhost:8080/api/usuarios/
 
 	@GET
+	@RolesAllowed("USUARIO")
 	public Response getUsuarios() throws Exception {
 
 		String baseUri = uriInfo.getAbsolutePath().toString();
@@ -94,8 +103,7 @@ public class ControladorUsuarios {
 
 		List<Usuario> usuarios = servicio.recuperarTodos();
 		final String uri = baseUri;
-		List<UsuarioResumenDTO> resumen = usuarios.stream()
-				.map(u -> new UsuarioResumenDTO(u, uri))
+		List<UsuarioResumenDTO> resumen = usuarios.stream().map(u -> new UsuarioResumenDTO(u, uri))
 				.collect(Collectors.toList());
 
 		return Response.status(Response.Status.OK).entity(resumen).build();

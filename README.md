@@ -1,11 +1,4 @@
-# segundum-arso
-Proyecto ARSO 25/26
-
-## ToDos de ArSo:
-
-#### Tareas pendientes
-  - Tarea 5
-  - Tarea 6
-
-## ToDos de AADD:
-(algunos métodos puede que no se usen en ArSO y que, por lo tanto, no haga falta hacer alguno de estos ToDO)
+# Tareas pendientes
+- **Tarea 5:** verificar las credenciales. Actualmente no podemos realizar esta comprobación porque el servicio aún no tiene funcionalidad de login
+- **Tarea 6:** pendiente de implementación completa
+- Revisar que cosas de AADD no hacen falta en ArSo
