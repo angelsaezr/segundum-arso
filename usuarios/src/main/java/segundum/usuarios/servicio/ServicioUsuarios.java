@@ -33,6 +33,10 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		if (fechaNacimiento == null)
 			throw new IllegalArgumentException("fecha nacimiento: no debe ser nula");
 
+		boolean emailYaExiste = repositorio.getAll().stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
+		if (emailYaExiste)
+			throw new IllegalArgumentException("email: ya existe un usuario registrado con ese email");
+
 		Usuario usuario = new Usuario(email, nombre, apellidos, clave, fechaNacimiento, telefono, false);
 
 		String id = repositorio.add(usuario);

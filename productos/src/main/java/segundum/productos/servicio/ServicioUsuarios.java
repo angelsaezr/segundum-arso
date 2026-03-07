@@ -31,6 +31,9 @@ public class ServicioUsuarios implements IServicioUsuarios {
 		if (email == null || email.isEmpty())
 			throw new IllegalArgumentException("email: no debe ser nulo ni vacio");
 
+		if (repositorioUsuarios.findByEmail(email).isPresent())
+			throw new IllegalArgumentException("email: ya existe un usuario registrado con ese email");
+
 		Usuario usuario = new Usuario(email, nombre, apellidos);
 
 		String id = repositorioUsuarios.save(usuario).getId();

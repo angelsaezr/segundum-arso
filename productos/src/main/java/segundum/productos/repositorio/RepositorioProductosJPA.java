@@ -7,10 +7,12 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import segundum.productos.modelo.EstadoProducto;
 import segundum.productos.modelo.Producto;
 
+@Repository
 public interface RepositorioProductosJPA extends RepositorioProductos, JpaRepository<Producto, String> {
 
 	@Query("SELECT p FROM Producto p LEFT JOIN p.categoria c "
