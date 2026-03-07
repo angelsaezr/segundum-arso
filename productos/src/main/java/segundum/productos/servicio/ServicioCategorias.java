@@ -2,7 +2,6 @@ package segundum.productos.servicio;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,37 +74,12 @@ public class ServicioCategorias implements IServicioCategorias {
 
 	@Override
 	public List<Categoria> getCategoriasRaiz() {
-		List<Categoria> todas = new ArrayList<>();
-		for (Categoria c : repositorioCategorias.findAll()) {
-			todas.add(c);
-		}
-		List<Categoria> raiz = new ArrayList<>();
-
-		for (Categoria c : todas) {
-			if (c.getCategoriaPadre() == null) {
-				raiz.add(c);
-			}
-		}
-
-		return raiz;
+		return repositorioCategorias.findCategoriasRaiz();
 	}
 
 	@Override
 	public List<Categoria> getDescendientesCategoria(String idCategoria) throws EntidadNoEncontrada {
 		Categoria categoria = getCategoria(idCategoria);
-		List<Categoria> descendientes = new ArrayList<>();
-		obtenerDescendientesRecursivos(categoria, descendientes);
-
-		return descendientes;
-	}
-
-	private void obtenerDescendientesRecursivos(Categoria categoria, List<Categoria> lista) {
-		if (categoria.getSubcategorias() == null)
-			return;
-
-		for (Categoria sub : categoria.getSubcategorias()) {
-			lista.add(sub);
-			obtenerDescendientesRecursivos(sub, lista);
-		}
+		return repositorioCategorias.findDescendientesByRuta(categoria.getRuta());
 	}
 }

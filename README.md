@@ -10,11 +10,6 @@ Proyecto ARSO 25/26
 ## ToDos de AADD:
 (algunos métodos puede que no se usen en ArSO y que, por lo tanto, no haga falta hacer alguno de estos ToDO)
 
-### Repositorio y servicio Categoria
-
-- `getCategoriasRaiz`: en lugar de recuperar todas las categorías y filtrar, sería más eficiente construir una consulta JPQL que hiciera la consulta.
-- `getDescendientesCategoria`: en lugar de tener un método recursivo para obtener los descendientes, será más eficiente hacer una consulta JPQL que aprovechara la existencia del campo `ruta`.
-
 ### Repositorio y servicio Usuarios
 
 - Hay que comprobar que el email del usuario no existe ya antes de crearlo.
