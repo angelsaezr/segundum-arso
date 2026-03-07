@@ -1,24 +1,44 @@
-package segundum.usuarios.rest;
+package segundum.usuarios.dto;
 
 import java.util.Date;
 
-/**
- * DTO para recibir datos de creación/modificación de un usuario.
- */
-public class UsuarioInputDTO {
+import segundum.usuarios.modelo.Usuario;
 
+/**
+ * DTO con la información completa de un usuario.
+ */
+public class UsuarioDTO {
+
+	private String id;
 	private String email;
 	private String nombre;
 	private String apellidos;
-	private String clave;
 	private Date fechaNacimiento;
 	private String telefono;
 	private boolean administrador;
 
-	public UsuarioInputDTO() {
+	public UsuarioDTO() {
+	}
+
+	public UsuarioDTO(Usuario usuario) {
+		this.id = usuario.getId();
+		this.email = usuario.getEmail();
+		this.nombre = usuario.getNombre();
+		this.apellidos = usuario.getApellidos();
+		this.fechaNacimiento = usuario.getFechaNacimiento();
+		this.telefono = usuario.getTelefono();
+		this.administrador = usuario.isAdministrador();
 	}
 
 	// Getters y Setters
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getEmail() {
 		return email;
@@ -42,14 +62,6 @@ public class UsuarioInputDTO {
 
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
-	}
-
-	public String getClave() {
-		return clave;
-	}
-
-	public void setClave(String clave) {
-		this.clave = clave;
 	}
 
 	public Date getFechaNacimiento() {

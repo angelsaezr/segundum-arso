@@ -1,4 +1,4 @@
-package segundum.usuarios.rest;
+package segundum.usuarios.dto;
 
 import segundum.usuarios.modelo.Usuario;
 

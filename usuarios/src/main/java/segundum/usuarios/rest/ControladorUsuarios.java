@@ -19,6 +19,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import io.jsonwebtoken.Claims;
+import segundum.usuarios.dto.UsuarioDTO;
+import segundum.usuarios.dto.UsuarioInputDTO;
+import segundum.usuarios.dto.UsuarioResumenDTO;
 import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.servicio.FactoriaServicios;
 import segundum.usuarios.servicio.IServicioUsuarios;
