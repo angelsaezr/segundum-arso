@@ -1,4 +1,4 @@
-package auth;
+package segundum.usuarios.auth;
 
 import java.time.Instant;
 import java.util.Date;
