@@ -2,6 +2,7 @@ package segundum.usuarios.servicio.test;
 
 import java.util.Date;
 
+import segundum.usuarios.dto.UsuarioInputDTO;
 import segundum.usuarios.servicio.FactoriaServicios;
 import segundum.usuarios.servicio.IServicioUsuarios;
 
@@ -22,7 +23,8 @@ public class Programa {
 
 		// Alta del usuario
 		System.out.println("Creando usuario...");
-		String id = servicioUsuarios.altaUsuario(email, nombre, apellidos, clave, fechaNacimiento, null);
+		UsuarioInputDTO usuarioDTO = new UsuarioInputDTO(email, nombre, apellidos, clave, fechaNacimiento, false);
+		String id = servicioUsuarios.altaUsuario(usuarioDTO);
 		System.out.println("Usuario creado con id:  " + id);
 		System.out
 				.println("Datos: " + email + ", " + nombre + ", " + apellidos + ", " + clave + ", " + fechaNacimiento);

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import segundum.usuarios.dto.UsuarioInputDTO;
 import segundum.usuarios.repositorio.Identificable;
 
 @XmlRootElement(name = "usuario")
@@ -48,6 +49,16 @@ public class Usuario implements Identificable {
 		this.fechaNacimiento = fechaNacimiento;
 		this.telefono = telefono;
 		this.administrador = administrador;
+	}
+
+	public Usuario(UsuarioInputDTO usuarioInputDTO) {
+		this.email = usuarioInputDTO.getEmail();
+		this.nombre = usuarioInputDTO.getNombre();
+		this.apellidos = usuarioInputDTO.getApellidos();
+		this.clave = usuarioInputDTO.getClave();
+		this.fechaNacimiento = usuarioInputDTO.getFechaNacimiento();
+		this.telefono = usuarioInputDTO.getTelefono();
+		this.administrador = usuarioInputDTO.isAdministrador();
 	}
 
 	// Getters y Setters
