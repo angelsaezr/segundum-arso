@@ -16,6 +16,17 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	private final Repositorio<Usuario, String> repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	@Override
+	public Usuario login(String email, String clave) throws RepositorioException {
+
+		validarNoVacio(email, "email");
+		validarNoVacio(clave, "clave");
+
+		return repositorio.getAll().stream()
+				.filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getClave().equals(clave)).findFirst()
+				.orElse(null);
+	}
+
+	@Override
 	public String altaUsuario(UsuarioInputDTO dto) throws RepositorioException {
 		if (dto == null)
 			throw new IllegalArgumentException("usuario: no puede ser nulo");

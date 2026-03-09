@@ -8,8 +8,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import segundum.usuarios.modelo.Usuario;
+import segundum.usuarios.servicio.FactoriaServicios;
+import segundum.usuarios.servicio.IServicioUsuarios;
+
 @Path("auth")
 public class ControladorAuth {
+
+	private final IServicioUsuarios servicio = FactoriaServicios.getServicio(IServicioUsuarios.class);
 
 	// curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d
 	// "username=juan&password=clave" http://localhost:8080/api/auth/login
@@ -30,12 +36,20 @@ public class ControladorAuth {
 
 	private Map<String, Object> verificarCredenciales(String username, String password) {
 
-		// TODO: verificar las credenciales
+		try {
+			Usuario usuario = servicio.login(username, password);
+			if (usuario == null) {
+				return null;
+			}
 
-		HashMap<String, Object> claims = new HashMap<String, Object>();
-		claims.put("sub", username);
-		claims.put("roles", "USUARIO");
+			Map<String, Object> claims = new HashMap<>();
+			claims.put("sub", usuario.getEmail());
+			claims.put("roles", "USUARIO");
 
-		return claims;
+			return claims;
+
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

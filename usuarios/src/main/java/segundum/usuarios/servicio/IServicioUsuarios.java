@@ -9,6 +9,8 @@ import segundum.usuarios.repositorio.EntidadNoEncontrada;
 import segundum.usuarios.repositorio.RepositorioException;
 
 public interface IServicioUsuarios {
+	Usuario login(String email, String clave) throws RepositorioException, EntidadNoEncontrada;
+
 	String altaUsuario(UsuarioInputDTO usuarioInputDTO) throws RepositorioException;
 
 	void modificarUsuario(String id, String email, String nombre, String apellidos, String clave, Date fechaNacimiento,

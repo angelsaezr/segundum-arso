@@ -1,29 +1,20 @@
 package auth;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 public class PruebasAuth {
 
 	public static void main(String[] args) {
-
-		// Generación de un token
-
-		Map<String, Object> claims = new HashMap<String, Object>(); // el cuerpo del token
+		Map<String, Object> claims = new HashMap<String, Object>();
 
 		claims.put("sub", "Juan");
 		claims.put("roles", "USUARIO");
 
-		Date caducidad = Date.from(Instant.now().plusSeconds(7200)); // 2 horas
-
-		String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256, "secreto")
-				.setExpiration(caducidad).compact();
+		String token = JwtUtils.generateToken(claims);
 
 		System.out.println(token);
 
