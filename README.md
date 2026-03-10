@@ -1,3 +1,10 @@
 # Tareas pendientes
-- **Tarea 6:** pendiente de implementación completa
-- Revisar que cosas de AADD no hacen falta en ArSo
+## Tarea 6:
+- Parte 1: ProductosController terminado. Falta CategoriasController.
+- Parte 2
+
+## Tarea 7
+
+#### Otras dudas
+- Preguntar qué operaciones tiene que tener cada api
+- Eliminar métodos de servicios / repositorios que no usen las apis

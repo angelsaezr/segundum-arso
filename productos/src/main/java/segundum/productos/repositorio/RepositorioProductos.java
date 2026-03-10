@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -16,5 +18,5 @@ public interface RepositorioProductos extends PagingAndSortingRepository<Product
 	List<Producto> buscarProductos(Set<String> idsCategoria, String texto, List<EstadoProducto> estadosPermitidos,
 			Double precioMax);
 
-	List<Producto> findResumenMensual(String idVendedor, LocalDateTime inicio, LocalDateTime fin);
+	Page<Producto> findResumenMensual(String idVendedor, LocalDateTime inicio, LocalDateTime fin, Pageable pageable);
 }

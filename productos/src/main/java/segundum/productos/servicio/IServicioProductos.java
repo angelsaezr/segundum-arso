@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import segundum.productos.modelo.EstadoProducto;
 import segundum.productos.modelo.Producto;
 import segundum.productos.repositorio.EntidadNoEncontrada;
-import segundum.productos.rest.dto.ProductoDto;
+import segundum.productos.rest.dto.ProductoResumen;
 
 public interface IServicioProductos {
 
@@ -25,9 +25,9 @@ public interface IServicioProductos {
 
 	void incrementarVisualizaciones(String idProducto) throws EntidadNoEncontrada;
 
-	List<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int año) throws EntidadNoEncontrada;
+	Page<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int año, Pageable pageable) throws EntidadNoEncontrada;
 
 	List<Producto> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado, Double precioMax);
 
-	Page<ProductoDto> getListadoPaginado(Pageable pageable);
+	Page<ProductoResumen> getListadoPaginado(Pageable pageable);
 }

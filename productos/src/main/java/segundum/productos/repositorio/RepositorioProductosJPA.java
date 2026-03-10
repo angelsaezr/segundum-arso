@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +26,6 @@ public interface RepositorioProductosJPA extends RepositorioProductos, JpaReposi
 
 	@Query("SELECT p FROM Producto p " + "WHERE p.vendedor.id = :idVendedor " + "AND p.fechaPublicacion >= :inicio "
 			+ "AND p.fechaPublicacion <= :fin " + "ORDER BY p.visualizaciones DESC")
-	List<Producto> findResumenMensual(@Param("idVendedor") String idVendedor, @Param("inicio") LocalDateTime inicio,
-			@Param("fin") LocalDateTime fin);
+	Page<Producto> findResumenMensual(@Param("idVendedor") String idVendedor, @Param("inicio") LocalDateTime inicio,
+			@Param("fin") LocalDateTime fin, Pageable pageable);
 }

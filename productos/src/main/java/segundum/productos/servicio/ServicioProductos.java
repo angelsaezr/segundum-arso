@@ -20,7 +20,7 @@ import segundum.productos.modelo.Usuario;
 import segundum.productos.repositorio.EntidadNoEncontrada;
 import segundum.productos.repositorio.RepositorioCategorias;
 import segundum.productos.repositorio.RepositorioProductos;
-import segundum.productos.rest.dto.ProductoDto;
+import segundum.productos.rest.dto.ProductoResumen;
 
 @Service
 public class ServicioProductos implements IServicioProductos {
@@ -54,12 +54,6 @@ public class ServicioProductos implements IServicioProductos {
 	@Override
 	public String crear(String titulo, String descripcion, double precio, EstadoProducto estado,
 			boolean envioDisponible, String idCategoria, String idVendedor) throws EntidadNoEncontrada {
-		if (titulo == null || titulo.isEmpty())
-			throw new IllegalArgumentException("titulo: no debe ser nulo ni vacio");
-		if (descripcion == null || descripcion.isEmpty())
-			throw new IllegalArgumentException("descripcion: no debe ser nulo ni vacio");
-		if (precio < 0)
-			throw new IllegalArgumentException("precio: debe ser mayor o igual que 0");
 
 		Categoria categoria = servicioCategorias.getCategoria(idCategoria);
 		Usuario vendedor = servicioUsuarios.getUsuario(idVendedor);
@@ -72,11 +66,6 @@ public class ServicioProductos implements IServicioProductos {
 	@Override
 	public void modificarDatosProducto(String idProducto, Double nuevoPrecio, String nuevaDescripcion)
 			throws EntidadNoEncontrada {
-		if (nuevoPrecio == null || nuevoPrecio < 0)
-			throw new IllegalArgumentException("nuevoPrecio: debe ser mayor o igual que 0");
-		if (nuevaDescripcion == null || nuevaDescripcion.isEmpty())
-			throw new IllegalArgumentException("nuevaDescripcion: no debe ser nulo ni vacio");
-
 		Producto producto = getProducto(idProducto);
 		producto.setPrecio(nuevoPrecio);
 		producto.setDescripcion(nuevaDescripcion);
@@ -86,13 +75,6 @@ public class ServicioProductos implements IServicioProductos {
 	@Override
 	public void asignarLugarRecogida(String idProducto, double longitud, double latitud, String descripcionLugar)
 			throws EntidadNoEncontrada {
-		if (longitud < -180 || longitud > 180)
-			throw new IllegalArgumentException("longitud: debe estar entre -180 y 180");
-		if (latitud < -90 || latitud > 90)
-			throw new IllegalArgumentException("latitud: debe estar entre -90 y 90");
-		if (descripcionLugar == null || descripcionLugar.isEmpty())
-			throw new IllegalArgumentException("descripcionLugar: no debe ser nulo ni vacio");
-
 		Producto producto = getProducto(idProducto);
 		producto.asignarLugarRecogida(descripcionLugar, longitud, latitud);
 		repositorioProductos.save(producto);
@@ -106,7 +88,7 @@ public class ServicioProductos implements IServicioProductos {
 	}
 
 	@Override
-	public List<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int anio)
+	public Page<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int anio, Pageable pageable)
 			throws EntidadNoEncontrada {
 		if (mes < 1 || mes > 12)
 			throw new IllegalArgumentException("mes: debe estar entre 1 y 12");
@@ -118,9 +100,9 @@ public class ServicioProductos implements IServicioProductos {
 		YearMonth ym = YearMonth.of(anio, mes);
 		LocalDateTime inicio = ym.atDay(1).atStartOfDay();
 		LocalDateTime fin = ym.atEndOfMonth().atTime(23, 59, 59, 999_999_999);
-
-		return repositorioProductos.findResumenMensual(idVendedor, inicio, fin).stream()
-				.map(p -> ProductoResumenMensual.fromEntity(p)).collect(Collectors.toList());
+		return this.repositorioProductos.findResumenMensual(idVendedor, inicio, fin, pageable).map(producto -> {
+			return ProductoResumenMensual.fromEntity(producto);
+		});
 	}
 
 	@Override
@@ -159,9 +141,9 @@ public class ServicioProductos implements IServicioProductos {
 	}
 
 	@Override
-	public Page<ProductoDto> getListadoPaginado(Pageable pageable) {
+	public Page<ProductoResumen> getListadoPaginado(Pageable pageable) {
 		return this.repositorioProductos.findAll(pageable).map(producto -> {
-			return ProductoDto.fromEntity(producto);
+			return ProductoResumen.fromEntity(producto);
 		});
 	}
 

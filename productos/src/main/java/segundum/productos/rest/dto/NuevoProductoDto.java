@@ -1,5 +1,6 @@
 package segundum.productos.rest.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import segundum.productos.modelo.EstadoProducto;
@@ -10,6 +11,8 @@ public class NuevoProductoDto {
 	private String titulo;
 	@NotNull
 	private String descripcion;
+	@NotNull
+	@Min(0)
 	private double precio;
 	private EstadoProducto estado;
 	private boolean envioDisponible;
