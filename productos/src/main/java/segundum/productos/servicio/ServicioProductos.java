@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import segundum.productos.modelo.Categoria;
 import segundum.productos.modelo.EstadoProducto;
@@ -17,7 +20,9 @@ import segundum.productos.modelo.Usuario;
 import segundum.productos.repositorio.EntidadNoEncontrada;
 import segundum.productos.repositorio.RepositorioCategorias;
 import segundum.productos.repositorio.RepositorioProductos;
+import segundum.productos.rest.dto.ProductoDto;
 
+@Service
 public class ServicioProductos implements IServicioProductos {
 
 	private RepositorioCategorias repositorioCategorias;
@@ -47,7 +52,7 @@ public class ServicioProductos implements IServicioProductos {
 	}
 
 	@Override
-	public String altaProducto(String titulo, String descripcion, double precio, EstadoProducto estado,
+	public String crear(String titulo, String descripcion, double precio, EstadoProducto estado,
 			boolean envioDisponible, String idCategoria, String idVendedor) throws EntidadNoEncontrada {
 		if (titulo == null || titulo.isEmpty())
 			throw new IllegalArgumentException("titulo: no debe ser nulo ni vacio");
@@ -115,10 +120,7 @@ public class ServicioProductos implements IServicioProductos {
 		LocalDateTime fin = ym.atEndOfMonth().atTime(23, 59, 59, 999_999_999);
 
 		return repositorioProductos.findResumenMensual(idVendedor, inicio, fin).stream()
-				.map(p -> new ProductoResumenMensual(p.getId(), p.getTitulo(), p.getPrecio(),
-						p.getFechaPublicacion().toLocalDate(),
-						p.getCategoria() != null ? p.getCategoria().getNombre() : null, p.getVisualizaciones()))
-				.collect(Collectors.toList());
+				.map(p -> ProductoResumenMensual.fromEntity(p)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -154,6 +156,13 @@ public class ServicioProductos implements IServicioProductos {
 		}
 
 		return repositorioProductos.buscarProductos(idsCategoriasValidas, texto, estadosPermitidos, precioMax);
+	}
+
+	@Override
+	public Page<ProductoDto> getListadoPaginado(Pageable pageable) {
+		return this.repositorioProductos.findAll(pageable).map(producto -> {
+			return ProductoDto.fromEntity(producto);
+		});
 	}
 
 }

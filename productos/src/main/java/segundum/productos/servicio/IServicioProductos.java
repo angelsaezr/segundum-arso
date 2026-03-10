@@ -2,16 +2,20 @@ package segundum.productos.servicio;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import segundum.productos.modelo.EstadoProducto;
 import segundum.productos.modelo.Producto;
 import segundum.productos.repositorio.EntidadNoEncontrada;
+import segundum.productos.rest.dto.ProductoDto;
 
 public interface IServicioProductos {
 
 	Producto getProducto(String id) throws EntidadNoEncontrada;
 
-	String altaProducto(String titulo, String descripcion, double precio, EstadoProducto estado,
-			boolean envioDisponible, String idCategoria, String idVendedor) throws EntidadNoEncontrada;
+	String crear(String titulo, String descripcion, double precio, EstadoProducto estado, boolean envioDisponible,
+			String idCategoria, String idVendedor) throws EntidadNoEncontrada;
 
 	void modificarDatosProducto(String idProducto, Double nuevoPrecio, String nuevaDescripcion)
 			throws EntidadNoEncontrada;
@@ -21,8 +25,9 @@ public interface IServicioProductos {
 
 	void incrementarVisualizaciones(String idProducto) throws EntidadNoEncontrada;
 
-	public List<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int año)
-			throws EntidadNoEncontrada;
+	List<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int año) throws EntidadNoEncontrada;
 
 	List<Producto> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado, Double precioMax);
+
+	Page<ProductoDto> getListadoPaginado(Pageable pageable);
 }
