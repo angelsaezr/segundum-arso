@@ -1,44 +1,34 @@
-package segundum.usuarios.dto;
+package segundum.usuarios.rest.dto;
 
 import java.util.Date;
 
-import segundum.usuarios.modelo.Usuario;
-
 /**
- * DTO con la información completa de un usuario.
+ * DTO para recibir datos de creación/modificación de un usuario.
  */
-public class UsuarioDTO {
+public class UsuarioInputDTO {
 
-	private String id;
 	private String email;
 	private String nombre;
 	private String apellidos;
+	private String clave;
 	private Date fechaNacimiento;
 	private String telefono;
 	private boolean administrador;
 
-	public UsuarioDTO() {
+	public UsuarioInputDTO() {
 	}
 
-	public UsuarioDTO(Usuario usuario) {
-		this.id = usuario.getId();
-		this.email = usuario.getEmail();
-		this.nombre = usuario.getNombre();
-		this.apellidos = usuario.getApellidos();
-		this.fechaNacimiento = usuario.getFechaNacimiento();
-		this.telefono = usuario.getTelefono();
-		this.administrador = usuario.isAdministrador();
+	public UsuarioInputDTO(String email, String nombre, String apellidos, String clave, Date fechaNacimiento,
+			boolean administrador) {
+		this.email = email;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.clave = clave;
+		this.fechaNacimiento = fechaNacimiento;
+		this.administrador = administrador;
 	}
 
 	// Getters y Setters
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getEmail() {
 		return email;
@@ -62,6 +52,14 @@ public class UsuarioDTO {
 
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
+	}
+
+	public String getClave() {
+		return clave;
+	}
+
+	public void setClave(String clave) {
+		this.clave = clave;
 	}
 
 	public Date getFechaNacimiento() {

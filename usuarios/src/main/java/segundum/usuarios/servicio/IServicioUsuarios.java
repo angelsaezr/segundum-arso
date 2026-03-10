@@ -3,10 +3,10 @@ package segundum.usuarios.servicio;
 import java.util.Date;
 import java.util.List;
 
-import segundum.usuarios.dto.UsuarioInputDTO;
 import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.repositorio.EntidadNoEncontrada;
 import segundum.usuarios.repositorio.RepositorioException;
+import segundum.usuarios.rest.dto.UsuarioInputDTO;
 
 public interface IServicioUsuarios {
 	Usuario login(String email, String clave) throws RepositorioException, EntidadNoEncontrada;

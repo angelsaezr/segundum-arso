@@ -9,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import segundum.usuarios.dto.UsuarioInputDTO;
 import segundum.usuarios.repositorio.Identificable;
+import segundum.usuarios.rest.dto.UsuarioInputDTO;
 
 @XmlRootElement(name = "usuario")
 @Entity

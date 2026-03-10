@@ -1,34 +1,46 @@
-package segundum.usuarios.dto;
+package segundum.usuarios.rest.dto;
 
 import java.util.Date;
 
-/**
- * DTO para recibir datos de creación/modificación de un usuario.
- */
-public class UsuarioInputDTO {
+import segundum.usuarios.modelo.Usuario;
 
+/**
+ * DTO con la información completa de un usuario.
+ */
+public class UsuarioDTO {
+
+	private String id;
 	private String email;
 	private String nombre;
 	private String apellidos;
-	private String clave;
 	private Date fechaNacimiento;
 	private String telefono;
 	private boolean administrador;
 
-	public UsuarioInputDTO() {
+	public UsuarioDTO() {
 	}
 
-	public UsuarioInputDTO(String email, String nombre, String apellidos, String clave, Date fechaNacimiento,
+	public UsuarioDTO(String id, String email, String nombre, String apellidos, Date fechaNacimiento, String telefono,
 			boolean administrador) {
+		this.id = id;
 		this.email = email;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
-		this.clave = clave;
 		this.fechaNacimiento = fechaNacimiento;
+		this.telefono = telefono;
 		this.administrador = administrador;
+
 	}
 
 	// Getters y Setters
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getEmail() {
 		return email;
@@ -54,14 +66,6 @@ public class UsuarioInputDTO {
 		this.apellidos = apellidos;
 	}
 
-	public String getClave() {
-		return clave;
-	}
-
-	public void setClave(String clave) {
-		this.clave = clave;
-	}
-
 	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
@@ -84,5 +88,10 @@ public class UsuarioInputDTO {
 
 	public void setAdministrador(boolean administrador) {
 		this.administrador = administrador;
+	}
+
+	public static UsuarioDTO fromEntity(Usuario usuario) {
+		return new UsuarioDTO(usuario.getId(), usuario.getEmail(), usuario.getNombre(), usuario.getApellidos(),
+				usuario.getFechaNacimiento(), usuario.getTelefono(), usuario.isAdministrador());
 	}
 }

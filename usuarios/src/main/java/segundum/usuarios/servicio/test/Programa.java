@@ -2,7 +2,7 @@ package segundum.usuarios.servicio.test;
 
 import java.util.Date;
 
-import segundum.usuarios.dto.UsuarioInputDTO;
+import segundum.usuarios.rest.dto.UsuarioInputDTO;
 import segundum.usuarios.servicio.FactoriaServicios;
 import segundum.usuarios.servicio.IServicioUsuarios;
 

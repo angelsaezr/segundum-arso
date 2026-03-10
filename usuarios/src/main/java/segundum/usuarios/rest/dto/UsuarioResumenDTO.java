@@ -1,10 +1,10 @@
-package segundum.usuarios.dto;
+package segundum.usuarios.rest.dto;
 
 import segundum.usuarios.modelo.Usuario;
 
 /**
- * DTO resumen de un usuario para el listado.
- * Incluye solo datos básicos y un enlace al recurso completo.
+ * DTO resumen de un usuario para el listado. Incluye solo datos básicos y un
+ * enlace al recurso completo.
  */
 public class UsuarioResumenDTO {
 
@@ -17,12 +17,12 @@ public class UsuarioResumenDTO {
 	public UsuarioResumenDTO() {
 	}
 
-	public UsuarioResumenDTO(Usuario usuario, String baseUri) {
-		this.id = usuario.getId();
-		this.nombre = usuario.getNombre();
-		this.apellidos = usuario.getApellidos();
-		this.email = usuario.getEmail();
-		this.url = baseUri + "/" + usuario.getId();
+	public UsuarioResumenDTO(String id, String nombre, String apellidos, String email, String url) {
+		this.id = id;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.email = email;
+		this.url = url;
 	}
 
 	// Getters y Setters
@@ -65,5 +65,10 @@ public class UsuarioResumenDTO {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public static UsuarioResumenDTO fromEntity(Usuario usuario, String baseUrl) {
+		return new UsuarioResumenDTO(usuario.getId(), usuario.getNombre(), usuario.getApellidos(), usuario.getEmail(),
+				baseUrl + "/" + usuario.getId());
 	}
 }

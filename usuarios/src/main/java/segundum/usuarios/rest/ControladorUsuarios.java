@@ -20,9 +20,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import io.jsonwebtoken.Claims;
-import segundum.usuarios.dto.UsuarioDTO;
-import segundum.usuarios.dto.UsuarioInputDTO;
-import segundum.usuarios.dto.UsuarioResumenDTO;
+import segundum.usuarios.rest.dto.UsuarioDTO;
+import segundum.usuarios.rest.dto.UsuarioInputDTO;
+import segundum.usuarios.rest.dto.UsuarioResumenDTO;
 import segundum.usuarios.servicio.FactoriaServicios;
 import segundum.usuarios.servicio.IServicioUsuarios;
 
@@ -52,7 +52,7 @@ public class ControladorUsuarios {
 			System.out.println("Roles: " + claims.get("roles"));
 		}
 
-		return Response.ok(new UsuarioDTO(servicio.recuperar(id))).build();
+		return Response.ok(UsuarioDTO.fromEntity(servicio.recuperar(id))).build();
 	}
 
 	// curl -i -X POST -H "Content-type: application/json" -d @1.json
@@ -92,8 +92,8 @@ public class ControladorUsuarios {
 
 		String baseUri = uriInfo.getAbsolutePath().toString().replaceAll("/$", "");
 
-		List<UsuarioResumenDTO> resumen = servicio.recuperarTodos().stream().map(u -> new UsuarioResumenDTO(u, baseUri))
-				.collect(Collectors.toList());
+		List<UsuarioResumenDTO> resumen = servicio.recuperarTodos().stream()
+				.map(u -> UsuarioResumenDTO.fromEntity(u, baseUri)).collect(Collectors.toList());
 
 		return Response.ok(resumen).build();
 	}
