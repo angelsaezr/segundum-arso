@@ -18,16 +18,6 @@ public class UsuarioInputDTO {
 	public UsuarioInputDTO() {
 	}
 
-	public UsuarioInputDTO(String email, String nombre, String apellidos, String clave, Date fechaNacimiento,
-			boolean administrador) {
-		this.email = email;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.clave = clave;
-		this.fechaNacimiento = fechaNacimiento;
-		this.administrador = administrador;
-	}
-
 	// Getters y Setters
 
 	public String getEmail() {
