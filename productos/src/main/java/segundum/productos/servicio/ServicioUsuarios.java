@@ -1,6 +1,5 @@
 package segundum.productos.servicio;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +53,7 @@ public class ServicioUsuarios implements IServicioUsuarios {
 	}
 
 	@Override
-	public void modificarUsuario(String id, String email, String nombre, String apellidos, String clave,
-			LocalDate fechaNacimiento, String telefono, boolean administrador) throws EntidadNoEncontrada {
+	public void modificarUsuario(String id, String email, String nombre, String apellidos) throws EntidadNoEncontrada {
 		Usuario usuario = getUsuario(id);
 
 		if (email != null && !email.isEmpty())
