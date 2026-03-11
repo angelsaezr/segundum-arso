@@ -23,7 +23,13 @@ public class Programa {
 
 		// Alta del usuario
 		System.out.println("Creando usuario...");
-		UsuarioInputDTO usuarioDTO = new UsuarioInputDTO(email, nombre, apellidos, clave, fechaNacimiento, false);
+		UsuarioInputDTO usuarioDTO = new UsuarioInputDTO();
+		usuarioDTO.setEmail(email);
+		usuarioDTO.setNombre(nombre);
+		usuarioDTO.setApellidos(apellidos);
+		usuarioDTO.setClave(clave);
+		usuarioDTO.setFechaNacimiento(fechaNacimiento);
+		usuarioDTO.setAdministrador(false);
 		String id = servicioUsuarios.altaUsuario(usuarioDTO);
 		System.out.println("Usuario creado con id:  " + id);
 		System.out
