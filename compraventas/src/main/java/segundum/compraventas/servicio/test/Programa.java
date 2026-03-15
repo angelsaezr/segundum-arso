@@ -1,5 +1,7 @@
 package segundum.compraventas.servicio.test;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,12 +17,32 @@ public class Programa implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("=== PRUEBA CREAR COMPRAVENTA ===");
-		Compraventa c = servicio.crearCompraventa("Bicicleta de montaña", 350.0);
-		System.out.println("Compraventa creada:");
-		System.out.println("ID:     " + c.getId());
+
+		// 1. Crear una compraventa
+		System.out.println("=== PRUEBA compraventa ===");
+		Compraventa c = servicio.compraventa("producto-001", "comprador-001");
+		System.out.println("ID: " + c.getId());
+		System.out.println("Producto: " + c.getIdProducto());
 		System.out.println("Título: " + c.getTitulo());
 		System.out.println("Precio: " + c.getPrecio() + " €");
-		System.out.println("=== FIN PRUEBA ===");
+		System.out.println("Recogida: " + c.getRecogida());
+		System.out.println("Vendedor: " + c.getNombreVendedor());
+		System.out.println("Comprador: " + c.getNombreComprador());
+		System.out.println("Fecha: " + c.getFecha());
+
+		// 2. Recuperar compras del usuario comprador
+		System.out.println("\n=== PRUEBA recuperarComprasUsuario ===");
+		List<Compraventa> compras = servicio.recuperarComprasUsuario("comprador-001");
+		compras.forEach(cv -> System.out.println(cv.getTitulo() + ", " + cv.getFecha()));
+
+		// 3. Recuperar ventas del usuario vendedor
+		System.out.println("\n=== PRUEBA recuperarVentasUsuario ===");
+		List<Compraventa> ventas = servicio.recuperarVentasUsuario("vendedor-001");
+		ventas.forEach(cv -> System.out.println(cv.getTitulo() + ", " + cv.getFecha()));
+
+		// 4. Recuperar compraventas entre comprador y vendedor
+		System.out.println("\n=== PRUEBA recuperarCompraventasEntreUsuarios ===");
+		List<Compraventa> entreUsuarios = servicio.recuperarCompraventasEntreUsuarios("comprador-001", "vendedor-001");
+		entreUsuarios.forEach(cv -> System.out.println(cv.getTitulo() + ", " + cv.getFecha()));
 	}
 }
