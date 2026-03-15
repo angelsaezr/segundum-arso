@@ -1,47 +1,38 @@
 package segundum.compraventas.modelo;
 
-import java.time.LocalDateTime;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "compraventas")
 public class Compraventa {
 
+	@Id
 	private String id;
 
-	private String idProducto;
+	// private String idProducto;
 	private String titulo;
 	private double precio;
-	private String recogida;
+	// private String recogida;
 
-	private String idVendedor;
-	private String nombreVendedor;
+	// private String idVendedor;
+	// private String nombreVendedor;
 
-	private String idComprador;
-	private String nombreComprador;
+	// private String idComprador;
+	// private String nombreComprador;
 
-	private LocalDateTime fecha;
+	// private LocalDateTime fecha;
 
 	public Compraventa() {
 	}
 
-	public Compraventa(String id, String idProducto, String titulo, double precio, String recogida, String idVendedor,
-			String nombreVendedor, String idComprador, String nombreComprador, LocalDateTime fecha) {
+	public Compraventa(String id, String titulo, double precio) {
 		this.id = id;
-		this.idProducto = idProducto;
 		this.titulo = titulo;
 		this.precio = precio;
-		this.recogida = recogida;
-		this.idVendedor = idVendedor;
-		this.nombreVendedor = nombreVendedor;
-		this.idComprador = idComprador;
-		this.nombreComprador = nombreComprador;
-		this.fecha = fecha;
 	}
 
 	public String getId() {
 		return id;
-	}
-
-	public String getIdProducto() {
-		return idProducto;
 	}
 
 	public String getTitulo() {
@@ -52,36 +43,8 @@ public class Compraventa {
 		return precio;
 	}
 
-	public String getRecogida() {
-		return recogida;
-	}
-
-	public String getIdVendedor() {
-		return idVendedor;
-	}
-
-	public String getNombreVendedor() {
-		return nombreVendedor;
-	}
-
-	public String getIdComprador() {
-		return idComprador;
-	}
-
-	public String getNombreComprador() {
-		return nombreComprador;
-	}
-
-	public LocalDateTime getFecha() {
-		return fecha;
-	}
-
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public void setIdProducto(String idProducto) {
-		this.idProducto = idProducto;
 	}
 
 	public void setTitulo(String titulo) {
@@ -90,37 +53,5 @@ public class Compraventa {
 
 	public void setPrecio(double precio) {
 		this.precio = precio;
-	}
-
-	public void setRecogida(String recogida) {
-		this.recogida = recogida;
-	}
-
-	public void setIdVendedor(String idVendedor) {
-		this.idVendedor = idVendedor;
-	}
-
-	public void setNombreVendedor(String nombreVendedor) {
-		this.nombreVendedor = nombreVendedor;
-	}
-
-	public void setIdComprador(String idComprador) {
-		this.idComprador = idComprador;
-	}
-
-	public void setNombreComprador(String nombreComprador) {
-		this.nombreComprador = nombreComprador;
-	}
-
-	public void setFecha(LocalDateTime fecha) {
-		this.fecha = fecha;
-	}
-
-	@Override
-	public String toString() {
-		return "Compraventa{" + "id='" + id + '\'' + ", idProducto='" + idProducto + '\'' + ", titulo='" + titulo + '\''
-				+ ", precio=" + precio + ", recogida='" + recogida + '\'' + ", idVendedor='" + idVendedor + '\''
-				+ ", nombreVendedor='" + nombreVendedor + '\'' + ", idComprador='" + idComprador + '\''
-				+ ", nombreComprador='" + nombreComprador + '\'' + ", fecha=" + fecha + '}';
 	}
 }
