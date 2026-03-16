@@ -20,7 +20,7 @@ import segundum.productos.modelo.Usuario;
 import segundum.productos.repositorio.EntidadNoEncontrada;
 import segundum.productos.repositorio.RepositorioCategorias;
 import segundum.productos.repositorio.RepositorioProductos;
-import segundum.productos.rest.dto.ProductoResumen;
+import segundum.productos.rest.dto.ProductoResumenDTO;
 
 @Service
 public class ServicioProductos implements IServicioProductos {
@@ -141,9 +141,9 @@ public class ServicioProductos implements IServicioProductos {
 	}
 
 	@Override
-	public Page<ProductoResumen> getListadoPaginado(Pageable pageable) {
+	public Page<ProductoResumenDTO> getListadoPaginado(Pageable pageable) {
 		return this.repositorioProductos.findAll(pageable).map(producto -> {
-			return ProductoResumen.fromEntity(producto);
+			return ProductoResumenDTO.fromEntity(producto);
 		});
 	}
 

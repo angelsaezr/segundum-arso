@@ -18,11 +18,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import segundum.productos.modelo.EstadoProducto;
 import segundum.productos.modelo.Producto;
-import segundum.productos.rest.dto.ModificadoProductoDto;
-import segundum.productos.rest.dto.NuevoLugarDeRecogidaDto;
-import segundum.productos.rest.dto.NuevoProductoDto;
-import segundum.productos.rest.dto.ProductoDto;
-import segundum.productos.rest.dto.ProductoResumen;
+import segundum.productos.rest.dto.ModificadoProductoDTO;
+import segundum.productos.rest.dto.NuevoLugarDeRecogidaDTO;
+import segundum.productos.rest.dto.NuevoProductoDTO;
+import segundum.productos.rest.dto.ProductoDTO;
+import segundum.productos.rest.dto.ProductoResumenDTO;
 import segundum.productos.servicio.IServicioProductos;
 import segundum.productos.servicio.ProductoResumenMensual;
 
@@ -33,7 +33,7 @@ public class ProductosController implements ProductosApi {
 	private IServicioProductos serviciosProductos;
 
 	@Autowired
-	private PagedResourcesAssembler<ProductoResumen> pagedResourcesAssembler;
+	private PagedResourcesAssembler<ProductoResumenDTO> pagedResourcesAssembler;
 
 	@Autowired
 	private PagedResourcesAssembler<ProductoResumenMensual> pagedResourcesAssemblerMensual;
@@ -50,7 +50,7 @@ public class ProductosController implements ProductosApi {
 	}
 
 	@Override
-	public ResponseEntity<Void> createProducto(NuevoProductoDto nuevoProductoDto) throws Exception {
+	public ResponseEntity<Void> createProducto(NuevoProductoDTO nuevoProductoDto) throws Exception {
 		String id = this.serviciosProductos.crear(nuevoProductoDto.getTitulo(), nuevoProductoDto.getDescripcion(),
 				nuevoProductoDto.getPrecio(), nuevoProductoDto.getEstado(), nuevoProductoDto.isEnvioDisponible(),
 				nuevoProductoDto.getIdCategoria(), nuevoProductoDto.getIdVendedor());
@@ -61,18 +61,18 @@ public class ProductosController implements ProductosApi {
 	}
 
 	@Override
-	public EntityModel<ProductoDto> getProductoById(String id) throws Exception {
+	public EntityModel<ProductoDTO> getProductoById(String id) throws Exception {
 		Producto producto = this.serviciosProductos.getProducto(id);
-		ProductoDto productoDto = ProductoDto.fromEntity(producto);
+		ProductoDTO productoDto = ProductoDTO.fromEntity(producto);
 
-		EntityModel<ProductoDto> model = EntityModel.of(productoDto);
+		EntityModel<ProductoDTO> model = EntityModel.of(productoDto);
 		model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProductosController.class).getProductoById(id))
 				.withSelfRel());
 		return model;
 	}
 
 	@Override
-	public ResponseEntity<Void> modificarDatosProducto(String id, ModificadoProductoDto modificadoProductoDto)
+	public ResponseEntity<Void> modificarDatosProducto(String id, ModificadoProductoDTO modificadoProductoDto)
 			throws Exception {
 		this.serviciosProductos.modificarDatosProducto(id, modificadoProductoDto.getPrecio(),
 				modificadoProductoDto.getDescripcion());
@@ -80,7 +80,7 @@ public class ProductosController implements ProductosApi {
 	}
 
 	@Override
-	public ResponseEntity<Void> asignarLugarRecogida(String id, NuevoLugarDeRecogidaDto lugarRecogida)
+	public ResponseEntity<Void> asignarLugarRecogida(String id, NuevoLugarDeRecogidaDTO lugarRecogida)
 			throws Exception {
 		this.serviciosProductos.asignarLugarRecogida(id, lugarRecogida.getLongitud(), lugarRecogida.getLatitud(),
 				lugarRecogida.getDescripcion());
@@ -103,16 +103,16 @@ public class ProductosController implements ProductosApi {
 	}
 
 	@Override
-	public PagedModel<EntityModel<ProductoResumen>> getProductosPaginado(Pageable paginacion) throws Exception {
-		Page<ProductoResumen> resultado = this.serviciosProductos.getListadoPaginado(paginacion);
+	public PagedModel<EntityModel<ProductoResumenDTO>> getProductosPaginado(Pageable paginacion) throws Exception {
+		Page<ProductoResumenDTO> resultado = this.serviciosProductos.getListadoPaginado(paginacion);
 
 		return this.pagedResourcesAssembler.toModel(resultado, productoResumenAssembler);
 	}
 
 	@Override
-	public List<ProductoDto> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado,
+	public List<ProductoDTO> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado,
 			Double precioMax) throws Exception {
 		return this.serviciosProductos.buscarProductos(descripcion, idCategoria, estado, precioMax).stream()
-				.map(ProductoDto::fromEntity).collect(Collectors.toList());
+				.map(ProductoDTO::fromEntity).collect(Collectors.toList());
 	}
 }

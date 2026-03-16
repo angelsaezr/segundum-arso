@@ -4,7 +4,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class NuevoLugarDeRecogidaDto {
+public class NuevoLugarDeRecogidaDTO {
 
 	@NotNull
 	private String descripcion;
@@ -18,7 +18,7 @@ public class NuevoLugarDeRecogidaDto {
 	@Max(90)
 	private double latitud;
 
-	public NuevoLugarDeRecogidaDto() {
+	public NuevoLugarDeRecogidaDTO() {
 
 	}
 

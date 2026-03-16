@@ -16,7 +16,7 @@ La operación de compraventa debería tener como requisito que el producto que s
 ---
 
 # Otros
-- Renombrar `ProductoResumen` a `ProductoResumenDTO` en `segundum.productos.rest.dto`.
+
 
 # Dudas pendientes
 - ¿Hay que implementar `CategoriasController` en el microservicio `productos`?

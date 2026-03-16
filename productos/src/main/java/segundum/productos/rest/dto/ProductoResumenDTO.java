@@ -2,7 +2,7 @@ package segundum.productos.rest.dto;
 
 import segundum.productos.modelo.Producto;
 
-public class ProductoResumen {
+public class ProductoResumenDTO {
 
 	private String idProducto;
 	private String titulo;
@@ -24,8 +24,8 @@ public class ProductoResumen {
 		return "ProductoResumen [idProducto=" + idProducto + ", titulo=" + titulo + ", precio=" + precio + "]";
 	}
 
-	public static ProductoResumen fromEntity(Producto producto) {
-		ProductoResumen resumen = new ProductoResumen();
+	public static ProductoResumenDTO fromEntity(Producto producto) {
+		ProductoResumenDTO resumen = new ProductoResumenDTO();
 		resumen.idProducto = producto.getId();
 		resumen.titulo = producto.getTitulo();
 		resumen.precio = producto.getPrecio();

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import segundum.productos.modelo.EstadoProducto;
 import segundum.productos.modelo.Producto;
 import segundum.productos.repositorio.EntidadNoEncontrada;
-import segundum.productos.rest.dto.ProductoResumen;
+import segundum.productos.rest.dto.ProductoResumenDTO;
 
 public interface IServicioProductos {
 
@@ -29,5 +29,5 @@ public interface IServicioProductos {
 
 	List<Producto> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado, Double precioMax);
 
-	Page<ProductoResumen> getListadoPaginado(Pageable pageable);
+	Page<ProductoResumenDTO> getListadoPaginado(Pageable pageable);
 }

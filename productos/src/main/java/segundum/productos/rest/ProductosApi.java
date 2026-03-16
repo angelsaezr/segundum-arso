@@ -18,32 +18,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import io.swagger.v3.oas.annotations.Operation;
 import segundum.productos.modelo.EstadoProducto;
-import segundum.productos.rest.dto.ModificadoProductoDto;
-import segundum.productos.rest.dto.NuevoLugarDeRecogidaDto;
-import segundum.productos.rest.dto.NuevoProductoDto;
-import segundum.productos.rest.dto.ProductoDto;
-import segundum.productos.rest.dto.ProductoResumen;
+import segundum.productos.rest.dto.ModificadoProductoDTO;
+import segundum.productos.rest.dto.NuevoLugarDeRecogidaDTO;
+import segundum.productos.rest.dto.NuevoProductoDTO;
+import segundum.productos.rest.dto.ProductoDTO;
+import segundum.productos.rest.dto.ProductoResumenDTO;
 import segundum.productos.servicio.ProductoResumenMensual;
 
 public interface ProductosApi {
 
 	@Operation(summary = "Crear producto", description = "Crea un nuevo producto con los datos proporcionados")
 	@PostMapping
-	ResponseEntity<Void> createProducto(@Valid @RequestBody NuevoProductoDto nuevoProductoDto) throws Exception;
+	ResponseEntity<Void> createProducto(@Valid @RequestBody NuevoProductoDTO nuevoProductoDto) throws Exception;
 
 	@Operation(summary = "Obtener producto", description = "Obtiene un producto por su id")
 	@GetMapping("/{id}")
-	EntityModel<ProductoDto> getProductoById(@PathVariable String id) throws Exception;
+	EntityModel<ProductoDTO> getProductoById(@PathVariable String id) throws Exception;
 
 	@Operation(summary = "Modificar producto", description = "Modifica los datos de un producto existente")
 	@PatchMapping("/{id}")
 	ResponseEntity<Void> modificarDatosProducto(@PathVariable String id,
-			@Valid @RequestBody ModificadoProductoDto modificadoProductoDto) throws Exception;
+			@Valid @RequestBody ModificadoProductoDTO modificadoProductoDto) throws Exception;
 
 	@Operation(summary = "Asignar lugar de recogida", description = "Asigna un lugar de recogida a un producto")
 	@PostMapping("/{id}/recogida")
 	ResponseEntity<Void> asignarLugarRecogida(@PathVariable String id,
-			@Valid @RequestBody NuevoLugarDeRecogidaDto lugarRecogida) throws Exception;
+			@Valid @RequestBody NuevoLugarDeRecogidaDTO lugarRecogida) throws Exception;
 
 	@Operation(summary = "Incrementar visualizaciones", description = "Incrementa el contador de visualizaciones de un producto")
 	@PatchMapping("/{id}/visualizaciones")
@@ -56,12 +56,12 @@ public interface ProductosApi {
 
 	@Operation(summary = "Obtener productos paginados", description = "Obtiene una lista paginada de productos con su resumen")
 	@GetMapping
-	PagedModel<EntityModel<ProductoResumen>> getProductosPaginado(@ParameterObject Pageable paginacion)
+	PagedModel<EntityModel<ProductoResumenDTO>> getProductosPaginado(@ParameterObject Pageable paginacion)
 			throws Exception;
 
 	@Operation(summary = "Buscar productos", description = "Busca productos por descripción, categoría, estado o precio máximo")
 	@GetMapping("/buscar")
-	List<ProductoDto> buscarProductos(@RequestParam(required = false) String descripcion,
+	List<ProductoDTO> buscarProductos(@RequestParam(required = false) String descripcion,
 			@RequestParam(required = false) String idCategoria, @RequestParam(required = false) EstadoProducto estado,
 			@RequestParam(required = false) Double precioMax) throws Exception;
 }

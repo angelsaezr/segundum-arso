@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 import segundum.productos.modelo.EstadoProducto;
 
-public class NuevoProductoDto {
+public class NuevoProductoDTO {
 
 	@NotNull
 	private String titulo;
@@ -21,7 +21,7 @@ public class NuevoProductoDto {
 	@NotNull
 	private String idVendedor;
 
-	public NuevoProductoDto() {
+	public NuevoProductoDTO() {
 
 	}
 

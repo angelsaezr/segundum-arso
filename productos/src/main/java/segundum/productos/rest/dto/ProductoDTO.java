@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import segundum.productos.modelo.Producto;
 
 @Schema(description = "DTO de la entidad Producto")
-public class ProductoDto {
+public class ProductoDTO {
 
 	@Schema(description = "Identificador del producto")
 	private String id;
@@ -23,11 +23,11 @@ public class ProductoDto {
 	@Schema(description = "Identificador del vendedor del producto")
 	private String idVendedor;
 
-	public ProductoDto() {
+	public ProductoDTO() {
 
 	}
 
-	public ProductoDto(String id, String titulo, String descripcion, double precio, String estado,
+	public ProductoDTO(String id, String titulo, String descripcion, double precio, String estado,
 			boolean envioDisponible, String idCategoria, String idVendedor) {
 		this.id = id;
 		this.titulo = titulo;
@@ -103,8 +103,8 @@ public class ProductoDto {
 		this.idVendedor = idVendedor;
 	}
 
-	public static ProductoDto fromEntity(Producto producto) {
-		return new ProductoDto(producto.getId(), producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(),
+	public static ProductoDTO fromEntity(Producto producto) {
+		return new ProductoDTO(producto.getId(), producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(),
 				producto.getEstado().toString(), producto.isEnvioDisponible(), producto.getCategoria().getId(),
 				producto.getVendedor().getId());
 	}
