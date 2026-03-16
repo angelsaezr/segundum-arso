@@ -20,7 +20,7 @@ public class Programa implements CommandLineRunner {
 
 		// 1. Crear una compraventa
 		System.out.println("=== PRUEBA compraventa ===");
-		Compraventa c = servicio.compraventa("producto-001", "comprador-001");
+		Compraventa c = servicio.compraventa("2", "1");
 		System.out.println("ID: " + c.getId());
 		System.out.println("Producto: " + c.getIdProducto());
 		System.out.println("Título: " + c.getTitulo());

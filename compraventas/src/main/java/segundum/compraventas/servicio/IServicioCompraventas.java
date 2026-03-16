@@ -5,7 +5,7 @@ import java.util.List;
 import segundum.compraventas.modelo.Compraventa;
 
 public interface IServicioCompraventas {
-	Compraventa compraventa(String idProducto, String idComprador);
+	Compraventa compraventa(String idProducto, String idComprador) throws Exception;
 
 	List<Compraventa> recuperarComprasUsuario(String idComprador);
 
