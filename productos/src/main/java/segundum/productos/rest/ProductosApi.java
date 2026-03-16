@@ -52,7 +52,7 @@ public interface ProductosApi {
 	@Operation(summary = "Obtener resumen mensual", description = "Obtiene el resumen mensual de productos de un vendedor")
 	@GetMapping("/historial")
 	PagedModel<EntityModel<ProductoResumenMensual>> getResumenMensual(@RequestParam String idVendedor,
-			@RequestParam int mes, @RequestParam int año, @ParameterObject Pageable paginacion) throws Exception;
+			@RequestParam int mes, @RequestParam int anyo, @ParameterObject Pageable paginacion) throws Exception;
 
 	@Operation(summary = "Obtener productos paginados", description = "Obtiene una lista paginada de productos con su resumen")
 	@GetMapping

@@ -20,5 +20,6 @@ La operación de compraventa debería tener como requisito que el producto que s
 
 # Dudas pendientes
 - ¿Hay que implementar `CategoriasController` en el microservicio `productos`?
+- ¿Buscar productos debería ser pageable?
 - Preguntar qué operaciones debe tener cada API.
 - Eliminar métodos de servicios/repositorios que no estén siendo utilizados por las APIs.

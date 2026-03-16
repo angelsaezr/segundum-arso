@@ -94,9 +94,9 @@ public class ProductosController implements ProductosApi {
 	}
 
 	@Override
-	public PagedModel<EntityModel<ProductoResumenMensual>> getResumenMensual(String idVendedor, int mes, int año,
+	public PagedModel<EntityModel<ProductoResumenMensual>> getResumenMensual(String idVendedor, int mes, int anyo,
 			Pageable paginacion) throws Exception {
-		Page<ProductoResumenMensual> resultado = this.serviciosProductos.getResumenMensual(idVendedor, mes, año,
+		Page<ProductoResumenMensual> resultado = this.serviciosProductos.getResumenMensual(idVendedor, mes, anyo,
 				paginacion);
 
 		return this.pagedResourcesAssemblerMensual.toModel(resultado, productoResumenAssemblerMensual);

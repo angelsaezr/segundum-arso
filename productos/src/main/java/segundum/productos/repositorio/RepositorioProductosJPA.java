@@ -17,9 +17,11 @@ import segundum.productos.modelo.Producto;
 @Repository
 public interface RepositorioProductosJPA extends RepositorioProductos, JpaRepository<Producto, String> {
 
-	@Query("SELECT p FROM Producto p LEFT JOIN p.categoria c " + "WHERE (c.id IN :idsCategoria) "
+	@Query("SELECT p FROM Producto p LEFT JOIN p.categoria c "
+			+ "WHERE (:idsCategoria IS NULL OR c.id IN :idsCategoria) "
 			+ "AND (:texto IS NULL OR LOWER(p.titulo) LIKE LOWER(CONCAT('%', :texto, '%')) "
-			+ "OR LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%'))) " + "AND (p.estado IN :estadosPermitidos) "
+			+ "     OR LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%'))) "
+			+ "AND (:estadosPermitidos IS NULL OR p.estado IN :estadosPermitidos) "
 			+ "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
 	List<Producto> buscarProductos(@Param("idsCategoria") Set<String> idsCategoria, @Param("texto") String texto,
 			@Param("estadosPermitidos") List<EstadoProducto> estadosPermitidos, @Param("precioMax") Double precioMax);
