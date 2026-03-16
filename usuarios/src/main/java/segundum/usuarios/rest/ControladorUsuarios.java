@@ -45,13 +45,6 @@ public class ControladorUsuarios {
 	@Path("{id}")
 	@RolesAllowed("USUARIO")
 	public Response getUsuario(@PathParam("id") String id) throws Exception {
-
-		Claims claims = getClaims();
-		if (claims != null) {
-			System.out.println("Usuario autenticado: " + claims.getSubject());
-			System.out.println("Roles: " + claims.get("roles"));
-		}
-
 		return Response.ok(UsuarioDTO.fromEntity(servicio.recuperar(id))).build();
 	}
 
@@ -61,7 +54,6 @@ public class ControladorUsuarios {
 	@POST
 	@PermitAll
 	public Response createUsuario(UsuarioInputDTO dto) throws Exception {
-
 		String id = servicio.altaUsuario(dto);
 		URI nuevaURL = uriInfo.getAbsolutePathBuilder().path(id).build();
 		return Response.created(nuevaURL).build();
@@ -89,13 +81,21 @@ public class ControladorUsuarios {
 	@GET
 	@RolesAllowed("USUARIO")
 	public Response getUsuarios() throws Exception {
-
 		String baseUri = uriInfo.getAbsolutePath().toString().replaceAll("/$", "");
 
 		List<UsuarioResumenDTO> resumen = servicio.recuperarTodos().stream()
 				.map(u -> UsuarioResumenDTO.fromEntity(u, baseUri)).collect(Collectors.toList());
 
 		return Response.ok(resumen).build();
+	}
+
+	// GET http://localhost:8080/api/usuarios/1/nombre
+
+	@GET
+	@Path("{id}/nombre")
+	@PermitAll
+	public Response getNombreUsuario(@PathParam("id") String id) throws Exception {
+		return Response.ok(servicio.recuperar(id).getNombre()).build();
 	}
 
 	private Claims getClaims() {
