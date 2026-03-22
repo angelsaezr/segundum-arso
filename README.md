@@ -1,7 +1,7 @@
 # Tarea 6
 
 ## Parte 2: Funcionalidad de compraventa y APIs
-- Falta probar Retrofit.
+- Revisar clase programa del servicio Compraventas, no sale en los logs los métodos de recuperación.
 - Falta implementar controlador REST.
 
 ### Nota 2
@@ -21,6 +21,7 @@ La operación de compraventa debería tener como requisito que el producto que s
 
 # Otros
 
+---
 
 # Dudas pendientes
 - ¿Hay que implementar `CategoriasController` en el microservicio `productos`?

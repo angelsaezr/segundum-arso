@@ -11,9 +11,9 @@ public class LugarDeRecogida {
 	@Column(name = "descripcion_recogida")
 	private String descripcion;
 
-	private double longitud;
+	private Double longitud;
 
-	private double latitud;
+	private Double latitud;
 
 	public LugarDeRecogida() {
 
