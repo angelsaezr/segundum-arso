@@ -1,4 +1,4 @@
-package segundum.usuarios.rest;
+package segundum.usuarios.rest.excepciones;
 
 import java.util.HashMap;
 import java.util.Map;
