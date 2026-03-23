@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import segundum.compraventas.modelo.Compraventa;
 import segundum.compraventas.repositorio.RepositorioCompraventas;
+import segundum.compraventas.rest.dto.CompraventaDTO;
 import segundum.compraventas.rest.dto.ProductoDTO;
 
 @Service
@@ -61,5 +64,12 @@ public class ServicioCompraventas implements IServicioCompraventas {
 	@Override
 	public List<Compraventa> recuperarCompraventasEntreUsuarios(String idComprador, String idVendedor) {
 		return repositorioCompraventas.findByIdCompradorAndIdVendedor(idComprador, idVendedor);
+	}
+
+	@Override
+	public Page<CompraventaDTO> getListadoPaginado(Pageable pageable) {
+		return this.repositorioCompraventas.findAll(pageable).map(compraventa -> {
+			return CompraventaDTO.fromEntity(compraventa);
+		});
 	}
 }

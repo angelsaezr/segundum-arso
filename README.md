@@ -34,3 +34,4 @@ La operación de compraventa debería tener como requisito que el producto que s
 - Preguntar qué operaciones debe tener cada API.
 - Eliminar métodos de servicios/repositorios que no estén siendo utilizados por las APIs.
 - ¿Lo de que la id de los productos sea UUID está bien? (ver /productos/src/main/java/segundum/productos/modelo/Producto.java)
+- Por qué está productoResumenMensual en servicio

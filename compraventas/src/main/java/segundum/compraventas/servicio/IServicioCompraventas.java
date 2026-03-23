@@ -2,7 +2,11 @@ package segundum.compraventas.servicio;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import segundum.compraventas.modelo.Compraventa;
+import segundum.compraventas.rest.dto.CompraventaDTO;
 
 public interface IServicioCompraventas {
 	Compraventa compraventa(String idProducto, String idComprador) throws Exception;
@@ -12,4 +16,6 @@ public interface IServicioCompraventas {
 	List<Compraventa> recuperarVentasUsuario(String idVendedor);
 
 	List<Compraventa> recuperarCompraventasEntreUsuarios(String idComprador, String idVendedor);
+
+	Page<CompraventaDTO> getListadoPaginado(Pageable pageable);
 }
