@@ -19,6 +19,11 @@ La operación de compraventa debería tener como requisito que el producto que s
 
 ---
 
+# Tarea 9
+- Todo por hacer
+
+---
+
 # Otros
 
 ---
