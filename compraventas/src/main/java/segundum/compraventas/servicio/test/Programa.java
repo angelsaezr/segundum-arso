@@ -32,17 +32,17 @@ public class Programa implements CommandLineRunner {
 
 		// 2. Recuperar compras del usuario comprador
 		System.out.println("\n=== PRUEBA recuperarComprasUsuario ===");
-		List<Compraventa> compras = servicio.recuperarComprasUsuario("comprador-001");
+		List<Compraventa> compras = servicio.recuperarComprasUsuario("153");
 		compras.forEach(cv -> System.out.println(cv.getTitulo() + ", " + cv.getFecha()));
 
 		// 3. Recuperar ventas del usuario vendedor
 		System.out.println("\n=== PRUEBA recuperarVentasUsuario ===");
-		List<Compraventa> ventas = servicio.recuperarVentasUsuario("vendedor-001");
+		List<Compraventa> ventas = servicio.recuperarVentasUsuario("152");
 		ventas.forEach(cv -> System.out.println(cv.getTitulo() + ", " + cv.getFecha()));
 
 		// 4. Recuperar compraventas entre comprador y vendedor
 		System.out.println("\n=== PRUEBA recuperarCompraventasEntreUsuarios ===");
-		List<Compraventa> entreUsuarios = servicio.recuperarCompraventasEntreUsuarios("comprador-001", "vendedor-001");
+		List<Compraventa> entreUsuarios = servicio.recuperarCompraventasEntreUsuarios("153", "152");
 		entreUsuarios.forEach(cv -> System.out.println(cv.getTitulo() + ", " + cv.getFecha()));
 	}
 }
