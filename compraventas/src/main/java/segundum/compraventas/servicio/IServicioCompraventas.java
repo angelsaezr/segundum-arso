@@ -9,7 +9,10 @@ import segundum.compraventas.modelo.Compraventa;
 import segundum.compraventas.rest.dto.CompraventaDTO;
 
 public interface IServicioCompraventas {
+
 	Compraventa compraventa(String idProducto, String idComprador) throws Exception;
+
+	CompraventaDTO getCompraventaById(String id);
 
 	List<Compraventa> recuperarComprasUsuario(String idComprador);
 

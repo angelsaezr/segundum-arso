@@ -52,6 +52,13 @@ public class ServicioCompraventas implements IServicioCompraventas {
 	}
 
 	@Override
+	public CompraventaDTO getCompraventaById(String id) {
+		Compraventa compraventa = repositorioCompraventas.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("No existe compraventa con id: " + id));
+		return CompraventaDTO.fromEntity(compraventa);
+	}
+
+	@Override
 	public List<Compraventa> recuperarComprasUsuario(String idComprador) {
 		return repositorioCompraventas.findByIdComprador(idComprador);
 	}
@@ -68,8 +75,6 @@ public class ServicioCompraventas implements IServicioCompraventas {
 
 	@Override
 	public Page<CompraventaDTO> getListadoPaginado(Pageable pageable) {
-		return this.repositorioCompraventas.findAll(pageable).map(compraventa -> {
-			return CompraventaDTO.fromEntity(compraventa);
-		});
+		return repositorioCompraventas.findAll(pageable).map(CompraventaDTO::fromEntity);
 	}
 }

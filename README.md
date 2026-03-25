@@ -2,7 +2,7 @@
 
 ## Parte 2: Funcionalidad de compraventa y APIs
 - Revisar clase programa del servicio Compraventas, no sale en los logs los métodos de recuperación.
-- Falta implementar controlador REST.
+- Probar controlador REST.
 
 ### Nota 2
 La operación de compraventa debería tener como requisito que el producto que se está comprando no esté vendido. Actualmente este requisito no se puede comprobar porque no se almacena esa información. **En una tarea posterior será incorporado** y habrá que incluir el control de este requisito.

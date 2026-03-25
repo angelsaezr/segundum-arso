@@ -7,22 +7,18 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
-import segundum.compraventas.modelo.Compraventa;
+import segundum.compraventas.rest.dto.CompraventaDTO;
 
 @Component
-public class CompraventaAssembler implements RepresentationModelAssembler<Compraventa, EntityModel<Compraventa>> {
+public class CompraventaAssembler implements RepresentationModelAssembler<CompraventaDTO, EntityModel<CompraventaDTO>> {
 
 	@Override
-	public EntityModel<Compraventa> toModel(Compraventa compraventa) {
+	public EntityModel<CompraventaDTO> toModel(CompraventaDTO dto) {
 		try {
-
-			EntityModel<Compraventa> resultado = EntityModel.of(compraventa,
-					linkTo(methodOn(CompraventasController.class).getCompraventaById(compraventa.getId()))
-							.withSelfRel());
-			return resultado;
+			return EntityModel.of(dto,
+					linkTo(methodOn(CompraventasController.class).getCompraventaById(dto.getId())).withSelfRel());
 		} catch (Exception e) {
-			return EntityModel.of(compraventa);
+			return EntityModel.of(dto);
 		}
 	}
-
 }
