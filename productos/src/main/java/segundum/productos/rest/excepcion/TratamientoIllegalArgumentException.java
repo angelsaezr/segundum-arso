@@ -1,4 +1,4 @@
-package segundum.productos.rest.excepciones;
+package segundum.productos.rest.excepcion;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

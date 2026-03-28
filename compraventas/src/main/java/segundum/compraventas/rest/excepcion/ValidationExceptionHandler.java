@@ -1,4 +1,4 @@
-package segundum.productos.rest.excepciones;
+package segundum.compraventas.rest.excepcion;
 
 import java.util.HashMap;
 import java.util.Map;
