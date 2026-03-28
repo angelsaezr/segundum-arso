@@ -39,6 +39,8 @@ public class Producto {
 
 	private boolean envioDisponible;
 
+	private boolean vendido = false;
+
 	@ManyToOne
 	private Categoria categoria;
 
@@ -49,7 +51,6 @@ public class Producto {
 	private LugarDeRecogida lugarDeRecogida;
 
 	public Producto() {
-
 	}
 
 	public Producto(String titulo, String descripcion, double precio, EstadoProducto estado, boolean envioDisponible,
@@ -64,6 +65,7 @@ public class Producto {
 		this.categoria = categoria;
 		this.vendedor = vendedor;
 		this.lugarDeRecogida = null;
+		this.vendido = false;
 	}
 
 	public String getId() {
@@ -130,6 +132,14 @@ public class Producto {
 		this.envioDisponible = envioDisponible;
 	}
 
+	public boolean isVendido() {
+		return vendido;
+	}
+
+	public void setVendido(boolean vendido) {
+		this.vendido = vendido;
+	}
+
 	public Categoria getCategoria() {
 		return categoria;
 	}
@@ -162,10 +172,15 @@ public class Producto {
 		this.lugarDeRecogida = new LugarDeRecogida(descripcion, longitud, latitud);
 	}
 
+	public void marcarComoVendido() {
+		this.vendido = true;
+	}
+
 	@Override
 	public String toString() {
-		return "Producto{" + "id='" + id + '\'' + ", titulo='" + titulo + '\'' + ", precio=" + precio + ", estado="
-				+ estado + ", categoria=" + (categoria != null ? categoria.getNombre() : "N/A") + ", vendedor="
-				+ (vendedor != null ? vendedor.getEmail() : "N/A") + ", visualizaciones=" + visualizaciones + '}';
+		return "Producto{id='" + id + "', titulo='" + titulo + "', precio=" + precio + ", estado=" + estado
+				+ ", vendido=" + vendido + ", categoria=" + (categoria != null ? categoria.getNombre() : "N/A")
+				+ ", vendedor=" + (vendedor != null ? vendedor.getEmail() : "N/A") + ", visualizaciones="
+				+ visualizaciones + '}';
 	}
 }

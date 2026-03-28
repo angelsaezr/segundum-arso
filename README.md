@@ -21,6 +21,7 @@ La operación de compraventa debería tener como requisito que el producto que s
 ---
 
 # Otros
+- Actualizar esquemas de bases de datos tras añadir nuevos atributos.
 
 ---
 

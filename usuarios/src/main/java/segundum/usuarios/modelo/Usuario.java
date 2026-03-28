@@ -22,22 +22,16 @@ public class Usuario implements Identificable {
 	private String id;
 
 	private String email;
-
 	private String nombre;
-
 	private String apellidos;
-
 	private String clave;
-
 	private Date fechaNacimiento;
-
 	private String telefono;
-
 	private boolean administrador;
+	private int contadorCompras = 0;
+	private int contadorVentas = 0;
 
-	// Constructores
 	public Usuario() {
-
 	}
 
 	public Usuario(String email, String nombre, String apellidos, String clave, Date fechaNacimiento, String telefono,
@@ -49,6 +43,8 @@ public class Usuario implements Identificable {
 		this.fechaNacimiento = fechaNacimiento;
 		this.telefono = telefono;
 		this.administrador = administrador;
+		this.contadorCompras = 0;
+		this.contadorVentas = 0;
 	}
 
 	public Usuario(UsuarioInputDTO usuarioInputDTO) {
@@ -59,9 +55,10 @@ public class Usuario implements Identificable {
 		this.fechaNacimiento = usuarioInputDTO.getFechaNacimiento();
 		this.telefono = usuarioInputDTO.getTelefono();
 		this.administrador = usuarioInputDTO.isAdministrador();
+		this.contadorCompras = 0;
+		this.contadorVentas = 0;
 	}
 
-	// Getters y Setters
 	public String getId() {
 		return id;
 	}
@@ -126,11 +123,33 @@ public class Usuario implements Identificable {
 		this.administrador = administrador;
 	}
 
-	// Métodos auxiliares
+	public int getContadorCompras() {
+		return contadorCompras;
+	}
+
+	public void setContadorCompras(int contadorCompras) {
+		this.contadorCompras = contadorCompras;
+	}
+
+	public int getContadorVentas() {
+		return contadorVentas;
+	}
+
+	public void setContadorVentas(int contadorVentas) {
+		this.contadorVentas = contadorVentas;
+	}
+
+	public void incrementarCompras() {
+		this.contadorCompras++;
+	}
+
+	public void incrementarVentas() {
+		this.contadorVentas++;
+	}
+
 	@Override
 	public String toString() {
-		return "Usuario{" + "id='" + id + '\'' + ", email='" + email + '\'' + ", nombre='" + nombre + '\''
-				+ ", apellidos='" + apellidos + '\'' + ", fechaNacimiento=" + fechaNacimiento + ", telefono='"
-				+ telefono + '\'' + ", administrador=" + administrador + '}';
+		return "Usuario{id='" + id + "', email='" + email + "', nombre='" + nombre + "', apellidos='" + apellidos
+				+ "', contadorCompras=" + contadorCompras + ", contadorVentas=" + contadorVentas + '}';
 	}
 }
