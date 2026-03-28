@@ -1,17 +1,18 @@
-package segundum.compraventas.retrofit;
+package segundum.compraventas.adaptador;
 
 import org.springframework.stereotype.Component;
 
+import segundum.compraventas.puerto.ClienteProductosRetrofit;
+import segundum.compraventas.puerto.ProductosRetrofit;
 import segundum.compraventas.rest.dto.ProductoDTO;
 import segundum.compraventas.rest.dto.ProductoRespuestaDTO;
-import segundum.compraventas.servicio.IClienteProductos;
 
 @Component
-public class ClienteProductos implements IClienteProductos {
+public class ClienteProductosRetrofitImpl implements ClienteProductosRetrofit {
 
-	private final ProductosAPI api;
+	private final ProductosRetrofit api;
 
-	public ClienteProductos(ProductosAPI api) {
+	public ClienteProductosRetrofitImpl(ProductosRetrofit api) {
 		this.api = api;
 	}
 

@@ -24,14 +24,14 @@ import segundum.usuarios.rest.dto.UsuarioDTO;
 import segundum.usuarios.rest.dto.UsuarioInputDTO;
 import segundum.usuarios.rest.dto.UsuarioResumenDTO;
 import segundum.usuarios.servicio.FactoriaServicios;
-import segundum.usuarios.servicio.IServicioUsuarios;
+import segundum.usuarios.servicio.ServicioUsuarios;
 
 @Path("usuarios")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ControladorUsuarios {
 
-	private final IServicioUsuarios servicio = FactoriaServicios.getServicio(IServicioUsuarios.class);
+	private final ServicioUsuarios servicio = FactoriaServicios.getServicio(ServicioUsuarios.class);
 
 	@Context
 	private UriInfo uriInfo;

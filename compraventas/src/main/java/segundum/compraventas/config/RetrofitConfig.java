@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import segundum.compraventas.retrofit.ProductosAPI;
-import segundum.compraventas.retrofit.UsuariosAPI;
+import segundum.compraventas.puerto.ProductosRetrofit;
+import segundum.compraventas.puerto.UsuariosRetrofit;
 
 @Configuration
 public class RetrofitConfig {
@@ -19,14 +19,14 @@ public class RetrofitConfig {
 	private String urlUsuarios;
 
 	@Bean
-	public ProductosAPI retrofitProductosApi() {
+	public ProductosRetrofit retrofitProductosApi() {
 		return new Retrofit.Builder().baseUrl(urlProductos).addConverterFactory(GsonConverterFactory.create()).build()
-				.create(ProductosAPI.class);
+				.create(ProductosRetrofit.class);
 	}
 
 	@Bean
-	public UsuariosAPI retrofitUsuariosApi() {
+	public UsuariosRetrofit retrofitUsuariosApi() {
 		return new Retrofit.Builder().baseUrl(urlUsuarios).addConverterFactory(GsonConverterFactory.create()).build()
-				.create(UsuariosAPI.class);
+				.create(UsuariosRetrofit.class);
 	}
 }

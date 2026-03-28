@@ -7,13 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import segundum.compraventas.modelo.Compraventa;
-import segundum.compraventas.servicio.ServicioCompraventas;
+import segundum.compraventas.servicio.ServicioCompraventasImpl;
 
 @Component
 public class Programa implements CommandLineRunner {
 
 	@Autowired
-	private ServicioCompraventas servicio;
+	private ServicioCompraventasImpl servicio;
 
 	@Override
 	public void run(String... args) throws Exception {

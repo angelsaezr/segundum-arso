@@ -10,12 +10,12 @@ import javax.ws.rs.core.Response;
 
 import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.servicio.FactoriaServicios;
-import segundum.usuarios.servicio.IServicioUsuarios;
+import segundum.usuarios.servicio.ServicioUsuarios;
 
 @Path("auth")
 public class ControladorAuth {
 
-	private final IServicioUsuarios servicio = FactoriaServicios.getServicio(IServicioUsuarios.class);
+	private final ServicioUsuarios servicio = FactoriaServicios.getServicio(ServicioUsuarios.class);
 
 	// curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d
 	// "username=juan&password=clave" http://localhost:8080/api/auth/login

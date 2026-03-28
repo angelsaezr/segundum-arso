@@ -21,13 +21,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import segundum.compraventas.modelo.Compraventa;
 import segundum.compraventas.rest.dto.CompraventaDTO;
 import segundum.compraventas.rest.dto.NuevaCompraventaDTO;
-import segundum.compraventas.servicio.IServicioCompraventas;
+import segundum.compraventas.servicio.ServicioCompraventas;
 
 @RestController
 @RequestMapping("/compraventas")
 public class CompraventasController implements CompraventasApi {
 
-	private final IServicioCompraventas servicioCompraventas;
+	private final ServicioCompraventas servicioCompraventas;
 
 	@Autowired
 	private PagedResourcesAssembler<CompraventaDTO> pagedResourcesAssembler;
@@ -36,7 +36,7 @@ public class CompraventasController implements CompraventasApi {
 	private CompraventaAssembler compraventaAssembler;
 
 	@Autowired
-	public CompraventasController(IServicioCompraventas servicioCompraventas) {
+	public CompraventasController(ServicioCompraventas servicioCompraventas) {
 		this.servicioCompraventas = servicioCompraventas;
 	}
 

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import segundum.usuarios.rest.dto.UsuarioInputDTO;
 import segundum.usuarios.servicio.FactoriaServicios;
-import segundum.usuarios.servicio.IServicioUsuarios;
+import segundum.usuarios.servicio.ServicioUsuarios;
 
 public class Programa {
 
@@ -12,7 +12,7 @@ public class Programa {
 
 		System.out.println("----------- USUARIOS -----------\n");
 
-		IServicioUsuarios servicioUsuarios = FactoriaServicios.getServicio(IServicioUsuarios.class);
+		ServicioUsuarios servicioUsuarios = FactoriaServicios.getServicio(ServicioUsuarios.class);
 
 		// Configuración de datos del usuario
 		String email = "juan@um.es";

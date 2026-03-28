@@ -1,16 +1,17 @@
-package segundum.compraventas.retrofit;
+package segundum.compraventas.adaptador;
 
 import org.springframework.stereotype.Component;
 
 import okhttp3.ResponseBody;
-import segundum.compraventas.servicio.IClienteUsuarios;
+import segundum.compraventas.puerto.ClienteUsuariosRetrofit;
+import segundum.compraventas.puerto.UsuariosRetrofit;
 
 @Component
-public class ClienteUsuarios implements IClienteUsuarios {
+public class ClienteUsuariosRetrofitImpl implements ClienteUsuariosRetrofit {
 
-	private final UsuariosAPI api;
+	private final UsuariosRetrofit api;
 
-	public ClienteUsuarios(UsuariosAPI api) {
+	public ClienteUsuariosRetrofitImpl(UsuariosRetrofit api) {
 		this.api = api;
 	}
 

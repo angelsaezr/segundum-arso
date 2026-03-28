@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import segundum.productos.modelo.EstadoProducto;
-import segundum.productos.servicio.IServicioCategorias;
-import segundum.productos.servicio.IServicioProductos;
-import segundum.productos.servicio.IServicioUsuarios;
+import segundum.productos.servicio.ServicioCategorias;
+import segundum.productos.servicio.ServicioProductos;
+import segundum.productos.servicio.ServicioUsuarios;
 
 public class PruebaRepositorio {
 
@@ -14,9 +14,9 @@ public class PruebaRepositorio {
 
 		ConfigurableApplicationContext contexto = SpringApplication.run(ProductosApplication.class, args);
 
-		IServicioUsuarios servicioUsuarios = contexto.getBean(IServicioUsuarios.class);
-		IServicioProductos servicioProductos = contexto.getBean(IServicioProductos.class);
-		IServicioCategorias servicioCategorias = contexto.getBean(IServicioCategorias.class);
+		ServicioUsuarios servicioUsuarios = contexto.getBean(ServicioUsuarios.class);
+		ServicioProductos servicioProductos = contexto.getBean(ServicioProductos.class);
+		ServicioCategorias servicioCategorias = contexto.getBean(ServicioCategorias.class);
 
 		System.out.println("----------- USUARIOS -----------\n");
 

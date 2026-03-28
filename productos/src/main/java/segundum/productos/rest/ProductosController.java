@@ -23,14 +23,14 @@ import segundum.productos.rest.dto.NuevoLugarDeRecogidaDTO;
 import segundum.productos.rest.dto.NuevoProductoDTO;
 import segundum.productos.rest.dto.ProductoDTO;
 import segundum.productos.rest.dto.ProductoResumenDTO;
-import segundum.productos.servicio.IServicioProductos;
+import segundum.productos.servicio.ServicioProductos;
 import segundum.productos.servicio.ProductoResumenMensual;
 
 @RestController
 @RequestMapping("/productos")
 public class ProductosController implements ProductosApi {
 
-	private IServicioProductos serviciosProductos;
+	private ServicioProductos serviciosProductos;
 
 	@Autowired
 	private PagedResourcesAssembler<ProductoResumenDTO> pagedResourcesAssembler;
@@ -45,7 +45,7 @@ public class ProductosController implements ProductosApi {
 	private ProductoResumenMensualAssembler productoResumenAssemblerMensual;
 
 	@Autowired
-	public ProductosController(IServicioProductos serviciosProductos) {
+	public ProductosController(ServicioProductos serviciosProductos) {
 		this.serviciosProductos = serviciosProductos;
 	}
 
