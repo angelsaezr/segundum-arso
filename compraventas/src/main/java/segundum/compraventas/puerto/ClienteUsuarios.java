@@ -1,5 +1,5 @@
 package segundum.compraventas.puerto;
 
-public interface ClienteUsuariosRetrofit {
+public interface ClienteUsuarios {
 	String getNombreUsuario(String idUsuario) throws Exception;
 }

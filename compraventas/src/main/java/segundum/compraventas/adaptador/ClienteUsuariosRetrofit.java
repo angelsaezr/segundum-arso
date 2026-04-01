@@ -3,15 +3,15 @@ package segundum.compraventas.adaptador;
 import org.springframework.stereotype.Component;
 
 import okhttp3.ResponseBody;
-import segundum.compraventas.puerto.ClienteUsuariosRetrofit;
+import segundum.compraventas.puerto.ClienteUsuarios;
 import segundum.compraventas.puerto.UsuariosRetrofit;
 
 @Component
-public class ClienteUsuariosRetrofitImpl implements ClienteUsuariosRetrofit {
+public class ClienteUsuariosRetrofit implements ClienteUsuarios {
 
 	private final UsuariosRetrofit api;
 
-	public ClienteUsuariosRetrofitImpl(UsuariosRetrofit api) {
+	public ClienteUsuariosRetrofit(UsuariosRetrofit api) {
 		this.api = api;
 	}
 

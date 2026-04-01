@@ -8,9 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import segundum.compraventas.evento.EventoCompraventaCreada;
 import segundum.compraventas.modelo.Compraventa;
-import segundum.compraventas.puerto.ClienteProductosRetrofit;
-import segundum.compraventas.puerto.ClienteUsuariosRetrofit;
+import segundum.compraventas.puerto.ClienteProductos;
+import segundum.compraventas.puerto.ClienteUsuarios;
+import segundum.compraventas.puerto.PublicadorEventos;
 import segundum.compraventas.repositorio.RepositorioCompraventas;
 import segundum.compraventas.rest.dto.CompraventaDTO;
 import segundum.compraventas.rest.dto.ProductoDTO;
@@ -19,21 +21,27 @@ import segundum.compraventas.rest.dto.ProductoDTO;
 public class ServicioCompraventasImpl implements ServicioCompraventas {
 
 	private final RepositorioCompraventas repositorioCompraventas;
-	private final ClienteProductosRetrofit clienteProductos;
-	private final ClienteUsuariosRetrofit clienteUsuarios;
+	private final ClienteProductos clienteProductos;
+	private final ClienteUsuarios clienteUsuarios;
+	private final PublicadorEventos publicadorEventos;
 
 	@Autowired
-	public ServicioCompraventasImpl(RepositorioCompraventas repositorioCompraventas, ClienteProductosRetrofit clienteProductos,
-			ClienteUsuariosRetrofit clienteUsuarios) {
+	public ServicioCompraventasImpl(RepositorioCompraventas repositorioCompraventas, ClienteProductos clienteProductos,
+			ClienteUsuarios clienteUsuarios, PublicadorEventos publicadorEventos) {
 		this.repositorioCompraventas = repositorioCompraventas;
 		this.clienteProductos = clienteProductos;
 		this.clienteUsuarios = clienteUsuarios;
+		this.publicadorEventos = publicadorEventos;
 	}
 
 	@Override
 	public Compraventa compraventa(String idProducto, String idComprador) throws Exception {
 		// Obtener datos del producto desde el microservicio Productos
 		ProductoDTO producto = clienteProductos.getProducto(idProducto);
+
+		if (producto.isVendido()) {
+			throw new IllegalArgumentException("El producto ya ha sido vendido.");
+		}
 
 		// Obtener nombres desde el microservicio Usuarios
 		String nombreVendedor = clienteUsuarios.getNombreUsuario(producto.getIdVendedor());
@@ -50,7 +58,13 @@ public class ServicioCompraventasImpl implements ServicioCompraventas {
 		c.setNombreComprador(nombreComprador);
 		c.setFecha(LocalDateTime.now());
 
-		return repositorioCompraventas.save(c);
+		Compraventa compraventa = repositorioCompraventas.save(c);
+
+		publicadorEventos.publicarEvento(
+				new EventoCompraventaCreada(compraventa.getId(), idProducto, idComprador, producto.getIdVendedor()));
+
+		return compraventa;
+
 	}
 
 	@Override

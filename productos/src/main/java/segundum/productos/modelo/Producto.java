@@ -39,7 +39,7 @@ public class Producto {
 
 	private boolean envioDisponible;
 
-	private boolean vendido = false;
+	private boolean vendido;
 
 	@ManyToOne
 	private Categoria categoria;

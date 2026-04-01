@@ -1,10 +1,3 @@
-# Tarea 6
-
-### Nota 2
-La operación de compraventa debería tener como requisito que el producto que se está comprando no esté vendido. Actualmente este requisito no se puede comprobar porque no se almacena esa información. **En una tarea posterior será incorporado** y habrá que incluir el control de este requisito.
-
----
-
 # Tarea 7
 - Todo por hacer
 

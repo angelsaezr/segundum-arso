@@ -2,19 +2,29 @@ package segundum.compraventas.evento;
 
 public class EventoCompraventaCreada extends Evento {
 
-	private String nombre;
+	public static final String TIPO = "compraventa-creada";
 
-	public EventoCompraventaCreada(String email, String nombre) {
-		super(email, "compraventa-creada");
-		this.nombre = nombre;
+	private final String idProducto;
+	private final String idComprador;
+	private final String idVendedor;
+
+	public EventoCompraventaCreada(String idCompraventa, String idProducto, String idComprador, String idVendedor) {
+
+		super(idCompraventa, TIPO);
+		this.idProducto = idProducto;
+		this.idComprador = idComprador;
+		this.idVendedor = idVendedor;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getIdProducto() {
+		return idProducto;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public String getIdComprador() {
+		return idComprador;
 	}
 
+	public String getIdVendedor() {
+		return idVendedor;
+	}
 }
