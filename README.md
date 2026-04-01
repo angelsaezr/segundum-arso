@@ -15,6 +15,7 @@
 
 # Otros
 - Actualizar esquemas de bases de datos tras añadir nuevos atributos.
+- Corregir usuarios/src/main/java/segundum/usuarios/puerto/ManejadorEventos.java‎
 
 ---
 
