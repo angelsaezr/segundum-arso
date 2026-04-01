@@ -1,4 +1,4 @@
-package segundum.productos.config;
+package segundum.compraventas.config;
 
 import java.util.Map;
 
@@ -21,10 +21,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Configuration
 public class RabbitMQConfig {
 
-	public static final String QUEUE_NAME = "productos";
+	public static final String QUEUE_NAME = "compraventas";
 	public static final String EXCHANGE_NAME = "bus";
-	public static final String BINDING_KEY = "bus.compraventas.#";
-	public static final String ROUTING_KEY = "bus.productos.";
+	public static final String BINDING_KEY = "bus.productos.#";
+	public static final String ROUTING_KEY = "bus.compraventas.";
 
 	@Bean
 	public DirectExchange exchange() {
