@@ -28,8 +28,8 @@ public class Usuario implements Identificable {
 	private Date fechaNacimiento;
 	private String telefono;
 	private boolean administrador;
-	private int contadorCompras = 0;
-	private int contadorVentas = 0;
+	private int contadorCompras;
+	private int contadorVentas;
 
 	public Usuario() {
 	}
