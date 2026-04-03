@@ -7,6 +7,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -25,6 +26,13 @@ public class RabbitMQConfig {
 	public static final String EXCHANGE_NAME = "bus";
 	public static final String BINDING_KEY = "bus.compraventas.#";
 	public static final String ROUTING_KEY = "bus.productos.";
+
+	@Bean
+	public ConnectionFactory connectionFactory() {
+		CachingConnectionFactory factory = new CachingConnectionFactory();
+		factory.setUri("amqps://mjxnthmp:pq0QmuFwei2ZNuHoSh2F8dtuQZxZl6co@rat.rmq2.cloudamqp.com/mjxnthmp");
+		return factory;
+	}
 
 	@Bean
 	public DirectExchange exchange() {

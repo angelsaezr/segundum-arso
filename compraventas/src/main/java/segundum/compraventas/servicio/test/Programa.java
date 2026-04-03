@@ -2,23 +2,21 @@ package segundum.compraventas.servicio.test;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
+import segundum.compraventas.CompraventasApplication;
 import segundum.compraventas.modelo.Compraventa;
 import segundum.compraventas.servicio.ServicioCompraventasImpl;
 
-@Component
-public class Programa implements CommandLineRunner {
+public class Programa {
 
-	@Autowired
-	private ServicioCompraventasImpl servicio;
+	public static void main(String[] args) throws Exception {
 
-	@Override
-	public void run(String... args) throws Exception {
+		ConfigurableApplicationContext contexto = SpringApplication.run(CompraventasApplication.class, args);
 
-		// 1. Crear una compraventa
+		ServicioCompraventasImpl servicio = contexto.getBean(ServicioCompraventasImpl.class);
+
 		System.out.println("=== PRUEBA compraventa ===");
 		Compraventa c = servicio.compraventa("0791a01c-6f11-4581-8294-1571ac425d00", "153");
 		System.out.println("ID: " + c.getId());
@@ -30,19 +28,20 @@ public class Programa implements CommandLineRunner {
 		System.out.println("Comprador: " + c.getNombreComprador());
 		System.out.println("Fecha: " + c.getFecha());
 
-		// 2. Recuperar compras del usuario comprador
 		System.out.println("\n=== PRUEBA recuperarComprasUsuario ===");
 		List<Compraventa> compras = servicio.recuperarComprasUsuario("153");
 		compras.forEach(cv -> System.out.println(cv.getTitulo() + ", " + cv.getFecha()));
 
-		// 3. Recuperar ventas del usuario vendedor
 		System.out.println("\n=== PRUEBA recuperarVentasUsuario ===");
 		List<Compraventa> ventas = servicio.recuperarVentasUsuario("152");
 		ventas.forEach(cv -> System.out.println(cv.getTitulo() + ", " + cv.getFecha()));
 
-		// 4. Recuperar compraventas entre comprador y vendedor
 		System.out.println("\n=== PRUEBA recuperarCompraventasEntreUsuarios ===");
 		List<Compraventa> entreUsuarios = servicio.recuperarCompraventasEntreUsuarios("153", "152");
 		entreUsuarios.forEach(cv -> System.out.println(cv.getTitulo() + ", " + cv.getFecha()));
+
+		contexto.close();
+
+		System.out.println("Fin de pruebas.");
 	}
 }

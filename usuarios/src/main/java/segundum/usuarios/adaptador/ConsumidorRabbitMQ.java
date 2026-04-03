@@ -17,6 +17,8 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 import segundum.usuarios.puerto.ManejadorEventos;
+import segundum.usuarios.repositorio.EntidadNoEncontrada;
+import segundum.usuarios.repositorio.RepositorioException;
 import segundum.usuarios.servicio.FactoriaServicios;
 
 @WebListener
@@ -72,7 +74,13 @@ public class ConsumidorRabbitMQ implements ServletContextListener {
 						String idComprador = objeto.get("idComprador").getAsString();
 						String idVendedor = objeto.get("idVendedor").getAsString();
 
-						manejadorEventos.compraventaCreada(idComprador, idVendedor);
+						try {
+							manejadorEventos.compraventaCreada(idComprador, idVendedor);
+						} catch (EntidadNoEncontrada e) {
+							e.printStackTrace();
+						} catch (RepositorioException e) {
+							e.printStackTrace();
+						}
 					}
 
 					// Confirma el procesamiento
