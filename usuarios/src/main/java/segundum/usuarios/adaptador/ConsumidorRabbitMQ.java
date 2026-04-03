@@ -1,5 +1,105 @@
 package segundum.usuarios.adaptador;
 
-public class ConsumidorRabbitMQ {
+import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+
+import segundum.usuarios.puerto.ManejadorEventos;
+import segundum.usuarios.servicio.FactoriaServicios;
+
+@WebListener
+public class ConsumidorRabbitMQ implements ServletContextListener {
+
+	// inyección del puerto de entrada
+	private final ManejadorEventos manejadorEventos = FactoriaServicios.getServicio(ManejadorEventos.class);
+
+	private Connection connection;
+	private Channel channel;
+
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+
+		String uri = "amqps://mjxnthmp:pq0QmuFwei2ZNuHoSh2F8dtuQZxZl6co@rat.rmq2.cloudamqp.com/mjxnthmp";
+
+		try {
+			ConnectionFactory factory = new ConnectionFactory();
+			factory.setUri(uri);
+
+			connection = factory.newConnection();
+			channel = connection.createChannel();
+
+			String exchangeName = "bus";
+			boolean durable = true;
+			channel.exchangeDeclare(exchangeName, "topic", durable);
+
+			final String queueName = "usuarios";
+			final String bindingKey = "bus.documentos.#"; // todos los eventos de "documentos"
+			durable = true;
+			boolean exclusive = false;
+			boolean autodelete = false;
+			Map<String, Object> properties = null; // sin propiedades
+			channel.queueDeclare(queueName, durable, exclusive, autodelete, properties);
+			channel.queueBind(queueName, exchangeName, bindingKey);
+
+			boolean autoAck = false;
+			channel.basicConsume(queueName, autoAck, "usuarios-consumer", new DefaultConsumer(channel) {
+				@Override
+				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+						byte[] body) throws IOException {
+
+					long deliveryTag = envelope.getDeliveryTag();
+
+					String contenido = new String(body);
+					System.out.println(contenido);
+
+					JsonObject objeto = JsonParser.parseString(contenido).getAsJsonObject();
+
+					if (objeto.get("tipo").getAsString().equals("compraventa-creada")) {
+
+						// ejecutar operación del puerto ...
+						String idComprador = objeto.get("idComprador").getAsString();
+						String idVendedor = objeto.get("idVendedor").getAsString();
+
+						manejadorEventos.compraventaCreada(idComprador, idVendedor);
+					}
+
+					// Confirma el procesamiento
+					channel.basicAck(deliveryTag, false);
+				}
+			});
+
+			System.out.println("consumidor esperando ...");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
+
+		try {
+			if (this.channel != null)
+				this.channel.close();
+
+			if (this.connection != null)
+				this.connection.close();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+	}
 
 }
