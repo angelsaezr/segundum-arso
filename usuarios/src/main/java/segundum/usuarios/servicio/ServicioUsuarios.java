@@ -1,5 +1,6 @@
 package segundum.usuarios.servicio;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +12,10 @@ import segundum.usuarios.rest.dto.UsuarioInputDTO;
 public interface ServicioUsuarios {
 	Usuario login(String email, String clave) throws RepositorioException, EntidadNoEncontrada;
 
-	String altaUsuario(UsuarioInputDTO usuarioInputDTO) throws RepositorioException;
+	String altaUsuario(UsuarioInputDTO usuarioInputDTO) throws RepositorioException, IOException;
 
 	void modificarUsuario(String id, String email, String nombre, String apellidos, String clave, Date fechaNacimiento,
-			String telefono, boolean administrador) throws RepositorioException, EntidadNoEncontrada;
+			String telefono, boolean administrador) throws RepositorioException, EntidadNoEncontrada, IOException;
 
 	Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada;
 

@@ -1,10 +1,15 @@
 package segundum.usuarios.servicio;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
+import segundum.usuarios.adaptador.PublicadorEventosRabbitMQ;
+import segundum.usuarios.evento.EventoUsuarioCreado;
+import segundum.usuarios.evento.EventoUsuarioModificado;
 import segundum.usuarios.modelo.Usuario;
+import segundum.usuarios.puerto.PublicadorEventos;
 import segundum.usuarios.repositorio.EntidadNoEncontrada;
 import segundum.usuarios.repositorio.FactoriaRepositorios;
 import segundum.usuarios.repositorio.Repositorio;
@@ -15,9 +20,10 @@ public class ServicioUsuariosImpl implements ServicioUsuarios {
 
 	private final Repositorio<Usuario, String> repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 
+	private final PublicadorEventos publicadorEventos = new PublicadorEventosRabbitMQ();
+
 	@Override
 	public Usuario login(String email, String clave) throws RepositorioException {
-
 		validarNoVacio(email, "email");
 		validarNoVacio(clave, "clave");
 
@@ -27,7 +33,7 @@ public class ServicioUsuariosImpl implements ServicioUsuarios {
 	}
 
 	@Override
-	public String altaUsuario(UsuarioInputDTO dto) throws RepositorioException {
+	public String altaUsuario(UsuarioInputDTO dto) throws RepositorioException, IOException {
 		if (dto == null)
 			throw new IllegalArgumentException("usuario: no puede ser nulo");
 		validarNoVacio(dto.getNombre(), "nombre");
@@ -42,13 +48,18 @@ public class ServicioUsuariosImpl implements ServicioUsuarios {
 		}
 
 		Usuario usuario = new Usuario(dto);
-		return repositorio.add(usuario);
+		String id = repositorio.add(usuario);
+
+		publicadorEventos.publicarEvento(
+				new EventoUsuarioCreado(id, usuario.getEmail(), usuario.getNombre(), usuario.getApellidos()));
+
+		return id;
 	}
 
 	@Override
 	public void modificarUsuario(String id, String email, String nombre, String apellidos, String clave,
 			Date fechaNacimiento, String telefono, boolean administrador)
-			throws RepositorioException, EntidadNoEncontrada {
+			throws RepositorioException, EntidadNoEncontrada, IOException {
 		validarNoVacio(id, "id");
 
 		Usuario usuario = repositorio.getById(id);
@@ -60,10 +71,12 @@ public class ServicioUsuariosImpl implements ServicioUsuarios {
 		actualizarSiNoVacio(telefono, usuario::setTelefono);
 		if (fechaNacimiento != null)
 			usuario.setFechaNacimiento(fechaNacimiento);
-
 		usuario.setAdministrador(administrador);
 
 		repositorio.update(usuario);
+
+		publicadorEventos.publicarEvento(
+				new EventoUsuarioModificado(id, usuario.getEmail(), usuario.getNombre(), usuario.getApellidos()));
 	}
 
 	@Override

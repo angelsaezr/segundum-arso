@@ -14,7 +14,8 @@
 ---
 
 # Otros
-- Actualizar esquemas de bases de datos tras añadir nuevos atributos de la tarea 7.‎
+- Actualizar esquemas de bases de datos tras añadir nuevos atributos de la tarea 7.
+- Crear logs‎
 
 ---
 

@@ -13,10 +13,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import segundum.productos.evento.EventoProductoCreado;
+import segundum.productos.evento.EventoProductoModificado;
 import segundum.productos.modelo.Categoria;
 import segundum.productos.modelo.EstadoProducto;
 import segundum.productos.modelo.Producto;
 import segundum.productos.modelo.Usuario;
+import segundum.productos.puerto.PublicadorEventos;
 import segundum.productos.repositorio.EntidadNoEncontrada;
 import segundum.productos.repositorio.RepositorioCategorias;
 import segundum.productos.repositorio.RepositorioProductos;
@@ -29,14 +32,17 @@ public class ServicioProductosImpl implements ServicioProductos {
 	private RepositorioProductos repositorioProductos;
 	private ServicioUsuariosImpl servicioUsuarios;
 	private ServicioCategoriasImpl servicioCategorias;
+	private PublicadorEventos publicadorEventos;
 
 	@Autowired
 	public ServicioProductosImpl(RepositorioCategorias repositorioCategorias, RepositorioProductos repositorioProductos,
-			ServicioUsuariosImpl servicioUsuarios, ServicioCategoriasImpl servicioCategorias) {
+			ServicioUsuariosImpl servicioUsuarios, ServicioCategoriasImpl servicioCategorias,
+			PublicadorEventos publicadorEventos) {
 		this.repositorioCategorias = repositorioCategorias;
 		this.repositorioProductos = repositorioProductos;
 		this.servicioUsuarios = servicioUsuarios;
 		this.servicioCategorias = servicioCategorias;
+		this.publicadorEventos = publicadorEventos;
 	}
 
 	@Override
@@ -61,7 +67,11 @@ public class ServicioProductosImpl implements ServicioProductos {
 		Producto producto = new Producto(titulo, descripcion, precio, estado, envioDisponible, categoria, vendedor,
 				false);
 
-		return repositorioProductos.save(producto).getId();
+		String id = repositorioProductos.save(producto).getId();
+
+		publicadorEventos.publicarEvento(new EventoProductoCreado(id, titulo, precio, idVendedor, idCategoria));
+
+		return id;
 	}
 
 	@Override
@@ -71,6 +81,8 @@ public class ServicioProductosImpl implements ServicioProductos {
 		producto.setPrecio(nuevoPrecio);
 		producto.setDescripcion(nuevaDescripcion);
 		repositorioProductos.save(producto);
+
+		publicadorEventos.publicarEvento(new EventoProductoModificado(idProducto, nuevoPrecio, nuevaDescripcion));
 	}
 
 	@Override
@@ -101,35 +113,30 @@ public class ServicioProductosImpl implements ServicioProductos {
 		YearMonth ym = YearMonth.of(anio, mes);
 		LocalDateTime inicio = ym.atDay(1).atStartOfDay();
 		LocalDateTime fin = ym.atEndOfMonth().atTime(23, 59, 59, 999_999_999);
-		return this.repositorioProductos.findResumenMensual(idVendedor, inicio, fin, pageable).map(producto -> {
-			return ProductoResumenMensual.fromEntity(producto);
-		});
+		return this.repositorioProductos.findResumenMensual(idVendedor, inicio, fin, pageable)
+				.map(ProductoResumenMensual::fromEntity);
 	}
 
 	@Override
 	public List<Producto> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado,
 			Double precioMax) {
-
 		String texto = descripcion != null ? descripcion.trim() : null;
 		if (texto != null && texto.isEmpty())
 			texto = null;
 
-		// Expandir categoría a descendientes usando el campo ruta — una sola query
 		Set<String> idsCategoriasValidas = null;
 		if (idCategoria != null && !idCategoria.trim().isEmpty()) {
 			Categoria raiz = repositorioCategorias.findById(idCategoria).orElse(null);
 			if (raiz != null) {
-				// Trae todos los descendientes por ruta, sin cargar el árbol en memoria
 				List<Categoria> descendientes = repositorioCategorias.findDescendientesByRuta(raiz.getRuta());
 				idsCategoriasValidas = descendientes.stream().map(Categoria::getId)
 						.collect(Collectors.toCollection(java.util.HashSet::new));
-				idsCategoriasValidas.add(idCategoria); // incluye la propia raíz
+				idsCategoriasValidas.add(idCategoria);
 			} else {
 				idsCategoriasValidas = java.util.Collections.singleton(idCategoria);
 			}
 		}
 
-		// Estados "igual o mejor"
 		List<EstadoProducto> estadosPermitidos = null;
 		if (estado != null) {
 			List<EstadoProducto> ranking = Arrays.asList(EstadoProducto.NUEVO, EstadoProducto.COMO_NUEVO,
@@ -143,9 +150,6 @@ public class ServicioProductosImpl implements ServicioProductos {
 
 	@Override
 	public Page<ProductoResumenDTO> getListadoPaginado(Pageable pageable) {
-		return this.repositorioProductos.findAll(pageable).map(producto -> {
-			return ProductoResumenDTO.fromEntity(producto);
-		});
+		return this.repositorioProductos.findAll(pageable).map(ProductoResumenDTO::fromEntity);
 	}
-
 }
