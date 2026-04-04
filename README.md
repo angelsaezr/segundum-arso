@@ -1,5 +1,5 @@
 # Tarea 7
-- Todo por hacer
+- Eventos de cambios en el estado de las entidades como creación, modificación o borrado (evento compraventa-creada acabado)
 
 ---
 
@@ -14,8 +14,7 @@
 ---
 
 # Otros
-- Actualizar esquemas de bases de datos tras añadir nuevos atributos.
-- Corregir usuarios/src/main/java/segundum/usuarios/puerto/ManejadorEventos.java‎
+- Actualizar esquemas de bases de datos tras añadir nuevos atributos de la tarea 7.‎
 
 ---
 

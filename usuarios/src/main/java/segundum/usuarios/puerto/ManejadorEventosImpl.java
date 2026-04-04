@@ -2,18 +2,16 @@ package segundum.usuarios.puerto;
 
 import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.repositorio.EntidadNoEncontrada;
+import segundum.usuarios.repositorio.FactoriaRepositorios;
+import segundum.usuarios.repositorio.Repositorio;
 import segundum.usuarios.repositorio.RepositorioException;
-import segundum.usuarios.repositorio.RepositorioUsuariosJPA;
-import segundum.usuarios.servicio.FactoriaServicios;
 
 public class ManejadorEventosImpl implements ManejadorEventos {
 
-	private RepositorioUsuariosJPA repositorioUsuarios;
+	private final Repositorio<Usuario, String> repositorioUsuarios = FactoriaRepositorios.getRepositorio(Usuario.class);
 
 	public void compraventaCreada(String idComprador, String idVendedor)
 			throws EntidadNoEncontrada, RepositorioException {
-
-		this.repositorioUsuarios = FactoriaServicios.getServicio(RepositorioUsuariosJPA.class);
 
 		Usuario comprador = this.repositorioUsuarios.getById(idComprador);
 		comprador.incrementarCompras();

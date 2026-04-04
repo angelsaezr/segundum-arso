@@ -4,9 +4,10 @@ import java.util.Map;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -27,8 +28,15 @@ public class RabbitMQConfig {
 	public static final String ROUTING_KEY = "bus.compraventas.";
 
 	@Bean
-	public DirectExchange exchange() {
-		return new DirectExchange(EXCHANGE_NAME);
+	public ConnectionFactory connectionFactory() {
+		CachingConnectionFactory factory = new CachingConnectionFactory();
+		factory.setUri("amqps://mjxnthmp:pq0QmuFwei2ZNuHoSh2F8dtuQZxZl6co@rat.rmq2.cloudamqp.com/mjxnthmp");
+		return factory;
+	}
+
+	@Bean
+	public TopicExchange exchange() {
+		return new TopicExchange(EXCHANGE_NAME);
 	}
 
 	@Bean

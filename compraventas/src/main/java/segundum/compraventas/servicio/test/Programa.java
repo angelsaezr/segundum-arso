@@ -18,7 +18,7 @@ public class Programa {
 		ServicioCompraventasImpl servicio = contexto.getBean(ServicioCompraventasImpl.class);
 
 		System.out.println("=== PRUEBA compraventa ===");
-		Compraventa c = servicio.compraventa("0791a01c-6f11-4581-8294-1571ac425d00", "153");
+		Compraventa c = servicio.compraventa("49f04af0-815b-4942-b4f9-6d9828ec7764", "153");
 		System.out.println("ID: " + c.getId());
 		System.out.println("Producto: " + c.getIdProducto());
 		System.out.println("Título: " + c.getTitulo());

@@ -6,6 +6,7 @@ public class ProductoRespuestaDTO {
 	private double precio;
 	private String idVendedor;
 	private String recogida;
+	private boolean vendido;
 
 	public ProductoRespuestaDTO() {
 	}
@@ -48,5 +49,13 @@ public class ProductoRespuestaDTO {
 
 	public void setRecogida(String recogida) {
 		this.recogida = recogida;
+	}
+
+	public boolean isVendido() {
+		return vendido;
+	}
+
+	public void setVendido(boolean vendido) {
+		this.vendido = vendido;
 	}
 }

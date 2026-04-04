@@ -47,7 +47,7 @@ public class ConsumidorRabbitMQ implements ServletContextListener {
 			channel.exchangeDeclare(exchangeName, "topic", durable);
 
 			final String queueName = "usuarios";
-			final String bindingKey = "bus.documentos.#"; // todos los eventos de "documentos"
+			final String bindingKey = "bus.compraventas.#";
 			durable = true;
 			boolean exclusive = false;
 			boolean autodelete = false;
