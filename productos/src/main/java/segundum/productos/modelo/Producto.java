@@ -54,7 +54,7 @@ public class Producto {
 	}
 
 	public Producto(String titulo, String descripcion, double precio, EstadoProducto estado, boolean envioDisponible,
-			Categoria categoria, Usuario vendedor) {
+			Categoria categoria, Usuario vendedor, Boolean vendido) {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;
@@ -65,7 +65,7 @@ public class Producto {
 		this.categoria = categoria;
 		this.vendedor = vendedor;
 		this.lugarDeRecogida = null;
-		this.vendido = false;
+		this.vendido = vendido;
 	}
 
 	public String getId() {

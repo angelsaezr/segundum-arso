@@ -39,7 +39,7 @@ public class ServicioCompraventasImpl implements ServicioCompraventas {
 		// Obtener datos del producto desde el microservicio Productos
 		ProductoDTO producto = clienteProductos.getProducto(idProducto);
 
-		if (producto.isVendido()) {
+		if (repositorioCompraventas.existsByIdProducto(idProducto)) {
 			throw new IllegalArgumentException("El producto ya ha sido vendido.");
 		}
 

@@ -28,6 +28,6 @@ public class ClienteProductosRetrofit implements ClienteProductos {
 
 		String lugarRecogida = dto.getRecogida();
 
-		return new ProductoDTO(dto.getIdVendedor(), dto.getTitulo(), dto.getPrecio(), lugarRecogida);
+		return new ProductoDTO(dto.getIdVendedor(), dto.getTitulo(), dto.getPrecio(), lugarRecogida, dto.isVendido());
 	}
 }

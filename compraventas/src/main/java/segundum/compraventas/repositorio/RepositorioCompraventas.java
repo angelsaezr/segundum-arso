@@ -14,4 +14,6 @@ public interface RepositorioCompraventas extends PagingAndSortingRepository<Comp
 	List<Compraventa> findByIdVendedor(String idVendedor);
 
 	List<Compraventa> findByIdCompradorAndIdVendedor(String idComprador, String idVendedor);
+
+	boolean existsByIdProducto(String idProducto);
 }

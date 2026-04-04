@@ -58,7 +58,8 @@ public class ServicioProductosImpl implements ServicioProductos {
 		Categoria categoria = servicioCategorias.getCategoria(idCategoria);
 		Usuario vendedor = servicioUsuarios.getUsuario(idVendedor);
 
-		Producto producto = new Producto(titulo, descripcion, precio, estado, envioDisponible, categoria, vendedor);
+		Producto producto = new Producto(titulo, descripcion, precio, estado, envioDisponible, categoria, vendedor,
+				false);
 
 		return repositorioProductos.save(producto).getId();
 	}

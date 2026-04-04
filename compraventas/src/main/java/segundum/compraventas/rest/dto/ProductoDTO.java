@@ -10,12 +10,12 @@ public class ProductoDTO {
 	public ProductoDTO() {
 	}
 
-	public ProductoDTO(String idVendedor, String titulo, double precio, String recogida) {
+	public ProductoDTO(String idVendedor, String titulo, double precio, String recogida, boolean vendido) {
 		this.idVendedor = idVendedor;
 		this.titulo = titulo;
 		this.precio = precio;
 		this.recogida = recogida;
-		this.vendido = false;
+		this.vendido = vendido;
 	}
 
 	public String getIdVendedor() {
