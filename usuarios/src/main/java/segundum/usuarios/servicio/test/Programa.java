@@ -14,7 +14,7 @@ public class Programa {
 
 		ServicioUsuarios servicioUsuarios = FactoriaServicios.getServicio(ServicioUsuarios.class);
 
-		// Configuración de datos del usuario
+		/*// Configuración de datos del usuario
 		String email = "juan@um.es";
 		String nombre = "Juan";
 		String apellidos = "Perez Gomez";
@@ -33,13 +33,13 @@ public class Programa {
 		String id = servicioUsuarios.altaUsuario(usuarioDTO);
 		System.out.println("Usuario creado con id:  " + id);
 		System.out
-				.println("Datos: " + email + ", " + nombre + ", " + apellidos + ", " + clave + ", " + fechaNacimiento);
+				.println("Datos: " + email + ", " + nombre + ", " + apellidos + ", " + clave + ", " + fechaNacimiento);*/
 
 		// Modificacion del usuario
 		System.out.println("Modificando el correo del usuario...");
-		String emailModificado = "juan2@um.es";
-		servicioUsuarios.modificarUsuario(id, emailModificado, null, null, null, null, null, false);
-		System.out.println("Correo modificado: " + emailModificado);
+		String nombreModificado = "Francisco";
+		servicioUsuarios.modificarUsuario("1", null, nombreModificado, null, null, null, null, false);
+		System.out.println("Nombre modificado: " + nombreModificado);
 
 		System.out.println("\n------------ FIN -------------------");
 

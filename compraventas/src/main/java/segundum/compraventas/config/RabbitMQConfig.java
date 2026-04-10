@@ -24,7 +24,8 @@ public class RabbitMQConfig {
 
 	public static final String QUEUE_NAME = "compraventas";
 	public static final String EXCHANGE_NAME = "bus";
-	public static final String BINDING_KEY = "bus.productos.#";
+	public static final String BINDING_KEY_PRODUCTOS = "bus.productos.#";
+	public static final String BINDING_KEY_USUARIOS = "bus.usuarios.#";
 	public static final String ROUTING_KEY = "bus.compraventas.";
 
 	@Bean
@@ -48,9 +49,15 @@ public class RabbitMQConfig {
 	}
 
 	@Bean
-	public Binding binding(Queue queue, Exchange exchange) {
+	public Binding bindingProductos(Queue queue, Exchange exchange) {
 		Map<String, Object> propiedades = null;
-		return BindingBuilder.bind(queue).to(exchange).with(BINDING_KEY).and(propiedades);
+		return BindingBuilder.bind(queue).to(exchange).with(BINDING_KEY_PRODUCTOS).and(propiedades);
+	}
+
+	@Bean
+	public Binding bindingUsuarios(Queue queue, Exchange exchange) {
+		Map<String, Object> propiedades = null;
+		return BindingBuilder.bind(queue).to(exchange).with(BINDING_KEY_USUARIOS).and(propiedades);
 	}
 
 	@Bean
