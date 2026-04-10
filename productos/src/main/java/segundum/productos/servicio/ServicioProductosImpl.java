@@ -13,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import segundum.productos.evento.EventoProductoCreado;
-import segundum.productos.evento.EventoProductoModificado;
 import segundum.productos.modelo.Categoria;
 import segundum.productos.modelo.EstadoProducto;
 import segundum.productos.modelo.Producto;
@@ -32,7 +30,6 @@ public class ServicioProductosImpl implements ServicioProductos {
 	private RepositorioProductos repositorioProductos;
 	private ServicioUsuariosImpl servicioUsuarios;
 	private ServicioCategoriasImpl servicioCategorias;
-	private PublicadorEventos publicadorEventos;
 
 	@Autowired
 	public ServicioProductosImpl(RepositorioCategorias repositorioCategorias, RepositorioProductos repositorioProductos,
@@ -42,7 +39,6 @@ public class ServicioProductosImpl implements ServicioProductos {
 		this.repositorioProductos = repositorioProductos;
 		this.servicioUsuarios = servicioUsuarios;
 		this.servicioCategorias = servicioCategorias;
-		this.publicadorEventos = publicadorEventos;
 	}
 
 	@Override
@@ -69,8 +65,6 @@ public class ServicioProductosImpl implements ServicioProductos {
 
 		String id = repositorioProductos.save(producto).getId();
 
-		publicadorEventos.publicarEvento(new EventoProductoCreado(id, titulo, precio, idVendedor, idCategoria));
-
 		return id;
 	}
 
@@ -81,8 +75,6 @@ public class ServicioProductosImpl implements ServicioProductos {
 		producto.setPrecio(nuevoPrecio);
 		producto.setDescripcion(nuevaDescripcion);
 		repositorioProductos.save(producto);
-
-		publicadorEventos.publicarEvento(new EventoProductoModificado(idProducto, nuevoPrecio, nuevaDescripcion));
 	}
 
 	@Override

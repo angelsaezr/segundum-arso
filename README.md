@@ -1,5 +1,6 @@
-# Tarea 7
-- ToDo: Eventos del microservicio productos
+# Tarea 7 (COMPLETADA)
+- La duda era si al modificar un producto había que avisar al microservicio de compraventas, pero no hace falta. El único atributo que comparten es el precio, y en compraventas se debe guardar el precio al que se hizo la operación, no el nuevo.
+- Si confirmamos que el microservicio Productos no tiene que notificar ningún evento, habría que eliminar el código de publicar eventos de productos y de consumir eventos de productos en el resto de microservicios.
 
 ---
 
