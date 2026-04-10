@@ -28,6 +28,10 @@ public class ConsumidorEventos {
 			this.manejadorEventos.usuarioCreado(mensaje.get("id"), mensaje.get("email"), mensaje.get("nombre"),
 					mensaje.get("apellidos"));
 			break;
+		case "usuario-modificado":
+			this.manejadorEventos.usuarioModificado(mensaje.get("id"), mensaje.get("email"), mensaje.get("nombre"),
+					mensaje.get("apellidos"));
+			break;
 		default:
 			System.out.println("Tipo de evento desconocido: " + mensaje.get("tipo"));
 		}

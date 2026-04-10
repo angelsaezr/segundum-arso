@@ -1,5 +1,7 @@
 package segundum.productos.puerto;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +31,20 @@ public class ManejadorEventos {
 		usuario.setId(idUsuario);
 		this.repositorioUsuarios.save(usuario);
 		System.out.println("productos: usuario creado");
+	}
+
+	public void usuarioModificado(String idUsuario, String email, String nombre, String apellidos) {
+		Optional<Usuario> usuario = this.repositorioUsuarios.findById(idUsuario);
+		if (usuario.isPresent()) {
+			Usuario u = usuario.get();
+			u.setEmail(email);
+			u.setNombre(nombre);
+			u.setApellidos(apellidos);
+			this.repositorioUsuarios.save(u);
+			System.out.println("productos: usuario modificado");
+		} else {
+			System.out.println("productos: usuario no encontrado para modificar");
+		}
 	}
 
 }
