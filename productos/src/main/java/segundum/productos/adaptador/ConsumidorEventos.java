@@ -20,9 +20,16 @@ public class ConsumidorEventos {
 
 		System.out.println("Mensaje recibido: " + mensaje);
 
-		if (mensaje.get("tipo").equals("compraventa-creada")) {
-
+		switch (mensaje.get("tipo")) {
+		case "compraventa-creada":
 			this.manejadorEventos.compraventaCreada(mensaje.get("idProducto"));
+			break;
+		case "usuario-creado":
+			this.manejadorEventos.usuarioCreado(mensaje.get("id"), mensaje.get("email"), mensaje.get("nombre"),
+					mensaje.get("apellidos"));
+			break;
+		default:
+			System.out.println("Tipo de evento desconocido: " + mensaje.get("tipo"));
 		}
 
 	}

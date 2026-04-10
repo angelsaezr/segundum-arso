@@ -34,12 +34,12 @@ public class Programa {
 		System.out.println("Usuario creado con id:  " + id);
 		System.out
 				.println("Datos: " + email + ", " + nombre + ", " + apellidos + ", " + clave + ", " + fechaNacimiento);
-
+		/*
 		// Modificacion del usuario
 		System.out.println("Modificando el correo del usuario...");
 		String emailModificado = "juan2@um.es";
 		servicioUsuarios.modificarUsuario(id, emailModificado, null, null, null, null, null, false);
-		System.out.println("Correo modificado: " + emailModificado);
+		System.out.println("Correo modificado: " + emailModificado);*/
 
 		System.out.println("\n------------ FIN -------------------");
 

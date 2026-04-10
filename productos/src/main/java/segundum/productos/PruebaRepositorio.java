@@ -18,10 +18,10 @@ public class PruebaRepositorio {
 		ServicioProductos servicioProductos = contexto.getBean(ServicioProductos.class);
 		ServicioCategorias servicioCategorias = contexto.getBean(ServicioCategorias.class);
 
-		System.out.println("----------- USUARIOS -----------\n");
+		/*System.out.println("----------- USUARIOS -----------\n");
 
 		// Configuración de datos del usuario
-		String email = "juan@um.es";
+		String email = "juan2@um.es";
 		String nombre = "Juan";
 		String apellidos = "Perez Gomez";
 
@@ -29,7 +29,7 @@ public class PruebaRepositorio {
 		System.out.println("Creando usuario...");
 		String id = servicioUsuarios.altaUsuario(email, nombre, apellidos);
 		System.out.println("Usuario creado con id:  " + id);
-		System.out.println("Datos: " + email + ", " + nombre + ", " + apellidos);
+		System.out.println("Datos: " + email + ", " + nombre + ", " + apellidos);*/
 
 		System.out.println("\n----------- CATEGORIAS -----------\n");
 
@@ -37,11 +37,10 @@ public class PruebaRepositorio {
 		servicioCategorias.cargarJerarquiaCategorias("categoriasXML/Software.xml");
 		System.out.println("Categorias cargadas.");
 
-		System.out.println("\n----------- PRODUCTOS -----------\n");
+		/*System.out.println("\n----------- PRODUCTOS -----------\n");
 
 		String idCategoria = "4951";
 
-		// Alta de productos
 		System.out.println("Dando de alta varios productos para pruebas...");
 
 		String idProd1 = servicioProductos.crear("Teclado mecánico", "Teclado switch azul con iluminación RGB", 45.90,
@@ -54,7 +53,7 @@ public class PruebaRepositorio {
 
 		String idProd3 = servicioProductos.crear("Portátil i7 16GB RAM",
 				"Perfecto estado, batería cambiada recientemente", 650.00, EstadoProducto.NUEVO, true, idCategoria, id);
-		System.out.println("Producto creado con id: " + idProd3);
+		System.out.println("Producto creado con id: " + idProd3);*/
 
 		System.out.println("\n------------ FIN -------------------");
 

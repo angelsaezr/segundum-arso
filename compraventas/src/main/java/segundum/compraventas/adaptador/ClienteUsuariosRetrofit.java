@@ -3,6 +3,7 @@ package segundum.compraventas.adaptador;
 import org.springframework.stereotype.Component;
 
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 import segundum.compraventas.puerto.ClienteUsuarios;
 import segundum.compraventas.puerto.UsuariosRetrofit;
 
@@ -17,7 +18,7 @@ public class ClienteUsuariosRetrofit implements ClienteUsuarios {
 
 	@Override
 	public String getNombreUsuario(String idUsuario) throws Exception {
-		retrofit2.Response<ResponseBody> response = api.getNombre(idUsuario).execute();
+		Response<ResponseBody> response = api.getNombre(idUsuario).execute();
 
 		if (!response.isSuccessful() || response.body() == null) {
 			throw new Exception("Usuario no encontrado: " + idUsuario);
