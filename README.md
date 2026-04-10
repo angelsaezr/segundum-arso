@@ -1,5 +1,5 @@
 # Tarea 7
-- Eventos de cambios en el estado de las entidades como creación, modificación o borrado (evento compraventa-creada acabado)
+- ToDo: Eventos del microservicio productos
 
 ---
 
