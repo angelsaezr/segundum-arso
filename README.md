@@ -15,9 +15,9 @@
 ---
 
 # Otros
-- Actualizar esquemas de bases de datos tras añadir nuevos atributos de la tarea 7.
 - Crear logs
-- Revisar Retrofit si funciona bien, si coge bien los datos y si DTO está bien‎
+- Revisar Retrofit si funciona bien, si coge bien los datos y si DTO está bien
+- [Angel] Actualizar bd mysql‎
 
 ---
 

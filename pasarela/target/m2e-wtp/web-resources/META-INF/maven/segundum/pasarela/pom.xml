@@ -41,14 +41,12 @@
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 		</dependency>
 
-
 		<!-- ===== Web / REST ===== -->
 		<!-- Spring MVC + Tomcat embebido + Jackson -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 
 		<!-- ===== Testing ===== -->
 		<!-- Incluye JUnit, Mockito, Spring Test, etc. -->
