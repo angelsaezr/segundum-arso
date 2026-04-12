@@ -20,8 +20,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import io.jsonwebtoken.Claims;
+import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.rest.dto.UsuarioDTO;
 import segundum.usuarios.rest.dto.UsuarioInputDTO;
+import segundum.usuarios.rest.dto.UsuarioLoginInputDTO;
+import segundum.usuarios.rest.dto.UsuarioLoginResponseDTO;
 import segundum.usuarios.rest.dto.UsuarioResumenDTO;
 import segundum.usuarios.servicio.FactoriaServicios;
 import segundum.usuarios.servicio.ServicioUsuarios;
@@ -96,6 +99,27 @@ public class ControladorUsuarios {
 	@PermitAll
 	public Response getNombreUsuario(@PathParam("id") String id) throws Exception {
 		return Response.ok(servicio.recuperar(id).getNombre()).build();
+	}
+
+	// POST http://localhost:8080/api/usuarios/login
+	// Operación pública para que la pasarela verifique credenciales.
+	// Devuelve los datos del usuario sin generar token (eso lo hace la pasarela).
+
+	@POST
+	@Path("/login")
+	@PermitAll
+	public Response login(UsuarioLoginInputDTO dto) {
+		try {
+			Usuario usuario = servicio.login(dto.getEmail(), dto.getPassword());
+			if (usuario == null) {
+				return Response.status(Response.Status.UNAUTHORIZED).entity("{\"error\": \"Credenciales inválidas\"}")
+						.build();
+			}
+			return Response.ok(UsuarioLoginResponseDTO.fromEntity(usuario)).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("{\"error\": \"" + e.getMessage() + "\"}").build();
+		}
 	}
 
 	private Claims getClaims() {

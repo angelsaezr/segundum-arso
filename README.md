@@ -5,8 +5,17 @@
 ---
 
 # Tarea 8
-- [ToDo] Productos: El usuario que da de alta un producto debe ser el propietario.
-- [ToDo] Productos: El usuario que modifica un producto debe ser el propietario.
+- `[Done]` Microservicio Usuarios: añadir operación pública de login para la pasarela
+- `[ToDo]` Pasarela: implementar el login con usuario/contraseña
+- `[ToDo]` Pasarela: implementar login con GitHub OAuth2
+- `[ToDo]` Pasarela: validar el JWT en cada petición y reenviarlo a los microservicios
+- `[ToDo]` Microservicios Productos y Compraventas: solo autorización, no autenticación
+- `[ToDo]` Productos y Compraventas: implementar control de autorización por operación
+- `[ToDo]` (Opcional) Cookie http-only
+
+Notas:
+- `[ToDo]` Productos: El usuario que da de alta un producto debe ser el propietario.
+- `[ToDo]` Productos: El usuario que modifica un producto debe ser el propietario.
 
 ---
 
