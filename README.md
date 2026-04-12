@@ -5,7 +5,8 @@
 ---
 
 # Tarea 8
-- Todo por hacer
+- [ToDo] Productos: El usuario que da de alta un producto debe ser el propietario.
+- [ToDo] Productos: El usuario que modifica un producto debe ser el propietario.
 
 ---
 
@@ -13,6 +14,11 @@
 - Todo por hacer
 
 ---
+
+# Operaciones pendientes en APIS:
+(Las 2 siguientes operaciones no sé si deberían de ir en `CategoriasController`)
+- Productos: Recuperar categorías raíz. Pública.
+- Productos: Recuperar descendientes de una categoría. Pública.
 
 # Otros
 - Crear logs

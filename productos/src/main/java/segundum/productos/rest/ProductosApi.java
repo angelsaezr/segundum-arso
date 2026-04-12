@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public interface ProductosApi {
 
 	@Operation(summary = "Crear producto", description = "Crea un nuevo producto con los datos proporcionados")
 	@PostMapping
+	@PreAuthorize("hasAuthority('USER')")
 	ResponseEntity<Void> createProducto(@Valid @RequestBody NuevoProductoDTO nuevoProductoDto) throws Exception;
 
 	@Operation(summary = "Obtener producto", description = "Obtiene un producto por su id")
@@ -37,11 +39,13 @@ public interface ProductosApi {
 
 	@Operation(summary = "Modificar producto", description = "Modifica los datos de un producto existente")
 	@PatchMapping("/{id}")
+	@PreAuthorize("hasAuthority('USER')")
 	ResponseEntity<Void> modificarDatosProducto(@PathVariable String id,
 			@Valid @RequestBody ModificadoProductoDTO modificadoProductoDto) throws Exception;
 
 	@Operation(summary = "Asignar lugar de recogida", description = "Asigna un lugar de recogida a un producto")
 	@PostMapping("/{id}/recogida")
+	@PreAuthorize("hasAuthority('USER')")
 	ResponseEntity<Void> asignarLugarRecogida(@PathVariable String id,
 			@Valid @RequestBody NuevoLugarDeRecogidaDTO lugarRecogida) throws Exception;
 
