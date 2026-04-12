@@ -5,7 +5,7 @@
 ---
 
 # Tarea 8
-- `[Done]` Microservicio Usuarios: añadir operación pública de login para la pasarela
+- `[DONE]` Microservicio Usuarios: añadir operación pública de login para la pasarela
 - `[ToDo]` Pasarela: implementar el login con usuario/contraseña
 - `[ToDo]` Pasarela: implementar login con GitHub OAuth2
 - `[ToDo]` Pasarela: validar el JWT en cada petición y reenviarlo a los microservicios

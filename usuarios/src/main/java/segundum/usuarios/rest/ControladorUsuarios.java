@@ -112,8 +112,7 @@ public class ControladorUsuarios {
 		try {
 			Usuario usuario = servicio.login(dto.getEmail(), dto.getPassword());
 			if (usuario == null) {
-				return Response.status(Response.Status.UNAUTHORIZED).entity("{\"error\": \"Credenciales inválidas\"}")
-						.build();
+				return Response.status(Response.Status.UNAUTHORIZED).entity("Credenciales inválidas").build();
 			}
 			return Response.ok(UsuarioLoginResponseDTO.fromEntity(usuario)).build();
 		} catch (Exception e) {
