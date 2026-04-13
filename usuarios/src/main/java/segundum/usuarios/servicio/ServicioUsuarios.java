@@ -20,4 +20,6 @@ public interface ServicioUsuarios {
 	Usuario recuperar(String id) throws RepositorioException, EntidadNoEncontrada;
 
 	List<Usuario> recuperarTodos() throws RepositorioException;
+
+	public Usuario buscarPorEmail(String email) throws EntidadNoEncontrada, RepositorioException;
 }

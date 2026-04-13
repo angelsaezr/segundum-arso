@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,6 +22,8 @@ import javax.ws.rs.core.UriInfo;
 
 import io.jsonwebtoken.Claims;
 import segundum.usuarios.modelo.Usuario;
+import segundum.usuarios.repositorio.EntidadNoEncontrada;
+import segundum.usuarios.repositorio.RepositorioException;
 import segundum.usuarios.rest.dto.UsuarioDTO;
 import segundum.usuarios.rest.dto.UsuarioInputDTO;
 import segundum.usuarios.rest.dto.UsuarioLoginInputDTO;
@@ -116,6 +119,25 @@ public class ControladorUsuarios {
 			}
 			return Response.ok(UsuarioLoginResponseDTO.fromEntity(usuario)).build();
 		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("{\"error\": \"" + e.getMessage() + "\"}").build();
+		}
+	}
+
+	@GET
+	@Path("/buscarPorEmail")
+	@PermitAll
+	public Response buscarPorEmail(@QueryParam("email") String email) {
+		try {
+			Usuario usuario = servicio.buscarPorEmail(email);
+
+			return Response.ok(UsuarioLoginResponseDTO.fromEntity(usuario)).build();
+
+		} catch (EntidadNoEncontrada e) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("{\"error\": \"No existe usuario con email: " + email + "\"}").build();
+
+		} catch (RepositorioException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("{\"error\": \"" + e.getMessage() + "\"}").build();
 		}

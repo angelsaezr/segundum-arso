@@ -28,4 +28,16 @@ public class ClienteUsuariosRetrofit implements ClienteUsuarios {
 		return response.body();
 	}
 
+	@Override
+	public UsuarioLoginResponseDTO buscarPorEmail(String email) throws Exception {
+		if (email == null || email.isEmpty()) {
+			throw new Exception("El usuario de GitHub no tiene email público");
+		}
+		Response<UsuarioLoginResponseDTO> response = api.buscarPorEmail(email).execute();
+		if (!response.isSuccessful() || response.body() == null) {
+			throw new Exception("No existe usuario con email: " + email);
+		}
+		return response.body();
+	}
+
 }

@@ -14,6 +14,7 @@ import segundum.usuarios.repositorio.EntidadNoEncontrada;
 import segundum.usuarios.repositorio.FactoriaRepositorios;
 import segundum.usuarios.repositorio.Repositorio;
 import segundum.usuarios.repositorio.RepositorioException;
+import segundum.usuarios.repositorio.RepositorioUsuariosAdHoc;
 import segundum.usuarios.rest.dto.UsuarioInputDTO;
 
 public class ServicioUsuariosImpl implements ServicioUsuarios {
@@ -99,5 +100,11 @@ public class ServicioUsuariosImpl implements ServicioUsuarios {
 		if (valor != null && !valor.isEmpty()) {
 			setter.accept(valor);
 		}
+	}
+
+	@Override
+	public Usuario buscarPorEmail(String email) throws RepositorioException {
+		validarNoVacio(email, "email");
+		return ((RepositorioUsuariosAdHoc) repositorio).buscarPorEmail(email);
 	}
 }
