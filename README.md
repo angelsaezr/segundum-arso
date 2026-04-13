@@ -9,16 +9,16 @@
 - `[DONE]` Pasarela: implementar el login con usuario/contraseña
 - `[DONE]` Pasarela: implementar login con GitHub OAuth2
 - `[DONE]` Pasarela: validar el JWT en cada petición y reenviarlo a los microservicios
-- `[ToDo]` Microservicios Productos y Compraventas: solo autorización, no autenticación
-- `[ToDo]` Productos y Compraventas: implementar control de autorización por operación
+- `[DONE]` Microservicios Productos y Compraventas: solo autorización, no autenticación
+- `[DONE]` Productos y Compraventas: implementar control de autorización por operación
 - `[DONE]` (Opcional) Cookie http-only
 - `[ToDo]` Ver si GitHub da el email porque buscamos el usuario por email
 - `[ToDo]` Ver que hacer cuando por OAuth2 no se encuentra en nuestra bd el usuario con email que viene de GitHub, lo registramos?
 - `[ToDo]` Probar OAuth2
 
 Notas:
-- `[ToDo]` Productos: El usuario que da de alta un producto debe ser el propietario.
-- `[ToDo]` Productos: El usuario que modifica un producto debe ser el propietario.
+- `[DONE]` Productos: El usuario que da de alta un producto debe ser el propietario.
+- `[DONE]` Productos: El usuario que modifica un producto debe ser el propietario.
 
 ---
 
