@@ -29,6 +29,8 @@ Notas:
 - Productos: Recuperar categorías raíz. Pública.
 - Productos: Recuperar descendientes de una categoría. Pública.
 
+---
+
 # Otros
 - Crear logs
 - Revisar Retrofit si funciona bien, si coge bien los datos y si DTO está bien
@@ -37,10 +39,16 @@ Notas:
 ---
 
 # Dudas pendientes
-- ¿Hay que implementar `CategoriasController` en el microservicio `productos`?
 - ¿Buscar productos debería ser pageable?
 - Preguntar qué operaciones debe tener cada API.
 - Eliminar métodos de servicios/repositorios que no estén siendo utilizados por las APIs.
 - ¿Lo de que la id de los productos sea UUID está bien? (ver /productos/src/main/java/segundum/productos/modelo/Producto.java)
 - Por qué está productoResumenMensual en servicio
 - ¿La consulta a la api de usuarios "getNombreUsuario" debería devolver Nombre + Apellidos?
+
+---
+
+# Respuestas a dudas
+- Sobre el microservicio Productos, sería mejor que las categorías fueran gestionadas con su propio controlador (CategoriasController) y que el path de acceso sea "categorias".
+- En los servicios implementados con Spring Boot, los listados deberían ser paginados.
+- Por último, la propiedad "nombre" de un usuario debería corresponder con el nombre completo, esto es, nombre y apellidos, ya que forma parte de la transacción de compraventa.
