@@ -13,9 +13,13 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import segundum.compraventas.modelo.Compraventa;
@@ -42,6 +46,12 @@ public class CompraventasController implements CompraventasApi {
 
 	@Override
 	public ResponseEntity<Void> createCompraventa(@Valid NuevaCompraventaDTO nuevaCompraventaDTO) throws Exception {
+		// El usuario autenticado debe ser el comprador
+		String idUsuarioAutenticado = getIdUsuarioAutenticado();
+		if (!idUsuarioAutenticado.equals(nuevaCompraventaDTO.getIdComprador())) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo puedes comprar como tú mismo");
+		}
+
 		Compraventa compraventa = servicioCompraventas.compraventa(nuevaCompraventaDTO.getIdProducto(),
 				nuevaCompraventaDTO.getIdComprador());
 
@@ -69,6 +79,12 @@ public class CompraventasController implements CompraventasApi {
 
 	@Override
 	public ResponseEntity<?> getComprasUsuario(String idComprador) throws Exception {
+		// Solo el propio usuario puede consultar sus compras
+		String idUsuarioAutenticado = getIdUsuarioAutenticado();
+		if (!idUsuarioAutenticado.equals(idComprador)) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo puedes consultar tus propias compras");
+		}
+
 		List<CompraventaDTO> compras = servicioCompraventas.recuperarComprasUsuario(idComprador).stream()
 				.map(CompraventaDTO::fromEntity).collect(Collectors.toList());
 		return ResponseEntity.ok(compras);
@@ -76,6 +92,12 @@ public class CompraventasController implements CompraventasApi {
 
 	@Override
 	public ResponseEntity<?> getVentasUsuario(String idVendedor) throws Exception {
+		// Solo el propio usuario puede consultar sus ventas
+		String idUsuarioAutenticado = getIdUsuarioAutenticado();
+		if (!idUsuarioAutenticado.equals(idVendedor)) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo puedes consultar tus propias ventas");
+		}
+
 		List<CompraventaDTO> ventas = servicioCompraventas.recuperarVentasUsuario(idVendedor).stream()
 				.map(CompraventaDTO::fromEntity).collect(Collectors.toList());
 		return ResponseEntity.ok(ventas);
@@ -87,5 +109,14 @@ public class CompraventasController implements CompraventasApi {
 				.recuperarCompraventasEntreUsuarios(idComprador, idVendedor).stream().map(CompraventaDTO::fromEntity)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(resultado);
+	}
+
+	// Método auxiliar
+	private String getIdUsuarioAutenticado() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || auth.getPrincipal() == null) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No autenticado");
+		}
+		return auth.getName();
 	}
 }

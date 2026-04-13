@@ -7,11 +7,11 @@
 # Tarea 8
 - `[DONE]` Microservicio Usuarios: añadir operación pública de login para la pasarela
 - `[DONE]` Pasarela: implementar el login con usuario/contraseña
-- `[ToDo]` Pasarela: implementar login con GitHub OAuth2
-- `[ToDo]` Pasarela: validar el JWT en cada petición y reenviarlo a los microservicios
+- `[DONE]` Pasarela: implementar login con GitHub OAuth2
+- `[DONE]` Pasarela: validar el JWT en cada petición y reenviarlo a los microservicios
 - `[ToDo]` Microservicios Productos y Compraventas: solo autorización, no autenticación
 - `[ToDo]` Productos y Compraventas: implementar control de autorización por operación
-- `[ToDo]` (Opcional) Cookie http-only
+- `[DONE]` (Opcional) Cookie http-only
 - `[ToDo]` Ver si GitHub da el email porque buscamos el usuario por email
 - `[ToDo]` Ver que hacer cuando por OAuth2 no se encuentra en nuestra bd el usuario con email que viene de GitHub, lo registramos?
 - `[ToDo]` Probar OAuth2
