@@ -3,6 +3,7 @@ package segundum.pasarela.auth;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,32 +11,55 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import segundum.pasarela.puerto.ClienteUsuarios;
+import segundum.pasarela.puerto.dto.UsuarioLoginInputDTO;
+import segundum.pasarela.puerto.dto.UsuarioLoginResponseDTO;
+
 @RestController
 @RequestMapping("/auth")
 public class ControllerAuth {
 
+	@Autowired
+	private ClienteUsuarios clienteUsuarios;
+
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+	public ResponseEntity<Map<String, Object>> login(@RequestParam String username, @RequestParam String password) {
 
 		Map<String, Object> claims = verificarCredenciales(username, password);
 		if (claims != null) {
 			String token = JwtUtils.generateToken(claims);
-			return ResponseEntity.ok(token);
-		} else {
-			// retorna código unauthorized y un mensaje de error
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
-		}
 
+			Map<String, Object> respuesta = new HashMap<>();
+			respuesta.put("token", token);
+			respuesta.put("id", claims.get("sub"));
+			respuesta.put("nombre", claims.get("nombre"));
+			respuesta.put("roles", claims.get("roles"));
+
+			return ResponseEntity.ok(respuesta);
+		} else {
+			Map<String, Object> error = new HashMap<>();
+			error.put("error", "Credenciales inválidas");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+		}
 	}
 
 	private Map<String, Object> verificarCredenciales(String username, String password) {
+		try {
+			UsuarioLoginInputDTO dto = new UsuarioLoginInputDTO();
+			dto.setEmail(username);
+			dto.setPassword(password);
+			UsuarioLoginResponseDTO usuario = clienteUsuarios.login(dto);
+			if (usuario == null)
+				return null;
 
-		// TODO: verificar las credenciales
+			Map<String, Object> claims = new HashMap<>();
+			claims.put("sub", usuario.getId());
+			claims.put("nombre", usuario.getNombre() + " " + usuario.getApellidos());
+			claims.put("roles", usuario.getRoles());
 
-		HashMap<String, Object> claims = new HashMap<String, Object>();
-		claims.put("sub", username);
-		claims.put("roles", "ADMIN");
-
-		return claims;
+			return claims;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }
