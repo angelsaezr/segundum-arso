@@ -1,4 +1,4 @@
-package segundum.compraventas.auth;
+package segundum.pasarela.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // configuración de seguridad
         httpSecurity.csrf().disable().httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/login").permitAll()
-                .antMatchers("/compraventas/**").authenticated()
+                .antMatchers("/auth/login", "/auth/**", "/login/**", "/oauth2/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .oauth2Login().successHandler(this.successHandler)
                 .and()

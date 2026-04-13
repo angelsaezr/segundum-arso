@@ -1,4 +1,4 @@
-package segundum.productos.auth;
+package segundum.pasarela.auth;
 
 import java.io.IOException;
 import java.util.ArrayList;
