@@ -101,7 +101,8 @@ public class ControladorUsuarios {
 	@Path("{id}/nombre")
 	@PermitAll
 	public Response getNombreUsuario(@PathParam("id") String id) throws Exception {
-		return Response.ok(servicio.recuperar(id).getNombre()).build();
+		Usuario usuario = servicio.recuperar(id);
+		return Response.ok(usuario.getNombre() + " " + usuario.getApellidos()).build();
 	}
 
 	// POST http://localhost:8080/api/usuarios/login

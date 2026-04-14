@@ -27,7 +27,6 @@ Notas:
 ---
 
 # Otros ToDos
-- La consulta a la api de usuarios "getNombreUsuario" debería devolver Nombre + Apellidos
 - Crear logs
 - Revisar Retrofit si funciona bien, si coge bien los datos y si DTO está bien
 - [Angel] Actualizar bd mysql‎
