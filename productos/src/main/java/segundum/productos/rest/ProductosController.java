@@ -1,8 +1,6 @@
 package segundum.productos.rest;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,10 +35,16 @@ public class ProductosController implements ProductosApi {
 	private ServicioProductos serviciosProductos;
 
 	@Autowired
-	private PagedResourcesAssembler<ProductoResumenDTO> pagedResourcesAssembler;
+	private PagedResourcesAssembler<ProductoDTO> pagedResourcesAssemblerProductos;
+
+	@Autowired
+	private PagedResourcesAssembler<ProductoResumenDTO> pagedResourcesAssemblerResumen;
 
 	@Autowired
 	private PagedResourcesAssembler<ProductoResumenMensual> pagedResourcesAssemblerMensual;
+
+	@Autowired
+	private ProductoAssembler productoAssembler;
 
 	@Autowired
 	private ProductoResumenAssembler productoResumenAssembler;
@@ -120,14 +124,15 @@ public class ProductosController implements ProductosApi {
 	@Override
 	public PagedModel<EntityModel<ProductoResumenDTO>> getProductosPaginado(Pageable paginacion) throws Exception {
 		Page<ProductoResumenDTO> resultado = this.serviciosProductos.getListadoPaginado(paginacion);
-		return this.pagedResourcesAssembler.toModel(resultado, productoResumenAssembler);
+		return this.pagedResourcesAssemblerResumen.toModel(resultado, productoResumenAssembler);
 	}
 
 	@Override
-	public List<ProductoDTO> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado,
-			Double precioMax) throws Exception {
-		return this.serviciosProductos.buscarProductos(descripcion, idCategoria, estado, precioMax).stream()
-				.map(ProductoDTO::fromEntity).collect(Collectors.toList());
+	public PagedModel<EntityModel<ProductoDTO>> buscarProductos(String descripcion, String idCategoria,
+			EstadoProducto estado, Double precioMax, Pageable paginacion) throws Exception {
+		Page<ProductoDTO> resultado = this.serviciosProductos.buscarProductos(descripcion, idCategoria, estado,
+				precioMax, paginacion);
+		return this.pagedResourcesAssemblerProductos.toModel(resultado, productoAssembler);
 	}
 
 	// Métodos auxiliares

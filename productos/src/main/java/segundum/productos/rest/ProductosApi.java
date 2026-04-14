@@ -1,7 +1,5 @@
 package segundum.productos.rest;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springdoc.api.annotations.ParameterObject;
@@ -65,7 +63,7 @@ public interface ProductosApi {
 
 	@Operation(summary = "Buscar productos", description = "Busca productos por descripción, categoría, estado o precio máximo")
 	@GetMapping("/buscar")
-	List<ProductoDTO> buscarProductos(@RequestParam(required = false) String descripcion,
+	PagedModel<EntityModel<ProductoDTO>> buscarProductos(@RequestParam(required = false) String descripcion,
 			@RequestParam(required = false) String idCategoria, @RequestParam(required = false) EstadoProducto estado,
-			@RequestParam(required = false) Double precioMax) throws Exception;
+			@RequestParam(required = false) Double precioMax, @ParameterObject Pageable paginacion) throws Exception;
 }

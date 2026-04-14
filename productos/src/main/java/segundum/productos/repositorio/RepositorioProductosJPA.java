@@ -23,8 +23,9 @@ public interface RepositorioProductosJPA extends RepositorioProductos, JpaReposi
 			+ "     OR LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :texto, '%'))) "
 			+ "AND (:estadosPermitidos IS NULL OR p.estado IN :estadosPermitidos) "
 			+ "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
-	List<Producto> buscarProductos(@Param("idsCategoria") Set<String> idsCategoria, @Param("texto") String texto,
-			@Param("estadosPermitidos") List<EstadoProducto> estadosPermitidos, @Param("precioMax") Double precioMax);
+	Page<Producto> buscarProductos(@Param("idsCategoria") Set<String> idsCategoria, @Param("texto") String texto,
+			@Param("estadosPermitidos") List<EstadoProducto> estadosPermitidos, @Param("precioMax") Double precioMax,
+			Pageable pageable);
 
 	@Query("SELECT p FROM Producto p " + "WHERE p.vendedor.id = :idVendedor " + "AND p.fechaPublicacion >= :inicio "
 			+ "AND p.fechaPublicacion <= :fin " + "ORDER BY p.visualizaciones DESC")

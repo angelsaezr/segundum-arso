@@ -21,6 +21,7 @@ import segundum.productos.puerto.PublicadorEventos;
 import segundum.productos.repositorio.EntidadNoEncontrada;
 import segundum.productos.repositorio.RepositorioCategorias;
 import segundum.productos.repositorio.RepositorioProductos;
+import segundum.productos.rest.dto.ProductoDTO;
 import segundum.productos.rest.dto.ProductoResumenDTO;
 
 @Service
@@ -110,8 +111,8 @@ public class ServicioProductosImpl implements ServicioProductos {
 	}
 
 	@Override
-	public List<Producto> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado,
-			Double precioMax) {
+	public Page<ProductoDTO> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado,
+			Double precioMax, Pageable pageable) {
 		String texto = descripcion != null ? descripcion.trim() : null;
 		if (texto != null && texto.isEmpty())
 			texto = null;
@@ -137,7 +138,8 @@ public class ServicioProductosImpl implements ServicioProductos {
 			estadosPermitidos = idx >= 0 ? ranking.subList(0, idx + 1) : java.util.Collections.singletonList(estado);
 		}
 
-		return repositorioProductos.buscarProductos(idsCategoriasValidas, texto, estadosPermitidos, precioMax);
+		return repositorioProductos.buscarProductos(idsCategoriasValidas, texto, estadosPermitidos, precioMax, pageable)
+				.map(ProductoDTO::fromEntity);
 	}
 
 	@Override

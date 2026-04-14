@@ -1,13 +1,12 @@
 package segundum.productos.servicio;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import segundum.productos.modelo.EstadoProducto;
 import segundum.productos.modelo.Producto;
 import segundum.productos.repositorio.EntidadNoEncontrada;
+import segundum.productos.rest.dto.ProductoDTO;
 import segundum.productos.rest.dto.ProductoResumenDTO;
 
 public interface ServicioProductos {
@@ -25,9 +24,11 @@ public interface ServicioProductos {
 
 	void incrementarVisualizaciones(String idProducto) throws EntidadNoEncontrada;
 
-	Page<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int año, Pageable pageable) throws EntidadNoEncontrada;
+	Page<ProductoResumenMensual> getResumenMensual(String idVendedor, int mes, int año, Pageable pageable)
+			throws EntidadNoEncontrada;
 
-	List<Producto> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado, Double precioMax);
+	Page<ProductoDTO> buscarProductos(String descripcion, String idCategoria, EstadoProducto estado, Double precioMax,
+			Pageable pageable);
 
 	Page<ProductoResumenDTO> getListadoPaginado(Pageable pageable);
 }

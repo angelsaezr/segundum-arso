@@ -15,8 +15,8 @@ import segundum.productos.modelo.Producto;
 @NoRepositoryBean
 public interface RepositorioProductos extends PagingAndSortingRepository<Producto, String> {
 
-	List<Producto> buscarProductos(Set<String> idsCategoria, String texto, List<EstadoProducto> estadosPermitidos,
-			Double precioMax);
+	Page<Producto> buscarProductos(Set<String> idsCategoria, String texto, List<EstadoProducto> estadosPermitidos,
+			Double precioMax, Pageable pageable);
 
 	Page<Producto> findResumenMensual(String idVendedor, LocalDateTime inicio, LocalDateTime fin, Pageable pageable);
 }
