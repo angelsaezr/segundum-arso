@@ -20,12 +20,6 @@ Notas:
 
 ---
 
-# Operaciones pendientes en APIS:
-- `[CategoriasController]` Recuperar categorías raíz. Pública.
-- `[CategoriasController]` Recuperar descendientes de una categoría. Pública.
-
----
-
 # Otros ToDos
 - Crear logs
 - Revisar Retrofit si funciona bien, si coge bien los datos y si DTO está bien

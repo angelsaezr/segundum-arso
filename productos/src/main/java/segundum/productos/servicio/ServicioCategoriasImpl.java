@@ -10,12 +10,15 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import segundum.productos.modelo.Categoria;
 import segundum.productos.repositorio.EntidadNoEncontrada;
 import segundum.productos.repositorio.RepositorioCategorias;
+import segundum.productos.rest.dto.CategoriaDTO;
 
 @Service
 @Transactional
@@ -58,17 +61,6 @@ public class ServicioCategoriasImpl implements ServicioCategorias {
 		repositorioCategorias.save(categoriaRaiz);
 	}
 
-	// Asigna el categoriaPadre a todos los nodos de la jerarquía.
-	private void enlazarPadresRecursivamente(Categoria categoria, Categoria padre) {
-		categoria.setCategoriaPadre(padre);
-
-		if (categoria.getSubcategorias() != null) {
-			for (Categoria sub : categoria.getSubcategorias()) {
-				enlazarPadresRecursivamente(sub, categoria);
-			}
-		}
-	}
-
 	@Override
 	public List<Categoria> getCategoriasRaiz() {
 		return repositorioCategorias.findCategoriasRaiz();
@@ -78,5 +70,31 @@ public class ServicioCategoriasImpl implements ServicioCategorias {
 	public List<Categoria> getDescendientesCategoria(String idCategoria) throws EntidadNoEncontrada {
 		Categoria categoria = getCategoria(idCategoria);
 		return repositorioCategorias.findDescendientesByRuta(categoria.getRuta());
+	}
+
+	@Override
+	public Page<CategoriaDTO> getCategoriasRaizPaginado(Pageable pageable) {
+		Page<Categoria> categorias = repositorioCategorias.findCategoriasRaizPaginado(pageable);
+		return categorias.map(CategoriaDTO::fromEntity);
+	}
+
+	@Override
+	public Page<CategoriaDTO> getDescendientesPaginado(String idCategoria, Pageable pageable)
+			throws EntidadNoEncontrada {
+		// Verificar que la categoría existe
+		getCategoria(idCategoria);
+		Page<Categoria> categorias = repositorioCategorias.findDescendientesByRutaPaginado(idCategoria, pageable);
+		return categorias.map(CategoriaDTO::fromEntityParaDescendientes);
+	}
+
+	// Asigna el categoriaPadre a todos los nodos de la jerarquía.
+	private void enlazarPadresRecursivamente(Categoria categoria, Categoria padre) {
+		categoria.setCategoriaPadre(padre);
+
+		if (categoria.getSubcategorias() != null) {
+			for (Categoria sub : categoria.getSubcategorias()) {
+				enlazarPadresRecursivamente(sub, categoria);
+			}
+		}
 	}
 }
