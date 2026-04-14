@@ -32,9 +32,9 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 		DefaultOAuth2User usuario = (DefaultOAuth2User) authentication.getPrincipal();
 
 		// El login de GitHub (nombre de usuario único)
-		String githubLogin = (String) usuario.getAttributes().get("login");
+		// String githubLogin = (String) usuario.getAttributes().get("login");
 		String githubEmail = (String) usuario.getAttributes().get("email"); // TODO hay que ver si GitHub da el email
-		String githubNombre = (String) usuario.getAttributes().get("name");
+		// String githubNombre = (String) usuario.getAttributes().get("name");
 
 		Map<String, Object> claims = null;
 		try {
@@ -64,10 +64,10 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 		// Usuario de GitHub no vinculado a una cuenta del sistema
 		// generamos un token provisional con rol USUARIO
 		// TODO revisar si esta bien hacer esto
-		claims = new HashMap<>();
-		claims.put("sub", "github:" + githubLogin);
-		claims.put("nombre", githubNombre != null ? githubNombre : githubLogin);
-		claims.put("roles", "USUARIO");
+		// claims = new HashMap<>();
+		// claims.put("sub", "github:" + githubLogin);
+		// claims.put("nombre", githubNombre != null ? githubNombre : githubLogin);
+		// claims.put("roles", "USUARIO");
 	}
 
 	private Map<String, Object> fetchUserInfo(String githubEmail) throws Exception {
