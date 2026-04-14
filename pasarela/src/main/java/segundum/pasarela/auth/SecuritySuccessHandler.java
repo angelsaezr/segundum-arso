@@ -36,7 +36,12 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 		String githubEmail = (String) usuario.getAttributes().get("email"); // TODO hay que ver si GitHub da el email
 		String githubNombre = (String) usuario.getAttributes().get("name");
 
-		Map<String, Object> claims = fetchUserInfo(githubEmail);
+		Map<String, Object> claims = null;
+		try {
+			claims = fetchUserInfo(githubEmail);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		if (claims != null) {
 			// genera el token JWT y lo envía en la respuesta ...
@@ -65,21 +70,18 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 		claims.put("roles", "USUARIO");
 	}
 
-	private Map<String, Object> fetchUserInfo(String githubEmail) {
+	private Map<String, Object> fetchUserInfo(String githubEmail) throws Exception {
 
-		try {
-			UsuarioLoginResponseDTO usuario = clienteUsuarios.buscarPorEmail(githubEmail);
-			if (usuario != null) {
-				HashMap<String, Object> claims = new HashMap<String, Object>();
-				claims.put("sub", usuario.getId());
-				claims.put("nombre", usuario.getNombre() + " " + usuario.getApellidos());
-				claims.put("roles", usuario.getRoles());
+		UsuarioLoginResponseDTO usuario = clienteUsuarios.buscarPorEmail(githubEmail);
+		if (usuario != null) {
+			HashMap<String, Object> claims = new HashMap<String, Object>();
+			claims.put("sub", usuario.getId());
+			claims.put("nombre", usuario.getNombre() + " " + usuario.getApellidos());
+			claims.put("roles", usuario.getRoles());
 
-				return claims;
-			}
-		} catch (Exception e) {
-			// TODO El usuario no existe en el sistema; registramos? rechazamos?
+			return claims;
 		}
+
 		return null;
 	}
 }
