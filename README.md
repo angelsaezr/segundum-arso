@@ -6,7 +6,7 @@
 - `[DONE]` Microservicios Productos y Compraventas: solo autorización, no autenticación
 - `[DONE]` Productos y Compraventas: implementar control de autorización por operación
 - `[DONE]` (Opcional) Cookie http-only
-- `[ToDo]` Ver si GitHub da el email porque buscamos el usuario por email
+- `[DONE]` Ver si GitHub da el email porque buscamos el usuario por email
 - `[ToDo]` Probar OAuth2
 
 Notas:
