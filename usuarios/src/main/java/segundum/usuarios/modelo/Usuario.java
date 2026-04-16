@@ -30,6 +30,7 @@ public class Usuario implements Identificable {
 	private boolean administrador;
 	private int contadorCompras;
 	private int contadorVentas;
+	private String githubId;
 
 	public Usuario() {
 	}
@@ -147,9 +148,18 @@ public class Usuario implements Identificable {
 		this.contadorVentas++;
 	}
 
+	public String getGithubId() {
+		return githubId;
+	}
+
+	public void setGithubId(String githubId) {
+		this.githubId = githubId;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario{id='" + id + "', email='" + email + "', nombre='" + nombre + "', apellidos='" + apellidos
-				+ "', contadorCompras=" + contadorCompras + ", contadorVentas=" + contadorVentas + '}';
+				+ "', githubId='" + githubId + "', contadorCompras=" + contadorCompras + ", contadorVentas="
+				+ contadorVentas + '}';
 	}
 }

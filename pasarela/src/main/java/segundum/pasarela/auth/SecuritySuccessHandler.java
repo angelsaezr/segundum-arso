@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import segundum.pasarela.puerto.ClienteUsuarios;
+import segundum.pasarela.puerto.dto.UsuarioGithubInputDTO;
 import segundum.pasarela.puerto.dto.UsuarioLoginResponseDTO;
 
 @Component
@@ -29,59 +30,72 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException {
 
-		DefaultOAuth2User usuario = (DefaultOAuth2User) authentication.getPrincipal();
+		DefaultOAuth2User githubUser = (DefaultOAuth2User) authentication.getPrincipal();
 
-		// El login de GitHub (nombre de usuario único)
-		// String githubLogin = (String) usuario.getAttributes().get("login");
-		String githubEmail = (String) usuario.getAttributes().get("email"); // TODO hay que ver si GitHub da el email
-		// String githubNombre = (String) usuario.getAttributes().get("name");
+		String githubId = String.valueOf(githubUser.getAttributes().get("id"));
+
+		// Datos opcionales que GitHub puede facilitar
+		String githubLogin = (String) githubUser.getAttributes().get("login"); // nombre de usuario
+		String githubNombre = (String) githubUser.getAttributes().get("name"); // nombre real (puede ser null)
+		String githubEmail = (String) githubUser.getAttributes().get("email"); // email (puede ser null)
 
 		Map<String, Object> claims = null;
 		try {
-			claims = fetchUserInfo(githubEmail);
+			claims = fetchUserInfo(githubId, githubNombre, githubLogin, githubEmail);
 		} catch (Exception e) {
 			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"Error al procesar el inicio de sesión con GitHub");
+			return;
 		}
 
-		if (claims != null) {
-			// genera el token JWT y lo envía en la respuesta ...
-			String token = JwtUtils.generateToken(claims);
-
-			// Enviar token en cookie http-only
-			Cookie cookie = new Cookie("jwt", token);
-			cookie.setMaxAge(JWT_TIEMPO_VALIDEZ);
-			cookie.setHttpOnly(true);
-			cookie.setPath("/");
-			response.addCookie(cookie);
-
-			// escribe el token en response
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write("{\"token\":\"" + token + "\"," + "\"id\":\"" + claims.get("sub") + "\","
-					+ "\"nombre\":\"" + claims.get("nombre") + "\"," + "\"roles\":\"" + claims.get("roles") + "\"}");
+		if (claims == null) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"No se pudo resolver el usuario de GitHub");
+			return;
 		}
 
-		// Usuario de GitHub no vinculado a una cuenta del sistema
-		// generamos un token provisional con rol USUARIO
-		// TODO revisar si esta bien hacer esto
-		// claims = new HashMap<>();
-		// claims.put("sub", "github:" + githubLogin);
-		// claims.put("nombre", githubNombre != null ? githubNombre : githubLogin);
-		// claims.put("roles", "USUARIO");
+		// Generar JWT
+		String token = JwtUtils.generateToken(claims);
+
+		// Enviar token en cookie http-only
+		Cookie cookie = new Cookie("jwt", token);
+		cookie.setMaxAge(JWT_TIEMPO_VALIDEZ);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+
+		// Escribir el token en la respuesta JSON
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write("{\"token\":\"" + token + "\"," + "\"id\":\"" + claims.get("sub") + "\","
+				+ "\"nombre\":\"" + claims.get("nombre") + "\"," + "\"roles\":\"" + claims.get("roles") + "\"}");
 	}
 
-	private Map<String, Object> fetchUserInfo(String githubEmail) throws Exception {
+	private Map<String, Object> fetchUserInfo(String githubId, String githubNombre, String githubLogin,
+			String githubEmail) throws Exception {
 
-		UsuarioLoginResponseDTO usuario = clienteUsuarios.buscarPorEmail(githubEmail);
-		if (usuario != null) {
-			HashMap<String, Object> claims = new HashMap<String, Object>();
-			claims.put("sub", usuario.getId());
-			claims.put("nombre", usuario.getNombre() + " " + usuario.getApellidos());
-			claims.put("roles", usuario.getRoles());
+		// Intenta encontrar el usuario vinculado a este GitHub ID
+		UsuarioLoginResponseDTO usuario = clienteUsuarios.buscarPorGithubId(githubId);
 
-			return claims;
+		// Si no existe, crear automáticamente con los datos que GitHub proporciona
+		if (usuario == null) {
+			// Usar el nombre real si está disponible, si no el login de GitHub
+			String nombre = (githubNombre != null && !githubNombre.isEmpty()) ? githubNombre : githubLogin;
+
+			String apellidos = "";
+
+			UsuarioGithubInputDTO nuevoUsuario = new UsuarioGithubInputDTO(githubId, nombre, apellidos, githubEmail);
+
+			usuario = clienteUsuarios.crearUsuarioGithub(nuevoUsuario);
 		}
 
-		return null;
+		// Construir claims para el JWT
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("sub", usuario.getId());
+		claims.put("nombre", usuario.getNombre() + " " + usuario.getApellidos());
+		claims.put("roles", usuario.getRoles());
+
+		return claims;
 	}
 }

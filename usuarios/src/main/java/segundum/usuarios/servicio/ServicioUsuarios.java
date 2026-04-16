@@ -21,5 +21,8 @@ public interface ServicioUsuarios {
 
 	List<Usuario> recuperarTodos() throws RepositorioException;
 
-	public Usuario buscarPorEmail(String email) throws EntidadNoEncontrada, RepositorioException;
+	Usuario buscarPorGithubId(String githubId) throws RepositorioException;
+
+	String altaUsuarioGithub(String githubId, String nombre, String apellidos, String email)
+			throws RepositorioException, IOException;
 }

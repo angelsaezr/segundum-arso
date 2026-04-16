@@ -22,9 +22,9 @@ import javax.ws.rs.core.UriInfo;
 
 import io.jsonwebtoken.Claims;
 import segundum.usuarios.modelo.Usuario;
-import segundum.usuarios.repositorio.EntidadNoEncontrada;
 import segundum.usuarios.repositorio.RepositorioException;
 import segundum.usuarios.rest.dto.UsuarioDTO;
+import segundum.usuarios.rest.dto.UsuarioGithubInputDTO;
 import segundum.usuarios.rest.dto.UsuarioInputDTO;
 import segundum.usuarios.rest.dto.UsuarioLoginInputDTO;
 import segundum.usuarios.rest.dto.UsuarioLoginResponseDTO;
@@ -46,7 +46,6 @@ public class ControladorUsuarios {
 	private HttpServletRequest servletRequest;
 
 	// GET http://localhost:8080/api/usuarios/1
-
 	@GET
 	@Path("{id}")
 	@RolesAllowed("USUARIO")
@@ -56,7 +55,6 @@ public class ControladorUsuarios {
 
 	// curl -i -X POST -H "Content-type: application/json" -d @1.json
 	// http://localhost:8080/api/usuarios/
-
 	@POST
 	@PermitAll
 	public Response createUsuario(UsuarioInputDTO dto) throws Exception {
@@ -67,7 +65,6 @@ public class ControladorUsuarios {
 
 	// curl -i -X PUT -H "Content-type: application/json" -d @1.json
 	// http://localhost:8080/api/usuarios/1
-
 	@PUT
 	@Path("{id}")
 	@RolesAllowed("USUARIO")
@@ -83,7 +80,6 @@ public class ControladorUsuarios {
 	}
 
 	// curl -i http://localhost:8080/api/usuarios/
-
 	@GET
 	@RolesAllowed("USUARIO")
 	public Response getUsuarios() throws Exception {
@@ -96,7 +92,6 @@ public class ControladorUsuarios {
 	}
 
 	// GET http://localhost:8080/api/usuarios/1/nombre
-
 	@GET
 	@Path("{id}/nombre")
 	@PermitAll
@@ -108,7 +103,6 @@ public class ControladorUsuarios {
 	// POST http://localhost:8080/api/usuarios/login
 	// Operación pública para que la pasarela verifique credenciales.
 	// Devuelve los datos del usuario sin generar token (eso lo hace la pasarela).
-
 	@POST
 	@Path("/login")
 	@PermitAll
@@ -126,19 +120,34 @@ public class ControladorUsuarios {
 	}
 
 	@GET
-	@Path("/buscarPorEmail")
+	@Path("/buscarPorGithubId")
 	@PermitAll
-	public Response buscarPorEmail(@QueryParam("email") String email) {
+	public Response buscarPorGithubId(@QueryParam("githubId") String githubId) {
 		try {
-			Usuario usuario = servicio.buscarPorEmail(email);
-
+			Usuario usuario = servicio.buscarPorGithubId(githubId);
+			if (usuario == null) {
+				return Response.status(Response.Status.NOT_FOUND)
+						.entity("{\"error\": \"No existe usuario con githubId: " + githubId + "\"}").build();
+			}
 			return Response.ok(UsuarioLoginResponseDTO.fromEntity(usuario)).build();
-
-		} catch (EntidadNoEncontrada e) {
-			return Response.status(Response.Status.NOT_FOUND)
-					.entity("{\"error\": \"No existe usuario con email: " + email + "\"}").build();
-
 		} catch (RepositorioException e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("{\"error\": \"" + e.getMessage() + "\"}").build();
+		}
+	}
+
+	@POST
+	@Path("/github")
+	@PermitAll
+	public Response createUsuarioGithub(UsuarioGithubInputDTO dto) {
+		try {
+			String id = servicio.altaUsuarioGithub(dto.getGithubId(), dto.getNombre(), dto.getApellidos(),
+					dto.getEmail());
+			URI nuevaURL = uriInfo.getBaseUriBuilder().path("usuarios").path(id).build();
+			return Response.created(nuevaURL).build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.CONFLICT).entity("{\"error\": \"" + e.getMessage() + "\"}").build();
+		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("{\"error\": \"" + e.getMessage() + "\"}").build();
 		}
@@ -147,5 +156,4 @@ public class ControladorUsuarios {
 	private Claims getClaims() {
 		return (Claims) servletRequest.getAttribute("claims");
 	}
-
 }

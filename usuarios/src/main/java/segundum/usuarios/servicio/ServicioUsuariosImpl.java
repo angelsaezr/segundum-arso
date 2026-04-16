@@ -91,6 +91,52 @@ public class ServicioUsuariosImpl implements ServicioUsuarios {
 		return repositorio.getAll();
 	}
 
+	@Override
+	public Usuario buscarPorGithubId(String githubId) throws RepositorioException {
+		validarNoVacio(githubId, "githubId");
+		try {
+			return ((RepositorioUsuariosAdHoc) repositorio).buscarPorGithubId(githubId);
+		} catch (EntidadNoEncontrada e) {
+			return null; // No existe, se creará en la pasarela
+		}
+	}
+
+	@Override
+	public String altaUsuarioGithub(String githubId, String nombre, String apellidos, String email)
+			throws RepositorioException, IOException {
+		validarNoVacio(githubId, "githubId");
+		validarNoVacio(nombre, "nombre");
+
+		// Comprobar que no exista ya un usuario con ese githubId
+		Usuario existente = buscarPorGithubId(githubId);
+		if (existente != null) {
+			throw new IllegalArgumentException("githubId: ya existe un usuario registrado con ese ID de GitHub");
+		}
+
+		Usuario usuario = new Usuario();
+		usuario.setGithubId(githubId);
+		usuario.setNombre(nombre);
+		// Si GitHub no devuelve apellidos, usar cadena vacía
+		usuario.setApellidos(apellidos != null ? apellidos : "");
+		// El email puede ser null si GitHub no lo expone
+		if (email != null && !email.isEmpty()) {
+			usuario.setEmail(email);
+		}
+		usuario.setAdministrador(false);
+		usuario.setContadorCompras(0);
+		usuario.setContadorVentas(0);
+
+		String id = repositorio.add(usuario);
+
+		// Publicar evento de creación (con los datos disponibles)
+		publicadorEventos.publicarEvento(new EventoUsuarioCreado(id,
+				usuario.getEmail() != null ? usuario.getEmail() : "", usuario.getNombre(), usuario.getApellidos()));
+
+		return id;
+	}
+
+	// Métodos auxiliares
+
 	private void validarNoVacio(String valor, String campo) {
 		if (valor == null || valor.isEmpty())
 			throw new IllegalArgumentException(campo + ": no debe ser nulo ni vacio");
@@ -100,11 +146,5 @@ public class ServicioUsuariosImpl implements ServicioUsuarios {
 		if (valor != null && !valor.isEmpty()) {
 			setter.accept(valor);
 		}
-	}
-
-	@Override
-	public Usuario buscarPorEmail(String email) throws RepositorioException {
-		validarNoVacio(email, "email");
-		return ((RepositorioUsuariosAdHoc) repositorio).buscarPorEmail(email);
 	}
 }
