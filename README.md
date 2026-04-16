@@ -7,7 +7,8 @@
 - `[DONE]` Productos y Compraventas: implementar control de autorización por operación
 - `[DONE]` (Opcional) Cookie http-only
 - `[DONE]` Ver si GitHub da el email porque buscamos el usuario por email
-- `[ToDo]` Probar OAuth2
+- `[DONE]` Probar OAuth2
+- `[ToDo]` Probar autorizacion compraventas y productos, por operacion y reenvio de JWT a microservicios
 
 Notas:
 - `[DONE]` Productos: El usuario que da de alta un producto debe ser el propietario.
@@ -21,9 +22,9 @@ Notas:
 ---
 
 # Otros ToDos
-- Crear logs
-- Revisar Retrofit si funciona bien, si coge bien los datos y si DTO está bien
-- [Angel] Actualizar bd mysql‎
+- Al crear un usuario del microservicio usuarios, el nombre se pone en el campo telefono
+- Al iniciar sesion con OAuth2, el githubId se pone en el campo nombre
+- Crear logs‎
 
 ---
 
