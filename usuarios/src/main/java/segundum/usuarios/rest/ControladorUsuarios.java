@@ -22,7 +22,6 @@ import javax.ws.rs.core.UriInfo;
 
 import io.jsonwebtoken.Claims;
 import segundum.usuarios.modelo.Usuario;
-import segundum.usuarios.repositorio.RepositorioException;
 import segundum.usuarios.rest.dto.ListadoUsuarios;
 import segundum.usuarios.rest.dto.UsuarioDTO;
 import segundum.usuarios.rest.dto.UsuarioGithubInputDTO;
@@ -108,34 +107,24 @@ public class ControladorUsuarios {
 	@POST
 	@Path("/login")
 	@PermitAll
-	public Response login(UsuarioLoginInputDTO dto) {
-		try {
-			Usuario usuario = servicio.login(dto.getEmail(), dto.getPassword());
-			if (usuario == null) {
-				return Response.status(Response.Status.UNAUTHORIZED).entity("Credenciales inválidas").build();
-			}
-			return Response.ok(UsuarioLoginResponseDTO.fromEntity(usuario)).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity("{\"error\": \"" + e.getMessage() + "\"}").build();
+	public Response login(UsuarioLoginInputDTO dto) throws Exception {
+		Usuario usuario = servicio.login(dto.getEmail(), dto.getPassword());
+		if (usuario == null) {
+			return Response.status(Response.Status.UNAUTHORIZED).entity("Credenciales inválidas").build();
 		}
+		return Response.ok(UsuarioLoginResponseDTO.fromEntity(usuario)).build();
 	}
 
 	@GET
 	@Path("/buscarPorGithubId")
 	@PermitAll
-	public Response buscarPorGithubId(@QueryParam("githubId") String githubId) {
-		try {
-			Usuario usuario = servicio.buscarPorGithubId(githubId);
-			if (usuario == null) {
-				return Response.status(Response.Status.NOT_FOUND)
-						.entity("{\"error\": \"No existe usuario con githubId: " + githubId + "\"}").build();
-			}
-			return Response.ok(UsuarioLoginResponseDTO.fromEntity(usuario)).build();
-		} catch (RepositorioException e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity("{\"error\": \"" + e.getMessage() + "\"}").build();
+	public Response buscarPorGithubId(@QueryParam("githubId") String githubId) throws Exception {
+		Usuario usuario = servicio.buscarPorGithubId(githubId);
+		if (usuario == null) {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("{\"error\": \"No existe usuario con githubId: " + githubId + "\"}").build();
 		}
+		return Response.ok(UsuarioLoginResponseDTO.fromEntity(usuario)).build();
 	}
 
 	@POST

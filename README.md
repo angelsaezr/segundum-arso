@@ -56,7 +56,7 @@ Por último, el GitHubId es único para cada usuario.
 
 **Controlador REST**
   - `[DONE]` La operación de listado debe ofrecer enlaces para recuperar la información completa de cada uno de los usuarios. Podéis consultar el ejemplo que se hizo en clase (Bookle).
-  - `[TODO]` Las últimas operaciones tienen algunos tratamientos de error que no son necesarios, ya que actúan los manejadores globales de error.
+  - `[DONE]` Las últimas operaciones tienen algunos tratamientos de error que no son necesarios, ya que actúan los manejadores globales de error.
 
 ### Productos
 **REST**
