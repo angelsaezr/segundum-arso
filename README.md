@@ -31,8 +31,9 @@ Notas:
 # Dudas pendientes
 - Preguntar qué operaciones debe tener cada API.
 - Eliminar métodos de servicios/repositorios que no estén siendo utilizados por las APIs.
-- ¿Lo de que la id de los productos sea UUID está bien? (ver /productos/src/main/java/segundum/productos/modelo/Producto.java)
+- ¿Lo de que la id de los productos sea UUID está bien? (ver `/productos/src/main/java/segundum/productos/modelo/Producto.java`)
 - Por qué está productoResumenMensual en servicio
+- Ubicación de `persistence.xml` en Usuarios. Lo he tenido que poner en `src/main/resources/META-INF/persistence.xml` para que funcione
 
 ---
 
@@ -54,7 +55,7 @@ Por último, el GitHubId es único para cada usuario.
   - `[DONE]` En el alta, cuando se produce una colisión con el email de un usuario, la excepción que mejor lo identifica es "IllegalState". Posteriormente en REST habría que introducir un manejador que la transforme en "conflict".
 
 **Controlador REST**
-  - `[TODO]` La operación de listado debe ofrecer enlaces para recuperar la información completa de cada uno de los usuarios. Podéis consultar el ejemplo que se hizo en clase (Bookle).
+  - `[DONE]` La operación de listado debe ofrecer enlaces para recuperar la información completa de cada uno de los usuarios. Podéis consultar el ejemplo que se hizo en clase (Bookle).
   - `[TODO]` Las últimas operaciones tienen algunos tratamientos de error que no son necesarios, ya que actúan los manejadores globales de error.
 
 ### Productos

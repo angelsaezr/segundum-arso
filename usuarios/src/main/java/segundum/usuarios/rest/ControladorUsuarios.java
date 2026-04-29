@@ -23,6 +23,7 @@ import javax.ws.rs.core.UriInfo;
 import io.jsonwebtoken.Claims;
 import segundum.usuarios.modelo.Usuario;
 import segundum.usuarios.repositorio.RepositorioException;
+import segundum.usuarios.rest.dto.ListadoUsuarios;
 import segundum.usuarios.rest.dto.UsuarioDTO;
 import segundum.usuarios.rest.dto.UsuarioGithubInputDTO;
 import segundum.usuarios.rest.dto.UsuarioInputDTO;
@@ -88,7 +89,8 @@ public class ControladorUsuarios {
 		List<UsuarioResumenDTO> resumen = servicio.recuperarTodos().stream()
 				.map(u -> UsuarioResumenDTO.fromEntity(u, baseUri)).collect(Collectors.toList());
 
-		return Response.ok(resumen).build();
+		ListadoUsuarios listado = new ListadoUsuarios(resumen);
+		return Response.ok(listado).build();
 	}
 
 	// GET http://localhost:8080/api/usuarios/1/nombre
