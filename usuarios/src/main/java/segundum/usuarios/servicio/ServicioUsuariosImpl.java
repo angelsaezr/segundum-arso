@@ -45,7 +45,7 @@ public class ServicioUsuariosImpl implements ServicioUsuarios {
 			throw new IllegalArgumentException("fecha nacimiento: no debe ser nula");
 
 		if (repositorio.getAll().stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(dto.getEmail()))) {
-			throw new IllegalArgumentException("email: ya existe un usuario registrado con ese email");
+			throw new IllegalStateException("email: ya existe un usuario registrado con ese email");
 		}
 
 		Usuario usuario = new Usuario(dto);

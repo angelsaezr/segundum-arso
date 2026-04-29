@@ -44,3 +44,28 @@ Tampoco habría inconveniente en permitir introducir a la vez los dos campos. Es
 El proceso de alta con GitHub sería más complicado. Primero requiere conceder los permisos a la aplicación y después la aplicación debe capturar los datos que no le ofrece GitHub a través de un formulario. Esto implica una coordinación entre el frontend y el backend. Por esto se optó por simplificarlo en un solo formulario.
 
 Por último, el GitHubId es único para cada usuario.
+
+---
+
+## Feedback entrega adelantada
+
+### Usuarios
+**Servicio**
+  - `[DONE]` En el alta, cuando se produce una colisión con el email de un usuario, la excepción que mejor lo identifica es "IllegalState". Posteriormente en REST habría que introducir un manejador que la transforme en "conflict".
+
+**Controlador REST**
+  - `[TODO]` La operación de listado debe ofrecer enlaces para recuperar la información completa de cada uno de los usuarios. Podéis consultar el ejemplo que se hizo en clase (Bookle).
+  - `[TODO]` Las últimas operaciones tienen algunos tratamientos de error que no son necesarios, ya que actúan los manejadores globales de error.
+
+### Productos
+**REST**
+  - `[TODO]` openapi: también hay que documentar los DTO de entrada.
+  - `[TODO]` openapi: habría que documentar también las respuestas y los parámetros.
+  - `[TODO]` En el otro microservicio se ha aplicado openapi del mismo modo.
+
+### Compraventas
+**Servicio**
+  - `[TODO]` getCompraventaById: si no existe, habría que lanzar una excepción "not found".
+
+**Eventos**
+  - `[TODO]` RabbitMQConfig: no debería ser estática en el código, sino definida en una propiedad de application.properties.

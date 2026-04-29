@@ -139,18 +139,10 @@ public class ControladorUsuarios {
 	@POST
 	@Path("/github")
 	@PermitAll
-	public Response createUsuarioGithub(UsuarioGithubInputDTO dto) {
-		try {
-			String id = servicio.altaUsuarioGithub(dto.getGithubId(), dto.getNombre(), dto.getApellidos(),
-					dto.getEmail());
-			URI nuevaURL = uriInfo.getBaseUriBuilder().path("usuarios").path(id).build();
-			return Response.created(nuevaURL).build();
-		} catch (IllegalArgumentException e) {
-			return Response.status(Response.Status.CONFLICT).entity("{\"error\": \"" + e.getMessage() + "\"}").build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity("{\"error\": \"" + e.getMessage() + "\"}").build();
-		}
+	public Response createUsuarioGithub(UsuarioGithubInputDTO dto) throws Exception {
+		String id = servicio.altaUsuarioGithub(dto.getGithubId(), dto.getNombre(), dto.getApellidos(), dto.getEmail());
+		URI nuevaURL = uriInfo.getBaseUriBuilder().path("usuarios").path(id).build();
+		return Response.created(nuevaURL).build();
 	}
 
 	private Claims getClaims() {
