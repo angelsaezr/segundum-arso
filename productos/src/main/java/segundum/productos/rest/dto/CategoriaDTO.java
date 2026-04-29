@@ -8,16 +8,23 @@ import org.springframework.hateoas.EntityModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import segundum.productos.modelo.Categoria;
 
+@Schema(description = "DTO de respuesta con los datos de una categoría")
 public class CategoriaDTO {
 
+	@Schema(description = "Identificador único de la categoría")
 	private String id;
+	@Schema(description = "Nombre de la categoría")
 	private String nombre;
+	@Schema(description = "Descripción de la categoría")
 	private String descripcion;
+	@Schema(description = "Ruta jerárquica de la categoría")
 	private String ruta;
 
 	@JsonInclude(Include.NON_EMPTY)
+	@Schema(description = "Lista de subcategorías de primer nivel")
 	private List<EntityModel<CategoriaDTO>> subcategorias = new LinkedList<>();
 
 	public String getId() {

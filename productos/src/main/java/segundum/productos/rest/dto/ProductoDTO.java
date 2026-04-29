@@ -3,16 +3,16 @@ package segundum.productos.rest.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import segundum.productos.modelo.Producto;
 
-@Schema(description = "DTO de la entidad Producto")
+@Schema(description = "DTO de respuesta con los datos completos de un producto")
 public class ProductoDTO {
 
-	@Schema(description = "Identificador del producto")
+	@Schema(description = "Identificador único del producto")
 	private String id;
 	@Schema(description = "Título del producto")
 	private String titulo;
-	@Schema(description = "Descripción del producto")
+	@Schema(description = "Descripción detallada del producto")
 	private String descripcion;
-	@Schema(description = "Precio del producto")
+	@Schema(description = "Precio del producto en euros")
 	private double precio;
 	@Schema(description = "Estado del producto")
 	private String estado;

@@ -3,22 +3,31 @@ package segundum.productos.rest.dto;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import segundum.productos.modelo.EstadoProducto;
 
+@Schema(description = "DTO de entrada para crear un nuevo producto")
 public class NuevoProductoDTO {
 
 	@NotNull
+	@Schema(description = "Título del producto")
 	private String titulo;
 	@NotNull
+	@Schema(description = "Descripción detallada del producto")
 	private String descripcion;
 	@NotNull
 	@Min(0)
+	@Schema(description = "Precio del producto en euros")
 	private double precio;
+	@Schema(description = "Estado del producto")
 	private EstadoProducto estado;
+	@Schema(description = "Indica si el envío del producto está disponible")
 	private boolean envioDisponible;
 	@NotNull
+	@Schema(description = "Identificador de la categoría a la que pertenece el producto")
 	private String idCategoria;
 	@NotNull
+	@Schema(description = "Identificador del vendedor del producto")
 	private String idVendedor;
 
 	public NuevoProductoDTO() {

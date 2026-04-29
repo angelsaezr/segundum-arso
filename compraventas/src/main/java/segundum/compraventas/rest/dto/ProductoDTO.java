@@ -1,10 +1,18 @@
 package segundum.compraventas.rest.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "DTO con los datos del producto en una compraventa")
 public class ProductoDTO {
+	@Schema(description = "Identificador del vendedor del producto")
 	private String idVendedor;
+	@Schema(description = "Título del producto")
 	private String titulo;
+	@Schema(description = "Precio del producto en euros")
 	private double precio;
+	@Schema(description = "Lugar de recogida del producto")
 	private String recogida;
+	@Schema(description = "Indica si el producto ya ha sido vendido")
 	private boolean vendido;
 
 	public ProductoDTO() {

@@ -60,9 +60,9 @@ Por último, el GitHubId es único para cada usuario.
 
 ### Productos
 **REST**
-  - `[TODO]` openapi: también hay que documentar los DTO de entrada.
-  - `[TODO]` openapi: habría que documentar también las respuestas y los parámetros.
-  - `[TODO]` En el otro microservicio se ha aplicado openapi del mismo modo.
+  - `[DONE]` openapi: también hay que documentar los DTO de entrada.
+  - `[DONE]` openapi: habría que documentar también las respuestas y los parámetros.
+  - `[DONE]` En el otro microservicio se ha aplicado openapi del mismo modo.
 
 ### Compraventas
 **Servicio**

@@ -7,7 +7,7 @@ import org.springframework.hateoas.RepresentationModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import segundum.compraventas.modelo.Compraventa;
 
-@Schema(description = "Datos de salida de una compraventa")
+@Schema(description = "DTO de respuesta con los datos completos de una compraventa")
 public class CompraventaDTO extends RepresentationModel<CompraventaDTO> {
 
 	@Schema(description = "Identificador único de la compraventa")
@@ -19,7 +19,7 @@ public class CompraventaDTO extends RepresentationModel<CompraventaDTO> {
 	@Schema(description = "Título del producto")
 	private String titulo;
 
-	@Schema(description = "Precio de la compraventa")
+	@Schema(description = "Precio de la compraventa en euros")
 	private double precio;
 
 	@Schema(description = "Método o lugar de recogida del producto")
