@@ -1,0 +1,70 @@
+services:
+
+  usuarios:
+    build: ./usuarios
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - rabbitmq
+
+  productos:
+    build: ./productos
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - rabbitmq
+
+  compraventas:
+    build: ./compraventas
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - productos
+      - usuarios
+
+  pasarela:
+    build: ./pasarela
+    ports:
+      - "8090:8090"
+    depends_on:
+      - usuarios
+    environment:
+      - MICROSERVICIO_USUARIOS_URL=http://usuarios:8080/api/
+      - SERVER_PORT=8090
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: practicas
+      MYSQL_DATABASE: usuarios
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  mongodb:
+    image: mongo:6.0
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+volumes:
+  mysql_data:
+  mongo_data:
