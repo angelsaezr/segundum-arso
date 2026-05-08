@@ -1,10 +1,10 @@
-# Tarea 
+# Tarea 8
 - `[ToDo]` Probar autorizacion compraventas y productos, por operacion y reenvio de JWT a microservicios
 
 ---
 
 # Otros ToDos
-- Exportar pruebas de Postman para la entrega (usar variable de entorno para el token, ids, etc para que sea más sencillo)
+- Probar, revisar y exportar pruebas de Postman para la entrega (usar variable de entorno para el token, ids, etc para que sea más sencillo). Clonar repo y probar
 - Al crear un usuario del microservicio usuarios, el nombre se pone en el campo telefono
 - Al iniciar sesion con OAuth2, el githubId se pone en el campo nombre
 - Crear logs‎
