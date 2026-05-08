@@ -31,7 +31,7 @@ public class RabbitMQConfig {
 	@Bean
 	public ConnectionFactory connectionFactory() {
 		CachingConnectionFactory factory = new CachingConnectionFactory();
-		factory.setUri("amqps://mjxnthmp:pq0QmuFwei2ZNuHoSh2F8dtuQZxZl6co@rat.rmq2.cloudamqp.com/mjxnthmp");
+		factory.setUri("amqp://guest:guest@rabbitmq:5672");
 		return factory;
 	}
 

@@ -32,7 +32,7 @@ public interface CompraventasApi {
 			@ApiResponse(responseCode = "401", description = "No autenticado"),
 			@ApiResponse(responseCode = "409", description = "El producto ya ha sido vendido") })
 	@PostMapping
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USUARIO')")
 	ResponseEntity<Void> createCompraventa(@Valid @RequestBody NuevaCompraventaDTO nuevaCompraventaDTO)
 			throws Exception;
 
@@ -42,7 +42,7 @@ public interface CompraventasApi {
 			@ApiResponse(responseCode = "404", description = "Compraventa no encontrada"),
 			@ApiResponse(responseCode = "401", description = "No autenticado") })
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USUARIO')")
 	EntityModel<CompraventaDTO> getCompraventaById(
 			@Parameter(description = "Identificador de la compraventa", required = true) @PathVariable String id) throws Exception;
 
@@ -52,7 +52,7 @@ public interface CompraventasApi {
 			@ApiResponse(responseCode = "400", description = "Parámetros de paginación inválidos"),
 			@ApiResponse(responseCode = "401", description = "No autenticado") })
 	@GetMapping
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USUARIO')")
 	PagedModel<EntityModel<CompraventaDTO>> getCompraventasPaginado(@ParameterObject Pageable pageable)
 			throws Exception;
 
@@ -62,7 +62,7 @@ public interface CompraventasApi {
 			@ApiResponse(responseCode = "400", description = "Identificador de usuario inválido"),
 			@ApiResponse(responseCode = "401", description = "No autenticado") })
 	@GetMapping("/compras")
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USUARIO')")
 	ResponseEntity<?> getComprasUsuario(
 			@Parameter(description = "Identificador del usuario comprador", required = true) @RequestParam String idComprador) throws Exception;
 
@@ -72,7 +72,7 @@ public interface CompraventasApi {
 			@ApiResponse(responseCode = "400", description = "Identificador de usuario inválido"),
 			@ApiResponse(responseCode = "401", description = "No autenticado") })
 	@GetMapping("/ventas")
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USUARIO')")
 	ResponseEntity<?> getVentasUsuario(
 			@Parameter(description = "Identificador del usuario vendedor", required = true) @RequestParam String idVendedor) throws Exception;
 
@@ -83,7 +83,7 @@ public interface CompraventasApi {
 			@ApiResponse(responseCode = "401", description = "No autenticado"),
 			@ApiResponse(responseCode = "403", description = "Solo administradores pueden acceder a esta operación") })
 	@GetMapping("/entre")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
 	ResponseEntity<?> getCompraventasEntreUsuarios(
 			@Parameter(description = "Identificador del usuario comprador", required = true) @RequestParam String idComprador,
 			@Parameter(description = "Identificador del usuario vendedor", required = true) @RequestParam String idVendedor)

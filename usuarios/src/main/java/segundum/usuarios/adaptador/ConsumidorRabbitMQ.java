@@ -33,7 +33,7 @@ public class ConsumidorRabbitMQ implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 
-		String uri = "amqps://mjxnthmp:pq0QmuFwei2ZNuHoSh2F8dtuQZxZl6co@rat.rmq2.cloudamqp.com/mjxnthmp";
+		String uri = "amqp://guest:guest@rabbitmq:5672";
 
 		try {
 			ConnectionFactory factory = new ConnectionFactory();

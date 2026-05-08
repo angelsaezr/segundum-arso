@@ -1,27 +1,10 @@
-# Tarea 8
-- `[DONE]` Microservicio Usuarios: añadir operación pública de login para la pasarela
-- `[DONE]` Pasarela: implementar el login con usuario/contraseña
-- `[DONE]` Pasarela: implementar login con GitHub OAuth2
-- `[DONE]` Pasarela: validar el JWT en cada petición y reenviarlo a los microservicios
-- `[DONE]` Microservicios Productos y Compraventas: solo autorización, no autenticación
-- `[DONE]` Productos y Compraventas: implementar control de autorización por operación
-- `[DONE]` (Opcional) Cookie http-only
-- `[DONE]` Ver si GitHub da el email porque buscamos el usuario por email
-- `[DONE]` Probar OAuth2
-- `[ToDo]` Probar autorizacion compraventas y productos, por operacion y reenvio de JWT a microservicios
-
-Notas:
-- `[DONE]` Productos: El usuario que da de alta un producto debe ser el propietario.
-- `[DONE]` Productos: El usuario que modifica un producto debe ser el propietario.
-
----
-
 # Tarea 9
-- Todo por hacer
+- Terminada
 
 ---
 
 # Otros ToDos
+- Exportar pruebas de Postman para la entrega (usar variable de entorno para el token, ids, etc para que sea más sencillo)
 - Al crear un usuario del microservicio usuarios, el nombre se pone en el campo telefono
 - Al iniciar sesion con OAuth2, el githubId se pone en el campo nombre
 - Crear logs‎
@@ -70,3 +53,33 @@ Por último, el GitHubId es único para cada usuario.
 
 **Eventos**
   - `[TODO]` RabbitMQConfig: no debería ser estática en el código, sino definida en una propiedad de application.properties.
+  
+---
+
+## Cómo desplegar desde docker y probar
+
+1. docker-compose up -d --build
+2. docker-compose logs -f usuarios (esperar a que despliegue, es el que más tarda)
+3. Desde Postman crear 2 usuarios (al menos uno de los dos debería ser admin, para probar posteriormente los métodos de ADMINISTRADOR)
+4. Crear al menos un producto (solo se puede crear con token con el id del vendedor)
+5. Probar el resto de métodos (revisar si se necesita mandar el token del comprador, vendedor, etc, o si hace falta que el usuario sea ADMINISTRADOR)
+
+Comandos útiles para ver BBDD desde docker:
+
+- mysql:
+
+	docker exec -it segundum-arso_mysql_1 mysql -u root -ppracticas usuarios
+	docker exec -it segundum-arso_mysql_1 mysql -u root -ppracticas productos
+
+- mongo:
+	
+	TODO
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,88 @@
+services:
+
+  usuarios:
+    build: ./usuarios
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  productos:
+    build: ./productos
+    ports:
+      - "8081:8081"
+    depends_on:
+        mysql:
+            condition: service_healthy
+        rabbitmq:
+            condition: service_healthy
+
+  compraventas:
+    build: ./compraventas
+    ports:
+      - "8082:8082"
+    depends_on:
+        mongodb:
+            condition: service_started
+        rabbitmq:
+            condition: service_healthy
+        productos:
+            condition: service_started
+        usuarios:
+            condition: service_started
+
+  pasarela:
+    build: ./pasarela
+    ports:
+      - "8090:8090"
+    depends_on:
+        usuarios:
+            condition: service_started
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: practicas
+      MYSQL_DATABASE: usuarios
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppracticas"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  mongodb:
+    image: mongo:6.0
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  mysql_data:
+  mongo_data:
