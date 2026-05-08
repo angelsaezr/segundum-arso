@@ -12,6 +12,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,10 +29,25 @@ public class RabbitMQConfig {
 	public static final String BINDING_KEY_USUARIOS = "bus.usuarios.#";
 	public static final String ROUTING_KEY = "bus.compraventas.";
 
+	@Value("${spring.rabbitmq.host:localhost}")
+	private String host;
+
+	@Value("${spring.rabbitmq.port:5672}")
+	private int port;
+
+	@Value("${spring.rabbitmq.username:admin}")
+	private String username;
+
+	@Value("${spring.rabbitmq.password:practicas}")
+	private String password;
+
 	@Bean
 	public ConnectionFactory connectionFactory() {
 		CachingConnectionFactory factory = new CachingConnectionFactory();
-		factory.setUri("amqp://guest:guest@rabbitmq:5672");
+		factory.setHost(host);
+		factory.setPort(port);
+		factory.setUsername(username);
+		factory.setPassword(password);
 		return factory;
 	}
 
@@ -42,22 +58,19 @@ public class RabbitMQConfig {
 
 	@Bean
 	public Queue queue() {
-		boolean durable = true;
-		boolean exclusive = false;
-		boolean autodelete = false;
-		return new Queue(QUEUE_NAME, durable, exclusive, autodelete);
+		return new Queue(QUEUE_NAME, true, false, false);
 	}
 
 	@Bean
 	public Binding bindingProductos(Queue queue, Exchange exchange) {
-		Map<String, Object> propiedades = null;
-		return BindingBuilder.bind(queue).to(exchange).with(BINDING_KEY_PRODUCTOS).and(propiedades);
+		Map<String, Object> props = null;
+		return BindingBuilder.bind(queue).to(exchange).with(BINDING_KEY_PRODUCTOS).and(props);
 	}
 
 	@Bean
 	public Binding bindingUsuarios(Queue queue, Exchange exchange) {
-		Map<String, Object> propiedades = null;
-		return BindingBuilder.bind(queue).to(exchange).with(BINDING_KEY_USUARIOS).and(propiedades);
+		Map<String, Object> props = null;
+		return BindingBuilder.bind(queue).to(exchange).with(BINDING_KEY_USUARIOS).and(props);
 	}
 
 	@Bean
@@ -65,13 +78,11 @@ public class RabbitMQConfig {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new JavaTimeModule());
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
 		return new Jackson2JsonMessageConverter(objectMapper);
 	}
 
 	@Bean
 	public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter converter) {
-
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
 		rabbitTemplate.setMessageConverter(converter);
 		return rabbitTemplate;

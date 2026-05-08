@@ -1,5 +1,5 @@
-# Tarea 9
-- Terminada
+# Tarea 
+- `[ToDo]` Probar autorizacion compraventas y productos, por operacion y reenvio de JWT a microservicios
 
 ---
 

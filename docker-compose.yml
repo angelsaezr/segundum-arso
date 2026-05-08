@@ -1,88 +1,221 @@
 services:
 
-  usuarios:
-    build: ./usuarios
-    ports:
-      - "8080:8080"
-    depends_on:
-      mysql:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-
-  productos:
-    build: ./productos
-    ports:
-      - "8081:8081"
-    depends_on:
-        mysql:
-            condition: service_healthy
-        rabbitmq:
-            condition: service_healthy
-
-  compraventas:
-    build: ./compraventas
-    ports:
-      - "8082:8082"
-    depends_on:
-        mongodb:
-            condition: service_started
-        rabbitmq:
-            condition: service_healthy
-        productos:
-            condition: service_started
-        usuarios:
-            condition: service_started
-
-  pasarela:
-    build: ./pasarela
-    ports:
-      - "8090:8090"
-    depends_on:
-        usuarios:
-            condition: service_started
-
+  # ─────────────────────────────────────────
+  # MySQL: una sola instancia con dos BDs
+  # ─────────────────────────────────────────
   mysql:
-    image: mysql:8.0
-    restart: always
-    ports:
-      - "3306:3306"
+    image: mysql:8
+    container_name: segundum-mysql
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: practicas
-      MYSQL_DATABASE: usuarios
+    ports:
+      - "3306:3306"
     volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
       - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppracticas"]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 30s
+    networks:
+      - segundum-net
 
-  mongodb:
-    image: mongo:6.0
-    restart: always
+  # ─────────────────────────────────────────
+  # MongoDB
+  # ─────────────────────────────────────────
+  mongo:
+    image: mongo:6
+    container_name: segundum-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: practicas
+      MONGO_INITDB_DATABASE: compraventas
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - segundum-net
 
+  mongo-express:
+    image: mongo-express:1
+    container_name: segundum-mongo-express
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: practicas
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: practicas
+    ports:
+      - "8083:8081"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8081"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - segundum-net
+
+  # ─────────────────────────────────────────
+  # RabbitMQ
+  # ─────────────────────────────────────────
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: segundum-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: practicas
     ports:
       - "5672:5672"
       - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 30s
+    networks:
+      - segundum-net
+
+  # ─────────────────────────────────────────
+  # Microservicio Usuarios (JAX-RS / Tomcat)
+  # ─────────────────────────────────────────
+  usuarios:
+    build:
+      context: ./usuarios
+      dockerfile: Dockerfile
+    container_name: segundum-usuarios
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      # Tomcat lee JAVA_OPTS automáticamente al arrancar.
+      # Las propiedades -D las recoge EclipseLink via System.getProperty().
+      # El persistence.xml referencia estas propiedades con ${DB_URL} etc.
+      JAVA_OPTS: >-
+        -DDB_URL=jdbc:mysql://mysql:3306/usuarios?serverTimezone=CET&allowPublicKeyRetrieval=true&useSSL=false
+        -DDB_USER=root
+        -DDB_PASSWORD=practicas
+        -DRABBITMQ_URI=amqp://admin:practicas@rabbitmq:5672
+    ports:
+      - "8080:8080"
+    networks:
+      - segundum-net
+
+  # ─────────────────────────────────────────
+  # Microservicio Productos (Spring Boot)
+  # ─────────────────────────────────────────
+  productos:
+    build:
+      context: ./productos
+      dockerfile: Dockerfile
+    container_name: segundum-productos
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/productos?serverTimezone=CET&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: practicas
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: admin
+      SPRING_RABBITMQ_PASSWORD: practicas
+      SERVER_PORT: 8081
+    ports:
+      - "8081:8081"
+    networks:
+      - segundum-net
+
+  # ─────────────────────────────────────────
+  # Microservicio Compraventas (Spring Boot)
+  # ─────────────────────────────────────────
+  compraventas:
+    build:
+      context: ./compraventas
+      dockerfile: Dockerfile
+    container_name: segundum-compraventas
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      productos:
+        condition: service_started
+      usuarios:
+        condition: service_started
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://admin:practicas@mongo:27017/compraventas?authSource=admin
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: admin
+      SPRING_RABBITMQ_PASSWORD: practicas
+      MICROSERVICIO_PRODUCTOS_URL: http://productos:8081/
+      MICROSERVICIO_USUARIOS_URL: http://usuarios:8080/api/
+      SERVER_PORT: 8082
+    ports:
+      - "8082:8082"
+    networks:
+      - segundum-net
+
+  # ─────────────────────────────────────────
+  # Pasarela (Spring Boot + Zuul)
+  # ─────────────────────────────────────────
+  pasarela:
+    build:
+      context: ./pasarela
+      dockerfile: Dockerfile
+    container_name: segundum-pasarela
+    restart: unless-stopped
+    depends_on:
+      - usuarios
+      - productos
+      - compraventas
+    environment:
+      MICROSERVICIO_USUARIOS_URL: http://usuarios:8080/api/
+      MICROSERVICIO_PRODUCTOS_URL: http://productos:8081/
+      MICROSERVICIO_COMPRAVENTAS_URL: http://compraventas:8082/
+      ZUUL_ROUTES_USUARIOS_URL: http://usuarios:8080/api/usuarios/
+      ZUUL_ROUTES_PRODUCTOS_URL: http://productos:8081/productos/
+      ZUUL_ROUTES_COMPRAVENTAS_URL: http://compraventas:8082/compraventas/
+      SERVER_PORT: 8090
+    ports:
+      - "8090:8090"
+    networks:
+      - segundum-net
 
 volumes:
   mysql_data:
   mongo_data:
+  rabbitmq_data:
+
+networks:
+  segundum-net:
+    driver: bridge

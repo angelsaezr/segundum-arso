@@ -14,10 +14,9 @@ import segundum.usuarios.puerto.PublicadorEventos;
 public class PublicadorEventosRabbitMQ implements PublicadorEventos {
 
 	public PublicadorEventosRabbitMQ() {
-
+		// Verificamos la conexión al arrancar para detectar problemas pronto
 		try {
-			String uri = "amqp://guest:guest@rabbitmq:5672";
-
+			String uri = getRabbitMQUri();
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setUri(uri);
 
@@ -33,15 +32,12 @@ public class PublicadorEventosRabbitMQ implements PublicadorEventos {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	@Override
 	public void publicarEvento(Evento evento) throws IOException {
-
 		try {
-			String uri = "amqp://guest:guest@rabbitmq:5672";
-
+			String uri = getRabbitMQUri();
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setUri(uri);
 
@@ -49,7 +45,6 @@ public class PublicadorEventosRabbitMQ implements PublicadorEventos {
 			Channel channel = connection.createChannel();
 
 			Gson gson = new Gson();
-
 			String mensaje = gson.toJson(evento);
 
 			channel.basicPublish("bus", "bus.usuarios." + evento.getTipo(),
@@ -60,7 +55,15 @@ public class PublicadorEventosRabbitMQ implements PublicadorEventos {
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
-
 	}
 
+	private String getRabbitMQUri() {
+		String uri = System.getProperty("RABBITMQ_URI");
+		if (uri != null && !uri.isEmpty())
+			return uri;
+		uri = System.getenv("RABBITMQ_URI");
+		if (uri != null && !uri.isEmpty())
+			return uri;
+		return "amqp://admin:practicas@localhost:5672";
+	}
 }

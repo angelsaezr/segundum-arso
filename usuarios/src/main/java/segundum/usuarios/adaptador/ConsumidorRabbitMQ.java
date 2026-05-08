@@ -24,7 +24,7 @@ import segundum.usuarios.servicio.FactoriaServicios;
 @WebListener
 public class ConsumidorRabbitMQ implements ServletContextListener {
 
-	// inyección del puerto de entrada
+	// El puerto de entrada se obtiene a través de la factoría
 	private final ManejadorEventos manejadorEventos = FactoriaServicios.getServicio(ManejadorEventos.class);
 
 	private Connection connection;
@@ -33,7 +33,7 @@ public class ConsumidorRabbitMQ implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 
-		String uri = "amqp://guest:guest@rabbitmq:5672";
+		String uri = getRabbitMQUri();
 
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
@@ -51,7 +51,7 @@ public class ConsumidorRabbitMQ implements ServletContextListener {
 			durable = true;
 			boolean exclusive = false;
 			boolean autodelete = false;
-			Map<String, Object> properties = null; // sin propiedades
+			Map<String, Object> properties = null;
 			channel.queueDeclare(queueName, durable, exclusive, autodelete, properties);
 			channel.queueBind(queueName, exchangeName, bindingKey);
 
@@ -62,18 +62,14 @@ public class ConsumidorRabbitMQ implements ServletContextListener {
 						byte[] body) throws IOException {
 
 					long deliveryTag = envelope.getDeliveryTag();
-
 					String contenido = new String(body);
 					System.out.println(contenido);
 
 					JsonObject objeto = JsonParser.parseString(contenido).getAsJsonObject();
 
 					if (objeto.get("tipo").getAsString().equals("compraventa-creada")) {
-
-						// ejecutar operación del puerto ...
 						String idComprador = objeto.get("idComprador").getAsString();
 						String idVendedor = objeto.get("idVendedor").getAsString();
-
 						try {
 							manejadorEventos.compraventaCreada(idComprador, idVendedor);
 						} catch (EntidadNoEncontrada e) {
@@ -83,31 +79,41 @@ public class ConsumidorRabbitMQ implements ServletContextListener {
 						}
 					}
 
-					// Confirma el procesamiento
 					channel.basicAck(deliveryTag, false);
 				}
 			});
 
-			System.out.println("consumidor esperando ...");
+			System.out.println("consumidor RabbitMQ esperando en: " + uri);
+
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-
 		try {
 			if (this.channel != null)
 				this.channel.close();
-
 			if (this.connection != null)
 				this.connection.close();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
+	private String getRabbitMQUri() {
+		// Propiedad del sistema (-DRABBITMQ_URI=...)
+		String uri = System.getProperty("RABBITMQ_URI");
+		if (uri != null && !uri.isEmpty())
+			return uri;
+
+		// Variable de entorno del sistema operativo
+		uri = System.getenv("RABBITMQ_URI");
+		if (uri != null && !uri.isEmpty())
+			return uri;
+
+		// Valor por defecto para desarrollo local
+		return "amqp://admin:practicas@localhost:5672";
+	}
 }
