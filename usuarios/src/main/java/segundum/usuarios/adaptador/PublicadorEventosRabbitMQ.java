@@ -16,7 +16,7 @@ public class PublicadorEventosRabbitMQ implements PublicadorEventos {
 	public PublicadorEventosRabbitMQ() {
 
 		try {
-			String uri = "amqps://mjxnthmp:pq0QmuFwei2ZNuHoSh2F8dtuQZxZl6co@rat.rmq2.cloudamqp.com/mjxnthmp";
+			String uri = "amqp://guest:guest@rabbitmq:5672";
 
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setUri(uri);
@@ -40,7 +40,7 @@ public class PublicadorEventosRabbitMQ implements PublicadorEventos {
 	public void publicarEvento(Evento evento) throws IOException {
 
 		try {
-			String uri = "amqps://mjxnthmp:pq0QmuFwei2ZNuHoSh2F8dtuQZxZl6co@rat.rmq2.cloudamqp.com/mjxnthmp";
+			String uri = "amqp://guest:guest@rabbitmq:5672";
 
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setUri(uri);

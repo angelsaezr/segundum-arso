@@ -38,7 +38,7 @@ public interface ProductosApi {
 			@ApiResponse(responseCode = "403", description = "Solo puedes dar de alta productos como vendedor propio"),
 			@ApiResponse(responseCode = "401", description = "No autenticado") })
 	@PostMapping
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USUARIO')")
 	ResponseEntity<Void> createProducto(@Valid @RequestBody NuevoProductoDTO nuevoProductoDto) throws Exception;
 
 	@Operation(summary = "Obtener producto", description = "Obtiene un producto por su id con toda su información")
@@ -58,7 +58,7 @@ public interface ProductosApi {
 			@ApiResponse(responseCode = "404", description = "Producto no encontrado"),
 			@ApiResponse(responseCode = "401", description = "No autenticado") })
 	@PatchMapping("/{id}")
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USUARIO')")
 	ResponseEntity<Void> modificarDatosProducto(
 			@Parameter(description = "Identificador del producto", required = true) @PathVariable String id,
 			@Valid @RequestBody ModificadoProductoDTO modificadoProductoDto) throws Exception;
@@ -70,7 +70,7 @@ public interface ProductosApi {
 			@ApiResponse(responseCode = "404", description = "Producto no encontrado"),
 			@ApiResponse(responseCode = "401", description = "No autenticado") })
 	@PostMapping("/{id}/recogida")
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USUARIO')")
 	ResponseEntity<Void> asignarLugarRecogida(
 			@Parameter(description = "Identificador del producto", required = true) @PathVariable String id,
 			@Valid @RequestBody NuevoLugarDeRecogidaDTO lugarRecogida) throws Exception;
