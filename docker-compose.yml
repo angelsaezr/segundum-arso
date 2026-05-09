@@ -111,14 +111,12 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      # Tomcat lee JAVA_OPTS automáticamente al arrancar.
-      # Las propiedades -D las recoge EclipseLink via System.getProperty().
-      # El persistence.xml referencia estas propiedades con ${DB_URL} etc.
-      JAVA_OPTS: >-
+      JAVA_TOOL_OPTIONS: >-
         -DDB_URL=jdbc:mysql://mysql:3306/usuarios?serverTimezone=CET&allowPublicKeyRetrieval=true&useSSL=false
         -DDB_USER=root
         -DDB_PASSWORD=practicas
         -DRABBITMQ_URI=amqp://admin:practicas@rabbitmq:5672
+      RABBITMQ_URI: amqp://admin:practicas@rabbitmq:5672
     ports:
       - "8080:8080"
     networks:
