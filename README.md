@@ -5,6 +5,7 @@
 
 # Otros ToDos
 - Probar, revisar y exportar pruebas de Postman para la entrega (usar variable de entorno para el token, ids, etc para que sea más sencillo). Clonar repo y probar
+- Hay que ver que en Postman tenemos todas las peticiones que hay que probar y poner token las que requieran token
 - Al iniciar sesion con OAuth2, el githubId se pone en el campo nombre‎
 
 ---
