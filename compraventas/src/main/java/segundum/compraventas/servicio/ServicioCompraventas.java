@@ -6,13 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import segundum.compraventas.modelo.Compraventa;
+import segundum.compraventas.repositorio.EntidadNoEncontrada;
 import segundum.compraventas.rest.dto.CompraventaDTO;
 
 public interface ServicioCompraventas {
 
 	Compraventa compraventa(String idProducto, String idComprador) throws Exception;
 
-	CompraventaDTO getCompraventaById(String id);
+	CompraventaDTO getCompraventaById(String id) throws EntidadNoEncontrada;
 
 	List<Compraventa> recuperarComprasUsuario(String idComprador);
 

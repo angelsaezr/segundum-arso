@@ -2,6 +2,7 @@ package segundum.compraventas.servicio;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import segundum.compraventas.modelo.Compraventa;
 import segundum.compraventas.puerto.ClienteProductos;
 import segundum.compraventas.puerto.ClienteUsuarios;
 import segundum.compraventas.puerto.PublicadorEventos;
+import segundum.compraventas.repositorio.EntidadNoEncontrada;
 import segundum.compraventas.repositorio.RepositorioCompraventas;
 import segundum.compraventas.rest.dto.CompraventaDTO;
 import segundum.compraventas.rest.dto.ProductoDTO;
@@ -68,10 +70,20 @@ public class ServicioCompraventasImpl implements ServicioCompraventas {
 	}
 
 	@Override
-	public CompraventaDTO getCompraventaById(String id) {
-		Compraventa compraventa = repositorioCompraventas.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("No existe compraventa con id: " + id));
-		return CompraventaDTO.fromEntity(compraventa);
+	public CompraventaDTO getCompraventaById(String id) throws EntidadNoEncontrada {
+
+		if (id == null || id.isEmpty()) {
+			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
+		}
+
+		Optional<Compraventa> resultado = repositorioCompraventas.findById(id);
+
+		if (resultado.isPresent() == false) {
+			throw new EntidadNoEncontrada("No existe encuesta con id: " + id);
+		} else {
+			Compraventa compraventa = resultado.get();
+			return CompraventaDTO.fromEntity(compraventa);
+		}
 	}
 
 	@Override
