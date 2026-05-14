@@ -1,19 +1,6 @@
-# Tarea 8
-- `[ToDo]` Probar autorizacion compraventas y productos, por operacion y reenvio de JWT a microservicios
-
----
-
 # Otros ToDos
-- Probar, revisar y exportar pruebas de Postman para la entrega (usar variable de entorno para el token, ids, etc para que sea más sencillo). Clonar repo y probar
-- Hay que ver que en Postman tenemos todas las peticiones que hay que probar y poner token las que requieran token
-- Al iniciar sesion con OAuth2, el githubId se pone en el campo nombre‎
-
----
-
-# Dudas pendientes
-- Preguntar qué operaciones debe tener cada API.
-- Eliminar métodos de servicios/repositorios que no estén siendo utilizados por las APIs.
-- ¿Lo de que la id de los productos sea UUID está bien? (ver `/productos/src/main/java/segundum/productos/modelo/Producto.java`)
+- Postman modificar usuario no funciona
+- Exportar pruebas de Postman para la entrega. Clonar repo y probar‎
   
 ---
 
