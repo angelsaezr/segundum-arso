@@ -1,0 +1,62 @@
+{
+  "info": {
+    "_postman_id": "9c990163-4e53-43a2-9f74-176501737fbf",
+    "name": "Pruebas_Pasarela",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52309124",
+    "_collection_link": "https://go.postman.co/collection/52309124-9c990163-4e53-43a2-9f74-176501737fbf?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.token) pm.environment.set('jwt', json.token);",
+              "//if (json.id) pm.environment.set('id_usuario', json.id);",
+              "if (json.roles) pm.environment.set('roles', json.roles);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "username",
+              "value": "{{email1}}",
+              "type": "text",
+              "uuid": "50ea6297-c391-4436-848d-2230057d8620"
+            },
+            {
+              "key": "password",
+              "value": "{{password1}}",
+              "type": "text",
+              "uuid": "b0c103fd-0266-4e54-b332-d7bbf9b5138e"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_pasarela}}/auth/login",
+          "host": [
+            "{{base_pasarela}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

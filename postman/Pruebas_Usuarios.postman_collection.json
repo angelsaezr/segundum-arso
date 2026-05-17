@@ -1,0 +1,217 @@
+{
+  "info": {
+    "_postman_id": "c3ed3823-bece-488e-824e-3c22f5d1af56",
+    "name": "Pruebas_Usuarios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52309124",
+    "_collection_link": "https://go.postman.co/collection/52309124-c3ed3823-bece-488e-824e-3c22f5d1af56?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Obtener Usuario",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_usuarios}}/usuarios/{{id_usuario1}}",
+          "host": [
+            "{{base_usuarios}}"
+          ],
+          "path": [
+            "usuarios",
+            "{{id_usuario1}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Usuario 1",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const location = pm.response.headers.get('Location');",
+              "if (location) {",
+              "  const id = location.split('/').filter(Boolean).pop();",
+              "  pm.environment.set('id_usuario1', id);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email1}}\",\n  \"nombre\": \"Angel\",\n  \"apellidos\": \"Ramirez Rosique\",\n  \"clave\": \"{{password1}}\",\n  \"fechaNacimiento\": \"2002-04-12T00:00:00.000+00:00\",\n  \"telefono\": \"600000000\",\n  \"administrador\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_usuarios}}/usuarios",
+          "host": [
+            "{{base_usuarios}}"
+          ],
+          "path": [
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Usuario 2",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const location = pm.response.headers.get('Location');",
+              "if (location) {",
+              "  const id = location.split('/').filter(Boolean).pop();",
+              "  pm.environment.set('id_usuario2', id);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email2}}\",\n  \"nombre\": \"Javi\",\n  \"apellidos\": \"Saez Lopez\",\n  \"clave\": \"{{password2}}\",\n  \"fechaNacimiento\": \"2002-05-12T00:00:00.000+00:00\",\n  \"telefono\": \"606008042\",\n  \"administrador\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_usuarios}}/usuarios",
+          "host": [
+            "{{base_usuarios}}"
+          ],
+          "path": [
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Modificar Usuario",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email1}}\",\n  \"nombre\": \"Angelo\",\n  \"apellidos\": \"Garcia Sanchez\",\n  \"clave\": \"{{password1}}\",\n  \"fechaNacimiento\": \"2002-04-12T00:00:00.000+00:00\",\n  \"telefono\": \"600763983\",\n  \"administrador\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_usuarios}}/usuarios/{{id_usuario1}}",
+          "host": [
+            "{{base_usuarios}}"
+          ],
+          "path": [
+            "usuarios",
+            "{{id_usuario1}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Usuarios",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_usuarios}}/usuarios",
+          "host": [
+            "{{base_usuarios}}"
+          ],
+          "path": [
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Nombre Usuario",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_usuarios}}/usuarios/{{id_usuario1}}/nombre",
+          "host": [
+            "{{base_usuarios}}"
+          ],
+          "path": [
+            "usuarios",
+            "{{id_usuario1}}",
+            "nombre"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

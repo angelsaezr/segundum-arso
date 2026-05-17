@@ -1,0 +1,239 @@
+{
+  "info": {
+    "_postman_id": "06b1370a-1843-4629-9e02-f7d7a7613249",
+    "name": "Pruebas_Compraventas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52309124",
+    "_collection_link": "https://go.postman.co/collection/52309124-06b1370a-1843-4629-9e02-f7d7a7613249?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Crear Compraventa",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const location = pm.response.headers.get('Location');",
+              "if (location) {",
+              "  const id = location.split('/').filter(Boolean).pop();",
+              "  pm.environment.set('id_compraventa', id);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idProducto\": \"{{id_producto}}\",\n  \"idComprador\": \"{{id_usuario2}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_compraventas}}/compraventas",
+          "host": [
+            "{{base_compraventas}}"
+          ],
+          "path": [
+            "compraventas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Compraventa",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_compraventas}}/compraventas/{{id_compraventa}}",
+          "host": [
+            "{{base_compraventas}}"
+          ],
+          "path": [
+            "compraventas",
+            "{{id_compraventa}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Compraventas Paginado",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_compraventas}}/compraventas?page=0&size=5&sort=fecha,desc",
+          "host": [
+            "{{base_compraventas}}"
+          ],
+          "path": [
+            "compraventas"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "5"
+            },
+            {
+              "key": "sort",
+              "value": "fecha,desc"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Compras Usuario",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_compraventas}}/compraventas/compras?idComprador={{id_usuario2}}",
+          "host": [
+            "{{base_compraventas}}"
+          ],
+          "path": [
+            "compraventas",
+            "compras"
+          ],
+          "query": [
+            {
+              "key": "idComprador",
+              "value": "{{id_usuario2}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Ventas Usuario",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_compraventas}}/compraventas/ventas?idVendedor={{id_usuario1}}",
+          "host": [
+            "{{base_compraventas}}"
+          ],
+          "path": [
+            "compraventas",
+            "ventas"
+          ],
+          "query": [
+            {
+              "key": "idVendedor",
+              "value": "{{id_usuario1}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Compraventas Entre Usuarios",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_compraventas}}/compraventas/entre?idComprador={{id_usuario2}}&idVendedor={{id_usuario1}}",
+          "host": [
+            "{{base_compraventas}}"
+          ],
+          "path": [
+            "compraventas",
+            "entre"
+          ],
+          "query": [
+            {
+              "key": "idComprador",
+              "value": "{{id_usuario2}}"
+            },
+            {
+              "key": "idVendedor",
+              "value": "{{id_usuario1}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

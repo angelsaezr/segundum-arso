@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -45,6 +46,9 @@ public class ControladorUsuarios {
 	@Context
 	private HttpServletRequest servletRequest;
 
+	@Context
+	private ContainerRequestContext requestContext;
+
 	// GET http://localhost:8080/api/usuarios/1
 	@GET
 	@Path("{id}")
@@ -70,10 +74,12 @@ public class ControladorUsuarios {
 	@RolesAllowed("USUARIO")
 	public Response update(@PathParam("id") String id, UsuarioInputDTO dto) throws Exception {
 		Claims claims = getClaims();
+		if (claims == null) {
+			return Response.status(Response.Status.UNAUTHORIZED).entity("Token no proporcionado o inválido").build();
+		}
 		if (!claims.getSubject().equals(id)) {
 			return Response.status(Response.Status.FORBIDDEN).entity("Solo puedes modificar tus propios datos").build();
 		}
-
 		servicio.modificarUsuario(id, dto.getEmail(), dto.getNombre(), dto.getApellidos(), dto.getClave(),
 				dto.getFechaNacimiento(), dto.getTelefono(), dto.isAdministrador());
 		return Response.noContent().build();
@@ -137,6 +143,6 @@ public class ControladorUsuarios {
 	}
 
 	private Claims getClaims() {
-		return (Claims) servletRequest.getAttribute("claims");
+		return (Claims) requestContext.getProperty("claims");
 	}
 }

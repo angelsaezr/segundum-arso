@@ -1,9 +1,3 @@
-# Otros ToDos
-- Postman modificar usuario no funciona
-- Exportar pruebas de Postman para la entrega. Clonar repo y probar‎
-  
----
-
 ## Cómo desplegar desde docker y probar
 
 1. docker-compose up -d --build

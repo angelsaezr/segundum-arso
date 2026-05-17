@@ -1,0 +1,287 @@
+{
+  "info": {
+    "_postman_id": "d40f66e0-c8f3-4987-b529-34cadeac1140",
+    "name": "Pruebas_Productos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52309124",
+    "_collection_link": "https://go.postman.co/collection/52309124-d40f66e0-c8f3-4987-b529-34cadeac1140?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Crear Producto",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const location = pm.response.headers.get('Location');",
+              "if (location) {",
+              "  const id = location.split('/').filter(Boolean).pop();",
+              "  pm.environment.set('id_producto', id);",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Producto Postman Segundo\",\n  \"descripcion\": \"Producto creado desde Postman\",\n  \"precio\": 100,\n  \"estado\": \"NUEVO\",\n  \"envioDisponible\": true,\n  \"idCategoria\": \"{{id_categoria}}\",\n  \"idVendedor\": \"{{id_usuario1}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_productos}}/productos/",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "productos",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Producto",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_productos}}/productos/{{id_producto}}",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "productos",
+            "{{id_producto}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Modificar Producto",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"descripcion\": \"Producto modificado desde postman\",\r\n  \"precio\": 200\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_productos}}/productos/{{id_producto}}",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "productos",
+            "{{id_producto}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Asignar Recogida",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jwt}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"descripcion\": \"Recogida desde postman\",\r\n  \"longitud\": 45,\r\n  \"latitud\": 45\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_productos}}/productos/{{id_producto}}/recogida",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "productos",
+            "{{id_producto}}",
+            "recogida"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Incrementar Visualizaciones",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_productos}}/productos/{{id_producto}}/visualizaciones",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "productos",
+            "{{id_producto}}",
+            "visualizaciones"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Resumen Mensual",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_productos}}/productos/historial?idVendedor={{id_usuario1}}&mes=3&anyo=2026&page=0&size=5",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "productos",
+            "historial"
+          ],
+          "query": [
+            {
+              "key": "idVendedor",
+              "value": "{{id_usuario1}}"
+            },
+            {
+              "key": "mes",
+              "value": "3"
+            },
+            {
+              "key": "anyo",
+              "value": "2026"
+            },
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Productos Paginado",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_productos}}/productos?page=0&size=5&sort=fechaPublicacion,desc",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "productos"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "5"
+            },
+            {
+              "key": "sort",
+              "value": "fechaPublicacion,desc"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buscar Productos",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_productos}}/productos/buscar?estado=NUEVO",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "productos",
+            "buscar"
+          ],
+          "query": [
+            {
+              "key": "estado",
+              "value": "NUEVO"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

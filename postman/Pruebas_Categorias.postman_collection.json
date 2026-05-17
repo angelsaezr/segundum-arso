@@ -1,0 +1,79 @@
+{
+  "info": {
+    "_postman_id": "f3a1b09f-0d82-4f74-a723-538fcd9ee979",
+    "name": "Pruebas_Categorias",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52309124",
+    "_collection_link": "https://go.postman.co/collection/52309124-f3a1b09f-0d82-4f74-a723-538fcd9ee979?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Obtener Categorías Raíz",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "const lista = Array.isArray(json) ? json : (json._embedded ? Object.values(json._embedded)[0] : []);",
+              "if (lista && lista.length && lista[0].id) pm.environment.set('id_categoria', lista[0].id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_productos}}/categorias",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "categorias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Descendientes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "const lista = Array.isArray(json) ? json : (json._embedded ? Object.values(json._embedded)[0] : []);",
+              "if (lista && lista.length && lista[0].id) pm.environment.set('id_categoria', lista[0].id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_productos}}/categorias/{{id_categoria}}/descendientes",
+          "host": [
+            "{{base_productos}}"
+          ],
+          "path": [
+            "categorias",
+            "{{id_categoria}}",
+            "descendientes"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
