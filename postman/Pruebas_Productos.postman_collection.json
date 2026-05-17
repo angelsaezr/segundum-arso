@@ -41,7 +41,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"titulo\": \"Producto Postman Segundo\",\n  \"descripcion\": \"Producto creado desde Postman\",\n  \"precio\": 100,\n  \"estado\": \"NUEVO\",\n  \"envioDisponible\": true,\n  \"idCategoria\": \"{{id_categoria}}\",\n  \"idVendedor\": \"{{id_usuario1}}\"\n}",
+          "raw": "{\n  \"titulo\": \"Producto Postman\",\n  \"descripcion\": \"Producto creado desde Postman\",\n  \"precio\": 100,\n  \"estado\": \"NUEVO\",\n  \"envioDisponible\": true,\n  \"idCategoria\": \"{{id_categoria}}\",\n  \"idVendedor\": \"{{id_usuario1}}\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -49,9 +49,9 @@
           }
         },
         "url": {
-          "raw": "{{base_productos}}/productos/",
+          "raw": "{{base_pasarela}}/productos/",
           "host": [
-            "{{base_productos}}"
+            "{{base_pasarela}}"
           ],
           "path": [
             "productos",

@@ -152,11 +152,12 @@
           }
         },
         "url": {
-          "raw": "{{base_usuarios}}/usuarios/{{id_usuario1}}",
+          "raw": "{{base_pasarela}}/api/usuarios/{{id_usuario1}}",
           "host": [
-            "{{base_usuarios}}"
+            "{{base_pasarela}}"
           ],
           "path": [
+            "api",
             "usuarios",
             "{{id_usuario1}}"
           ]

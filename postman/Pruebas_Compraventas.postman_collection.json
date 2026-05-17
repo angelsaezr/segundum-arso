@@ -49,9 +49,9 @@
           }
         },
         "url": {
-          "raw": "{{base_compraventas}}/compraventas",
+          "raw": "{{base_pasarela}}/compraventas",
           "host": [
-            "{{base_compraventas}}"
+            "{{base_pasarela}}"
           ],
           "path": [
             "compraventas"
